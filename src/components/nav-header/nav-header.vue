@@ -1,4 +1,5 @@
 <template>
+  <!-- 头部导航组件 -->
   <header class="nav-header">
     <nav class="navs">
       <router-link tag="div" to="/home" class="link">首页</router-link>
