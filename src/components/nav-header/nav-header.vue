@@ -24,8 +24,8 @@
     position: relative;
     padding: 0 35px;
     overflow: hidden;
+    min-width: 970px;
     background-color: #fff;
-    color: red;
     .navs {
       float: left;
       font-size: 0;

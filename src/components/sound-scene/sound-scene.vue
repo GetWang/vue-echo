@@ -57,6 +57,9 @@
       display: inline-block;
       margin-right: 1px;
       cursor: pointer;
+      &:last-child {
+        margin-right: 0;
+      }
       .cover {
         position: relative;
         width: 150px;

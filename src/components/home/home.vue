@@ -1,6 +1,6 @@
 <template>
   <!-- 首页组件 -->
-  <main class="m-home">
+  <main class="home">
     <section class="content-left">
       <sound-scene></sound-scene>
       <!-- 回声榜 -->
@@ -46,7 +46,7 @@
   import SoundScene from 'components/sound-scene/sound-scene'
 
   export default {
-    name: 'MHome',
+    name: 'Home',
     components: {
       SoundScene
     }
@@ -56,7 +56,7 @@
 <style lang="less" scoped rel="stylesheet/less">
   @import "~common/less/variable";
 
-  .m-home {
+  .home {
     width: 1000px;
     margin: 15px auto;
     overflow: hidden;
@@ -113,7 +113,7 @@
                   margin-right: 5px;
                   .cover {
                     width: 150px;
-                    height: 150px;                   
+                    height: 150px;
                     background: pink;
                   }
                   .sound-info {

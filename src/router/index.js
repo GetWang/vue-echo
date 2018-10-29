@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import MHome from '@/components/m-home/m-home'
+import Home from '@/components/home/home'
 
 Vue.use(Router)
 
@@ -8,13 +8,13 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'MHome',
+      name: 'Home',
       redirect: '/home'
     },
     {
       path: '/home',
-      name: 'MHome',
-      component: MHome
+      name: 'Home',
+      component: Home
     }
   ]
 })
