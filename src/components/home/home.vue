@@ -1,5 +1,5 @@
 <template>
-  <!-- 首页组件 -->
+  <!-- 首页 -->
   <main class="home">
     <section class="content-left">
       <sound-scene></sound-scene>
@@ -44,9 +44,26 @@
 
 <script type="text/ecmascript-6">
   import SoundScene from 'components/sound-scene/sound-scene'
+  import { getRankChoose } from 'api/home'
+  import { STATUS_OK } from 'api/config'
 
   export default {
     name: 'Home',
+    created () {
+      this._getRankChoose()
+    },
+    methods: {
+      _getRankChoose () {
+        getRankChoose().then(res => {
+          if (res.data.status === STATUS_OK) {
+            this.handleRankChoose(res.data)
+          }
+        })
+      },
+      handleRankChoose (data) {
+        console.log('res', data)
+      }
+    },
     components: {
       SoundScene
     }
