@@ -53,11 +53,11 @@
           <a class="enter-famous" href="#/famous">查看全部</a>
         </div>
         <ul class="famous-list">
-          <li class="famous-item">
-            <a class="famous-link">
-              <img src="" alt="" class="avatar">
-              <p class="famous-name">曹格</p>
-              <p class="follower"><span class="num">15645人</span>关注</p>
+          <li class="famous-item" v-for="famous in famousUserList" :key="famous.id">
+            <a class="famous-link" :href="'#/user/' + famous.id">
+              <img :src="famous.avatar_150" :alt="famous.name" class="avatar">
+              <p class="famous-name">{{famous.name}}</p>
+              <p class="follower"><span class="num">{{famous.followed_count}}人</span>关注</p>
             </a>
           </li>
         </ul>
@@ -74,13 +74,16 @@
   import { STATUS_OK } from 'api/config'
   import Sound from 'common/js/sound'
   import MV from 'common/js/mv'
+  import User from 'common/js/user'
 
   export default {
     name: 'Home',
     data () {
       return {
         // 回声榜列表
-        rankList: []
+        rankList: [],
+        // echo 名人列表
+        famousUserList: []
       }
     },
     created () {
@@ -91,8 +94,8 @@
       /* 获取首页回声榜和每日精选数据 */
       _getRankChoose () {
         getRankChoose().then(res => {
-          if (res.data.status === STATUS_OK) {
-            this.handleRankChoose(res.data)
+          if (res.status === STATUS_OK) {
+            this.handleRankChoose(res)
           }
         }).catch(err => {
           console.log('api/getRankChoose error', err)
@@ -101,11 +104,14 @@
       /* 获取首页 echo 名人数据 */
       _getFamousUser () {
         getFamousUser().then(res => {
-          console.log('res', res)
+          if (res.status === STATUS_OK) {
+            this.handleFamousUser(res)
+          }
         }).catch(err => {
           console.log('api/getFamousUser error', err)
         })
       },
+      /* 处理首页回声榜和每日精选数据 */
       handleRankChoose (data) {
         const soundHot = {
           name: '热门回声榜',
@@ -135,6 +141,12 @@
           top2and3: [new MV(data.rank.mv_hot.daily[1]), new MV(data.rank.mv_hot.daily[2])]
         }
         this.rankList.push(soundHot, soundOrigin, mvHot)
+      },
+      /* 处理首页 echo 名人数据 */
+      handleFamousUser (data) {
+        data.lists.forEach((item) => {
+          this.famousUserList.push(new User(item))
+        })
       }
     },
     components: {
@@ -380,14 +392,17 @@
           .famous-item {
             float: left;
             margin-right: 35px;
+            &:last-child {
+              margin-right: 0;
+            }
             .famous-link {
               display: block;
+              text-decoration: none;
               .avatar {
                 display: block;
                 width: 107px;
                 height: 107px;
                 margin-bottom: 8px;
-                background: red;
               }
               .famous-name {
                 margin-bottom: 5px;

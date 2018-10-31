@@ -4,6 +4,6 @@ import axios from 'axios'
 export function getRankChoose () {
   const url = '/api/getRankChoose'
   return axios.get(url).then(res => {
-    return Promise.resolve(res)
+    return Promise.resolve(res.data)
   })
 }
