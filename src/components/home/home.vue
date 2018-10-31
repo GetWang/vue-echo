@@ -70,6 +70,7 @@
 <script type="text/ecmascript-6">
   import SoundScene from 'components/sound-scene/sound-scene'
   import { getRankChoose } from 'api/home'
+  import { getFamousUser } from 'api/user'
   import { STATUS_OK } from 'api/config'
   import Sound from 'common/js/sound'
   import MV from 'common/js/mv'
@@ -84,6 +85,7 @@
     },
     created () {
       this._getRankChoose()
+      this._getFamousUser()
     },
     methods: {
       /* 获取首页回声榜和每日精选数据 */
@@ -92,10 +94,19 @@
           if (res.data.status === STATUS_OK) {
             this.handleRankChoose(res.data)
           }
+        }).catch(err => {
+          console.log('api/getRankChoose error', err)
+        })
+      },
+      /* 获取首页 echo 名人数据 */
+      _getFamousUser () {
+        getFamousUser().then(res => {
+          console.log('res', res)
+        }).catch(err => {
+          console.log('api/getFamousUser error', err)
         })
       },
       handleRankChoose (data) {
-        console.log('res', data)
         const soundHot = {
           name: '热门回声榜',
           rankClass: 'sound-hot',
@@ -124,7 +135,6 @@
           top2and3: [new MV(data.rank.mv_hot.daily[1]), new MV(data.rank.mv_hot.daily[2])]
         }
         this.rankList.push(soundHot, soundOrigin, mvHot)
-        console.log('rankList', this.rankList)
       }
     },
     components: {

@@ -39,6 +39,21 @@ const devWebpackConfig = merge(baseWebpackConfig, {
           console.log('api/getRankChoose error', e)
         })
       })
+      /* 获取首页 echo 名人数据 */
+      app.get('/api/getFamousUser', function (req, res) {
+        const url = 'http://www.app-echo.com/api/famous/famous-user'
+        axios.get(url, {
+          headers: {
+            host: 'www.app-echo.com',
+            referer: 'http://www.app-echo.com/'
+          },
+          params: req.query
+        }).then(response => {
+          res.json(response.data)
+        }).catch(e => {
+          console.log('api/getFamousUser error', e)
+        })
+      })
     },
     clientLogLevel: 'warning',
     historyApiFallback: {
