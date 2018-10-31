@@ -53,7 +53,13 @@
           <a class="enter-famous" href="#/famous">查看全部</a>
         </div>
         <ul class="famous-list">
-          <li class="famous-item"></li>
+          <li class="famous-item">
+            <a class="famous-link">
+              <img src="" alt="" class="avatar">
+              <p class="famous-name">曹格</p>
+              <p class="follower"><span class="num">15645人</span>关注</p>
+            </a>
+          </li>
         </ul>
       </div>
     </section>
@@ -235,7 +241,7 @@
                         margin-left: 8px;
                         font-size: @font-size-small-s;
                         line-height: 22px;
-                        color: @color-text-l;
+                        color: @color-text-ll;
                       }
                     }
                   }
@@ -286,7 +292,7 @@
                         font-size: @font-size-small-s;
                         line-height: 14px;
                         text-decoration: none;
-                        color: @color-text-l;
+                        color: @color-text-ll;
                       }
                     }
                   }
@@ -357,6 +363,51 @@
             line-height: 20px;
             text-decoration: none;
             color: @color-theme;
+          }
+        }
+        .famous-list {
+          overflow: hidden;
+          .famous-item {
+            float: left;
+            margin-right: 35px;
+            .famous-link {
+              display: block;
+              .avatar {
+                display: block;
+                width: 107px;
+                height: 107px;
+                margin-bottom: 8px;
+                background: red;
+              }
+              .famous-name {
+                margin-bottom: 5px;
+                font-size: @font-size-small;
+                line-height: 18px;
+                color: @color-text-d;
+                &:after {
+                  content: 'v';
+                  display: inline-block;
+                  width: 15px;
+                  height: 15px;
+                  margin: 2px 0 0 5px;
+                  border-radius: 50%;
+                  font-size: @font-size-small-s;
+                  line-height: 15px;
+                  text-align: center;
+                  vertical-align: top;
+                  color: #fff;
+                  background-color: @color-theme-d;
+                }
+              }
+              .follower {
+                font-size: @font-size-small-s;
+                line-height: 14px;
+                color: @color-text-l;
+                .num {
+                  margin-right: 4px;
+                }
+              }
+            }
           }
         }
       }
