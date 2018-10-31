@@ -5,38 +5,57 @@
       <sound-scene></sound-scene>
       <!-- 回声榜 -->
       <ul class="echo-rank">
-        <li class="rank">
+        <li class="rank" v-for="rank in rankList" :key="rank.rankClass" :class="[rank.rankClass]">
           <div class="rank-header">
-            <h2 class="rank-name">热门回声榜</h2>
-            <span class="enter-rank">进入榜单</span>
+            <h2 class="rank-name">{{rank.name}}</h2>
+            <a class="enter-rank" :href="rank.rankLink">进入榜单</a>
           </div>
           <div class="rank-main">
-            <a href="" class="rank-type"></a>
+            <a :href="rank.rankLink" class="rank-type"></a>
             <div class="rank-list">
               <div class="rank-item top1">
-                <img src="" alt="" class="cover">
+                <a :href="rank.soundLink + rank.top1.id" class="cover-link">
+                  <img :src="rank.top1.pic_200 || rank.top1.pic_url" :alt="rank.top1.name" class="cover">
+                </a>
                 <div class="sound-info">
                   <h3 class="rank1">TOP 1</h3>
-                  <p class="sound-name">怀旧金曲 女声版「难念的经」带你领略不一样的侠女柔情</p>
-                  <div class="user-info">
-                    <img src="" alt="" class="avatar">
-                    <span class="username">鹏鹏</span>
-                  </div>
+                  <p class="sound-name"><a :href="rank.soundLink + rank.top1.id" class="link">{{rank.top1.name}}</a></p>
+                  <a class="user-info" :href="rank.userLink + rank.top1.userId">
+                    <img :src="rank.top1.avatar_50" :alt="rank.top1.userName" class="avatar">
+                    <span class="username">{{rank.top1.userName}}</span>
+                  </a>
                 </div>
               </div>
               <ul class="rank-top2and3">
-                <li class="rank-item top2">
-                  <img src="" alt="" class="cover">
+                <li class="rank-item top2" v-for="(item, index) in rank.top2and3" :key="item.id">
+                  <a :href="rank.soundLink + item.id" class="cover-link">
+                    <img :src="item.pic_200 || item.pic_url" :alt="item.name" class="cover">
+                  </a>
                   <div class="sound-info">
-                    <div class="sound-name"><i class="rank-num">2</i>怀旧金曲 女声版「难念的经」带你领略不一样的侠女柔情</div>
-                    <p class="username">酱紫</p>
-                </div>
+                    <div class="sound-name">
+                      <i class="rank-num">{{index + 2}}</i>
+                      <a :href="rank.soundLink + item.id" class="link">{{item.name}}</a>
+                    </div>
+                    <p class="username">
+                      <a :href="rank.userLink + item.userId" class="link">{{item.userName}}</a>
+                    </p>
+                  </div>
                 </li>
               </ul>
             </div>
           </div>
         </li>
       </ul>
+      <!-- echo名人 -->
+      <div class="echo-famous">
+        <div class="famous-header">
+          <h2 class="title">echo名人</h2>
+          <a class="enter-famous" href="#/famous">查看全部</a>
+        </div>
+        <ul class="famous-list">
+          <li class="famous-item"></li>
+        </ul>
+      </div>
     </section>
     <section class="content-right">right</section>
   </main>
@@ -46,13 +65,22 @@
   import SoundScene from 'components/sound-scene/sound-scene'
   import { getRankChoose } from 'api/home'
   import { STATUS_OK } from 'api/config'
+  import Sound from 'common/js/sound'
+  import MV from 'common/js/mv'
 
   export default {
     name: 'Home',
+    data () {
+      return {
+        // 回声榜列表
+        rankList: []
+      }
+    },
     created () {
       this._getRankChoose()
     },
     methods: {
+      /* 获取首页回声榜和每日精选数据 */
       _getRankChoose () {
         getRankChoose().then(res => {
           if (res.data.status === STATUS_OK) {
@@ -62,6 +90,35 @@
       },
       handleRankChoose (data) {
         console.log('res', data)
+        const soundHot = {
+          name: '热门回声榜',
+          rankClass: 'sound-hot',
+          rankLink: '#/rank/sound-hot',
+          soundLink: '#/sound/',
+          userLink: '#/user/',
+          top1: new Sound(data.rank.sound_hot.daily[0]),
+          top2and3: [new Sound(data.rank.sound_hot.daily[1]), new Sound(data.rank.sound_hot.daily[2])]
+        }
+        const soundOrigin = {
+          name: '原创回声榜',
+          rankClass: 'sound-origin',
+          rankLink: '#/rank/sound-origin',
+          soundLink: '#/sound/',
+          userLink: '#/user/',
+          top1: new Sound(data.rank.sound_origin.daily[0]),
+          top2and3: [new Sound(data.rank.sound_origin.daily[1]), new Sound(data.rank.sound_origin.daily[2])]
+        }
+        const mvHot = {
+          name: '视频回声榜',
+          rankClass: 'mv-hot',
+          rankLink: '#/rank/mv-hot',
+          soundLink: '#/mv/',
+          userLink: '#/user/',
+          top1: new MV(data.rank.mv_hot.daily[0]),
+          top2and3: [new MV(data.rank.mv_hot.daily[1]), new MV(data.rank.mv_hot.daily[2])]
+        }
+        this.rankList.push(soundHot, soundOrigin, mvHot)
+        console.log('rankList', this.rankList)
       }
     },
     components: {
@@ -98,6 +155,7 @@
               bottom: 0;
               font-size: @font-size-medium;
               line-height: 20px;
+              text-decoration: none;
               color: @color-theme;
             }
           }
@@ -111,16 +169,19 @@
               background-repeat: no-repeat;
               background-position: 0 0;
               background-size: 100% 100%;
-              background-image: url("./sound-hot-rank.png");
             }
             .rank-list {
               float: left;
               overflow: hidden;
               .rank-item {
                 overflow: hidden;
-                .cover {
+                .cover-link {
                   display: block;
                   float: left;
+                  .cover {
+                    width: 100%;
+                    height: 100%;
+                  }
                 }
                 .sound-info {
                   float: right;
@@ -128,10 +189,9 @@
                 &.top1 {
                   float: left;
                   margin-right: 5px;
-                  .cover {
+                  .cover-link {
                     width: 150px;
                     height: 150px;
-                    background: pink;
                   }
                   .sound-info {
                     width: 182px;
@@ -144,15 +204,19 @@
                     .rank1 {
                       margin-bottom: 10px;
                       font-size: @font-size-medium-x;
-                      color: @color-rank-hot;
                     }
                     .sound-name {
                       height: 40px;
                       margin-bottom: 28px;
                       overflow: hidden;
-                      font-size: @font-size-small;
-                      line-height: 20px;
-                      color: @color-text;
+                      .link {
+                        display: block;
+                        height: 100%;
+                        font-size: @font-size-small;
+                        line-height: 20px;
+                        text-decoration: none;
+                        color: @color-text;
+                      }
                     }
                     .user-info {
                       position: relative;
@@ -163,7 +227,7 @@
                         left: 0;
                         width: 22px;
                         height: 22px;
-                        background: green;
+                        border-radius: 50%;
                       }
                       .username {
                         display: inline-block;
@@ -178,40 +242,52 @@
                 }
                 &.top2, &.top3 {
                   margin-bottom: 2px;
-                  .cover {
+                  .cover-link {
                     width: 73px;
                     height: 73px;
-                    background: blue;
                   }
                   .sound-info {
                     width: 199px;
                     height:73px;
-                    padding: 8px 30px 0 10px;
+                    padding: 8px 20px 0 10px;
                     border: 1px solid #f4f4f4;
                     border-left: none;
                     box-sizing: border-box;
                     background-color: #fff;
                     .sound-name {
+                      position: relative;
                       height: 36px;
                       margin-bottom: 10px;
                       overflow: hidden;
-                      font-size: @font-size-small;
-                      line-height: 18px;
-                      color: @color-text;
                       .rank-num {
-                        margin-right: 8px;
+                        position: absolute;
+                        top: 0;
+                        left: 0;
                         padding: 1px 5px;
                         font-size: @font-size-small-s;
                         font-style: normal;
                         line-height: 16px;
                         color: #fff;
-                        background-color: @color-rank-hot;
+                      }
+                      .link {
+                        display: block;
+                        height: 100%;
+                        font-size: @font-size-small;
+                        line-height: 18px;
+                        text-indent: 25px;
+                        text-decoration: none;
+                        color: @color-text;
                       }
                     }
                     .username {
-                      font-size: @font-size-small-s;
-                      line-height: 14px;
-                      color: @color-text-l;
+                      .link {
+                        display: block;
+                        height: 100%;
+                        font-size: @font-size-small-s;
+                        line-height: 14px;
+                        text-decoration: none;
+                        color: @color-text-l;
+                      }
                     }
                   }
                 }
@@ -220,6 +296,67 @@
                 float: left;
               }
             }
+          }
+          &.sound-hot {
+            .rank-type {
+              background-image: url("./sound-hot-rank.png");
+            }
+            .sound-info {
+              .rank1 {
+                color: @color-rank-hot;
+              }
+              .rank-num {
+                background-color: @color-rank-hot;
+              }
+            }
+          }
+          &.sound-origin {
+            .rank-type {
+              background-image: url("./sound-origin-rank.png");
+            }
+            .sound-info {
+              .rank1 {
+                color: @color-rank-origin;
+              }
+              .rank-num {
+                background-color: @color-rank-origin;
+              }
+            }
+          }
+          &.mv-hot {
+            .rank-type {
+              background-image: url("./mv-hot-rank.png");
+            }
+            .sound-info {
+              .rank1 {
+                color: @color-rank-mv;
+              }
+              .rank-num {
+                background-color: @color-rank-mv;
+              }
+            }
+          }
+        }
+      }
+      .echo-famous {
+        margin: 35px 30px 0;
+        .famous-header {
+          position: relative;
+          margin-bottom: 25px;
+          .title {
+            font-size: @font-size-large-x;
+            line-height: 28px;
+            text-align: left;
+            color: @color-text;
+          }
+          .enter-famous {
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            font-size: @font-size-medium;
+            line-height: 20px;
+            text-decoration: none;
+            color: @color-theme;
           }
         }
       }
