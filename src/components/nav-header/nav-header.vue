@@ -2,12 +2,12 @@
   <!-- 头部导航组件 -->
   <header class="nav-header">
     <nav class="navs">
-      <router-link tag="div" to="/home" class="link">首页</router-link>
-      <router-link tag="div" to="/channel" class="link">频道</router-link>
-      <router-link tag="div" to="/famous" class="link">名人</router-link>
-      <router-link tag="div" to="/store" class="link">商城</router-link>
+      <router-link to="/home" class="link">首页</router-link>
+      <router-link to="/channel" class="link">频道</router-link>
+      <router-link to="/famous" class="link">名人</router-link>
+      <router-link to="/store" class="link">商城</router-link>
     </nav>
-    <img src="./logo.png" class="logo" alt="logo" @click="$router.push('/home')">
+    <a href="#/home" class="logo-link"><img src="./logo.png" class="logo" alt="logo"></a>
   </header>
 </template>
 
@@ -35,10 +35,10 @@
         padding: 0 15px;
         box-sizing: border-box;
         text-align: center;
+        text-decoration: none;
         color: @color-text;
         font-size: @font-size-small;
         line-height: 80px;
-        cursor: pointer;
         &:hover {
           color: @color-theme;
         }
@@ -48,14 +48,17 @@
         }
       }
     }
-    .logo {
+    .logo-link {
       position: absolute;
       top: 50%;
       left: 50%;
       width: 74px;
       height: 28px;
       margin: -14px 0 0 -37px;
-      cursor: pointer;
+      .logo {
+        width: 100%;
+        height: 100%;
+      }
     }
   }
 </style>
