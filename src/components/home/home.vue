@@ -2,6 +2,7 @@
   <!-- 首页 -->
   <main class="home">
     <section class="content-left">
+      <!-- 声音场景 -->
       <sound-scene></sound-scene>
       <!-- 回声榜 -->
       <ul class="echo-rank">
@@ -58,6 +59,32 @@
               <img :src="famous.avatar_150" :alt="famous.name" class="avatar">
               <p class="famous-name">{{famous.name}}</p>
               <p class="follower"><span class="num">{{famous.followed_count}}人</span>关注</p>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <!-- 专辑 -->
+      <div class="echo-album">
+        <div class="album-header">
+          <h2 class="title">专辑</h2>
+          <a href="#/album" class="enter-album">查看全部</a>
+        </div>
+        <ul class="album-list">
+          <li class="album-item">
+            <a href="" class="album-link">
+              <img src="" alt="" class="cover">
+              <h3 class="album-name">专辑名称</h3>
+              <p class="user-name">用户名</p>
+              <div class="score-wrapper">
+                <ul class="star-list">
+                  <li class="star star-on"></li>
+                  <li class="star star-on"></li>
+                  <li class="star star-on"></li>
+                  <li class="star star-on"></li>
+                  <li class="star star-on"></li>
+                </ul>
+                <span class="score">9.0</span>
+              </div>
             </a>
           </li>
         </ul>
@@ -247,8 +274,15 @@
                       }
                     }
                     .user-info {
+                      display: block;
                       position: relative;
+                      height: 22px;
                       padding-left: 22px;
+                      overflow: hidden;
+                      line-height: 22px;
+                      text-overflow: ellipsis;
+                      white-space: nowrap;
+                      text-decoration: none;
                       .avatar {
                         position: absolute;
                         top: 0;
@@ -258,11 +292,8 @@
                         border-radius: 50%;
                       }
                       .username {
-                        display: inline-block;
-                        height: 22px;
                         margin-left: 8px;
                         font-size: @font-size-small-s;
-                        line-height: 22px;
                         color: @color-text-ll;
                       }
                     }
@@ -311,9 +342,12 @@
                       .link {
                         display: block;
                         height: 100%;
+                        overflow: hidden;
                         font-size: @font-size-small-s;
                         line-height: 14px;
                         text-decoration: none;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
                         color: @color-text-ll;
                       }
                     }
@@ -391,6 +425,7 @@
           overflow: hidden;
           .famous-item {
             float: left;
+            width: 107px;
             margin-right: 35px;
             &:last-child {
               margin-right: 0;
@@ -406,8 +441,11 @@
               }
               .famous-name {
                 margin-bottom: 5px;
+                overflow: hidden;
                 font-size: @font-size-small;
                 line-height: 18px;
+                text-overflow: ellipsis;
+                white-space: nowrap;
                 color: @color-text-d;
                 &:after {
                   content: 'v';
@@ -430,6 +468,104 @@
                 color: @color-text-l;
                 .num {
                   margin-right: 4px;
+                }
+              }
+            }
+          }
+        }
+      }
+      .echo-album {
+        margin: 35px 30px 0;
+        .album-header {
+          position: relative;
+          margin-bottom: 23px;
+          .title {
+            font-size: @font-size-large-x;
+            line-height: 28px;
+            text-align: left;
+            color: @color-text;
+          }
+          .enter-album {
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            font-size: @font-size-medium;
+            line-height: 20px;
+            text-decoration: none;
+            color: @color-theme;
+          }
+        }
+        .album-list {
+          overflow: hidden;
+          .album-item {
+            float: left;
+            width: 150px;
+            margin-right: 29px;
+            &:last-child {
+              margin-right: 0;
+            }
+            .album-link {
+              display: block;
+              text-decoration: none;
+              .cover {
+                display: block;
+                width: 150px;
+                height: 150px;
+                margin-bottom: 10px;
+                background: red;
+              }
+              .album-name {
+                margin-bottom: 3px;
+                overflow: hidden;
+                font-size: @font-size-small;
+                font-weight: normal;
+                line-height: 20px;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                color: @color-text-dd;
+              }
+              .user-name {
+                overflow: hidden;
+                font-size: @font-size-small-s;
+                line-height: 14px;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                color: @color-text;
+              }
+              .score-wrapper {
+                overflow: hidden;
+                .star-list {
+                  float: left;
+                  height: 18px;
+                  margin-right: 14px;
+                  padding-top: 3px;
+                  box-sizing: border-box;
+                  font-size: 0;
+                  .star {
+                    display: inline-block;
+                    width: 11px;
+                    height: 11px;
+                    margin-right: 5px;
+                    background-repeat: no-repeat;
+                    background-position: 0 0;
+                    background-size: 100% 100%;
+                    &:last-child {
+                      margin-right: 0;
+                    }
+                    &.star-on {
+                      background-image: url("./star-on.png");
+                    }
+                    &.star-off {
+                      background-image: url("./star-off.png");
+                    }
+                  }
+                }
+                .score {
+                  float: left;
+                  height: 18px;
+                  font-size: @font-size-small;
+                  line-height: 18px;
+                  color: @color-text-ll;
                 }
               }
             }
