@@ -70,20 +70,16 @@
           <a href="#/album" class="enter-album">查看全部</a>
         </div>
         <ul class="album-list">
-          <li class="album-item">
-            <a href="" class="album-link">
-              <img src="" alt="" class="cover">
-              <h3 class="album-name">专辑名称</h3>
-              <p class="user-name">用户名</p>
+          <li class="album-item" v-for="album in albumList" :key="album.id">
+            <a :href="'#/album/' + album.id" class="album-link">
+              <img :src="album.cover_url" :alt="album.name" class="cover">
+              <h3 class="album-name">{{album.name}}</h3>
+              <p class="user-name">{{album.userName}}</p>
               <div class="score-wrapper">
                 <ul class="star-list">
-                  <li class="star star-on"></li>
-                  <li class="star star-on"></li>
-                  <li class="star star-on"></li>
-                  <li class="star star-on"></li>
-                  <li class="star star-on"></li>
+                  <li class="star" v-for="i in 5" :key="i" :class="getStarCls(album.average_score, i)"></li>
                 </ul>
-                <span class="score">9.0</span>
+                <span class="score">{{album.average_score}}</span>
               </div>
             </a>
           </li>
@@ -103,6 +99,7 @@
   import Sound from 'common/js/sound'
   import MV from 'common/js/mv'
   import User from 'common/js/user'
+  import Album from 'common/js/album'
 
   export default {
     name: 'Home',
@@ -111,7 +108,9 @@
         // 回声榜列表
         rankList: [],
         // echo 名人列表
-        famousUserList: []
+        famousUserList: [],
+        // 专辑列表
+        albumList: []
       }
     },
     created () {
@@ -143,7 +142,9 @@
       /* 获取首页专辑数据 */
       _getHomeAlbum () {
         getHomeAlbum().then(res => {
-          console.log('res', res)
+          if (res.status === STATUS_OK) {
+            this.handleHomeAlbum(res)
+          }
         }).catch(err => {
           console.log('api/getHomeAlbum error', err)
         })
@@ -184,6 +185,29 @@
         data.lists.forEach((item) => {
           this.famousUserList.push(new User(item))
         })
+      },
+      /* 处理首页专辑数据 */
+      handleHomeAlbum (data) {
+        let len = data.list.length
+        for (let i = 0; i < 4 && i < len; i++) {
+          this.albumList.push(new Album(data.list[i]))
+        }
+      },
+      /* 计算出专辑评分的 star 样式类名 */
+      getStarCls (score, index) {
+        let arr = []
+        let starCount = 0
+        score = Number(score)
+        // 专辑中评分 star 的个数
+        if (score !== 0) {
+          starCount = Math.min(5, Math.floor(score / 2) + 1)
+        }
+        if (index <= starCount) {
+          arr.push('star-on')
+        } else {
+          arr.push('star-off')
+        }
+        return arr
       }
     },
     components: {
@@ -522,7 +546,6 @@
                 width: 150px;
                 height: 150px;
                 margin-bottom: 10px;
-                background: red;
               }
               .album-name {
                 margin-bottom: 3px;
