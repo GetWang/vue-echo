@@ -98,6 +98,7 @@
   import SoundScene from 'components/sound-scene/sound-scene'
   import { getRankChoose } from 'api/home'
   import { getFamousUser } from 'api/user'
+  import { getHomeAlbum } from 'api/album'
   import { STATUS_OK } from 'api/config'
   import Sound from 'common/js/sound'
   import MV from 'common/js/mv'
@@ -116,6 +117,7 @@
     created () {
       this._getRankChoose()
       this._getFamousUser()
+      this._getHomeAlbum()
     },
     methods: {
       /* 获取首页回声榜和每日精选数据 */
@@ -136,6 +138,14 @@
           }
         }).catch(err => {
           console.log('api/getFamousUser error', err)
+        })
+      },
+      /* 获取首页专辑数据 */
+      _getHomeAlbum () {
+        getHomeAlbum().then(res => {
+          console.log('res', res)
+        }).catch(err => {
+          console.log('api/getHomeAlbum error', err)
         })
       },
       /* 处理首页回声榜和每日精选数据 */
