@@ -85,6 +85,8 @@
           </li>
         </ul>
       </div>
+      <!-- 今日推荐 -->
+      <today-recommend></today-recommend>
     </section>
     <section class="content-right">
       <day-choose :list-data="chooseList"></day-choose>
@@ -95,6 +97,7 @@
 <script type="text/ecmascript-6">
   import SoundScene from 'components/sound-scene/sound-scene'
   import DayChoose from 'components/day-choose/day-choose'
+  import TodayRecommend from 'components/today-recommend/today-recommend'
   import { getRankChoose } from 'api/home'
   import { getFamousUser } from 'api/user'
   import { getHomeAlbum } from 'api/album'
@@ -220,7 +223,8 @@
     },
     components: {
       SoundScene,
-      DayChoose
+      DayChoose,
+      TodayRecommend
     }
   }
 </script>

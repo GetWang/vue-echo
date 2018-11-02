@@ -69,7 +69,7 @@
           left: 2px;
           width: 19px;
           height: 19px;
-          background: url("./play.png") no-repeat 0 0;
+          background: url("~common/image/play.png") no-repeat 0 0;
           background-size: 100% 100%;
         }
         .text {
