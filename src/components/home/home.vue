@@ -234,7 +234,8 @@
 
   .home {
     width: 1000px;
-    margin: 15px auto;
+    margin: 15px auto 0;
+    padding-bottom: 40px;
     overflow: hidden;
     .content-left {
       float: left;

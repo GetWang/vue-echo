@@ -36,6 +36,10 @@
         </a>
       </li>
     </ul>
+    <div class="load-more">
+      <span class="to-load">加载更多</span>
+      <span class="loading">加载ing</span>
+    </div>
   </div>
 </template>
 
@@ -50,7 +54,7 @@
 
   .today-recommend {
     width: 712px;
-    margin: 50px auto 0;
+    margin: 50px auto 20px;
     .recom-header {
       margin-bottom: 25px;
       padding: 0 9px;
@@ -190,6 +194,22 @@
             }
           }
         }
+      }
+    }
+    .load-more {
+      width: 672px;
+      height: 40px;
+      margin: 0 auto;
+      font-size: @font-size-small;
+      line-height: 40px;
+      text-align: center;
+      color: @color-text-ll;
+      background-color: @color-background-l;
+      cursor: pointer;
+      .loading {
+        padding-left: 22px;
+        background: url("./loading.gif") no-repeat 0 1px;
+        background-size: auto 16px;
       }
     }
   }
