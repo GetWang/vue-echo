@@ -86,12 +86,15 @@
         </ul>
       </div>
     </section>
-    <section class="content-right">right</section>
+    <section class="content-right">
+      <day-choose></day-choose>
+    </section>
   </main>
 </template>
 
 <script type="text/ecmascript-6">
   import SoundScene from 'components/sound-scene/sound-scene'
+  import DayChoose from 'components/day-choose/day-choose'
   import { getRankChoose } from 'api/home'
   import { getFamousUser } from 'api/user'
   import { getHomeAlbum } from 'api/album'
@@ -211,7 +214,8 @@
       }
     },
     components: {
-      SoundScene
+      SoundScene,
+      DayChoose
     }
   }
 </script>
@@ -225,6 +229,7 @@
     overflow: hidden;
     .content-left {
       float: left;
+      margin-right: 15px;
       background-color: #fff;
       .echo-rank {
         .rank {
@@ -607,7 +612,8 @@
       }
     }
     .content-right {
-      float: right;
+      float: left;
+      padding-top: 20px;
     }
   }
 </style>
