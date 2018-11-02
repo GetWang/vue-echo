@@ -87,7 +87,7 @@
       </div>
     </section>
     <section class="content-right">
-      <day-choose></day-choose>
+      <day-choose :list-data="chooseList"></day-choose>
     </section>
   </main>
 </template>
@@ -113,7 +113,9 @@
         // echo 名人列表
         famousUserList: [],
         // 专辑列表
-        albumList: []
+        albumList: [],
+        // 每日精选列表
+        chooseList: []
       }
     },
     created () {
@@ -182,6 +184,9 @@
           top2and3: [new MV(data.rank.mv_hot.daily[1]), new MV(data.rank.mv_hot.daily[2])]
         }
         this.rankList.push(soundHot, soundOrigin, mvHot)
+        data.hot_recommend.forEach((item) => {
+          this.chooseList.push(new Sound(item))
+        })
       },
       /* 处理首页 echo 名人数据 */
       handleFamousUser (data) {

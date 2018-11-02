@@ -9,12 +9,12 @@
       </div>
     </div>
     <ul class="choose-list">
-      <li class="choose-item">
-        <a href="" class="sound-link">
-          <img src="" alt="" class="cover">
+      <li class="choose-item" v-for="choose in listData" :key="choose.id">
+        <a :href="'#/sound/' + choose.id" class="sound-link">
+          <img :src="choose.pic_100" :alt="choose.name" class="cover">
           <div class="sound-info">
-            <h3 class="sound-name">「可爱女声」小幸运</h3>
-            <p class="user-name">高手在民间</p>
+            <h3 class="sound-name">{{choose.name}}</h3>
+            <p class="user-name">{{choose.userName}}</p>
           </div>
         </a>
       </li>
@@ -24,7 +24,16 @@
 
 <script type="text/ecmascript-6">
   export default {
-    name: 'DayChoose'
+    name: 'DayChoose',
+    props: {
+      // 列表数据
+      listData: {
+        type: Array,
+        default: function () {
+          return []
+        }
+      }
+    }
   }
 </script>
 
@@ -71,6 +80,10 @@
     }
     .choose-list{
       .choose-item {
+        margin-bottom: 16px;
+        &:last-child {
+          margin-bottom: 0;
+        }
         .sound-link {
           display: block;
           overflow: hidden;
@@ -80,7 +93,6 @@
             width: 68px;
             height: 68px;
             margin-right: 10px;
-            background: red;
           }
           .sound-info {
             float: left;
