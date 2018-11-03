@@ -69,6 +69,21 @@ const devWebpackConfig = merge(baseWebpackConfig, {
           console.log('api/getHomeAlbum error', e)
         })
       })
+      /* 获取首页今日推荐数据 */
+      app.get('/api/getTodayRecom', function (req, res) {
+        const url = 'http://www.app-echo.com/api/recommend/sound-day'
+        axios.get(url, {
+          headers: {
+            host: 'www.app-echo.com',
+            referer: 'http://www.app-echo.com/'
+          },
+          params: req.query
+        }).then(response => {
+          res.json(response.data)
+        }).catch(e => {
+          console.log('api/getTodayRecom error', e)
+        })
+      })
     },
     clientLogLevel: 'warning',
     historyApiFallback: {

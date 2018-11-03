@@ -44,8 +44,23 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import {getTodayRecom} from 'api/home'
+
   export default {
-    name: 'TodayRecommend'
+    name: 'TodayRecommend',
+    created () {
+      this._getTodayRecom()
+    },
+    methods: {
+      /* 获取首页今日推荐数据 */
+      _getTodayRecom (page = 1) {
+        getTodayRecom(page).then(res => {
+          console.log('res', res)
+        }).catch(err => {
+          console.log('api/getTodayRecom error', err)
+        })
+      }
+    }
   }
 </script>
 

@@ -7,3 +7,16 @@ export function getRankChoose () {
     return Promise.resolve(res.data)
   })
 }
+
+/* 获取首页今日推荐数据 */
+export function getTodayRecom (page) {
+  const url = '/api/getTodayRecom'
+  const data = {
+    page
+  }
+  return axios.get(url, {
+    params: data
+  }).then(res => {
+    return Promise.resolve(res.data)
+  })
+}
