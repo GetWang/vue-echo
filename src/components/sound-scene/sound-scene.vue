@@ -101,6 +101,7 @@
         line-height: 20px;
         text-align: center;
         color: @color-text;
+        transition: color .2s ease-in-out;
       }
       &:hover {
         .cover {

@@ -243,7 +243,8 @@
       background-color: #fff;
       .echo-rank {
         .rank {
-          margin: 35px 30px;
+          width: 695px;
+          margin: 35px auto;
           .rank-header {
             position: relative;
             margin-bottom: 19px;
@@ -450,7 +451,8 @@
         }
       }
       .echo-famous {
-        margin: 35px 30px 0;
+        width: 695px;
+        margin: 35px auto 0;
         .famous-header {
           position: relative;
           margin-bottom: 25px;
@@ -524,7 +526,8 @@
         }
       }
       .echo-album {
-        margin: 35px 30px 0;
+        width: 695px;
+        margin: 35px auto 0;
         .album-header {
           position: relative;
           margin-bottom: 23px;

@@ -36,9 +36,9 @@
         </a>
       </li>
     </ul>
-    <div class="load-more">
-      <span class="to-load">加载更多</span>
-      <span class="loading">加载ing</span>
+    <div class="load-more" @click="loadMore">
+      <span class="to-load" v-if="isLoading === false">加载更多</span>
+      <span class="loading" v-else>加载ing</span>
     </div>
   </div>
 </template>
@@ -53,7 +53,11 @@
     data () {
       return {
         // 今日推荐列表
-        recomList: []
+        recomList: [],
+        // 当前页码
+        currPage: 1,
+        // 加载中状态标志位
+        isLoading: false
       }
     },
     created () {
@@ -63,7 +67,6 @@
       /* 获取首页今日推荐数据 */
       _getTodayRecom (page = 1) {
         getTodayRecom(page).then(res => {
-          console.log('res', res)
           if (res.status === STATUS_OK) {
             this.handleToayRecom(res)
           }
@@ -76,7 +79,13 @@
         data.list.forEach((item) => {
           this.recomList.push(new Sound(item.sound))
         })
-        console.log('list', this.recomList)
+        this.isLoading = false
+      },
+      /* 加载更多 */
+      loadMore () {
+        this.isLoading = true
+        this.currPage++
+        this._getTodayRecom(this.currPage)
       },
       /* 格式化时间 */
       formatTime (second) {
@@ -158,7 +167,6 @@
               width: 100%;
               height: auto;
               height: 160px;
-              background: red;
             }
             .duration {
               position: absolute;
