@@ -9,27 +9,27 @@
       </div>
     </div>
     <ul class="recom-list">
-      <li class="recom-item">
-        <a href="" class="sound-link">
+      <li class="recom-item" v-for="recom in recomList" :key="recom.id">
+        <a :href="'#/sound/' + recom.id" class="sound-link">
           <div class="top">
-            <img src="" alt="" class="cover">
-            <div class="duration">03:34</div>
+            <img :src="recom.pic_200" :alt="recom.name" class="cover">
+            <div class="duration">{{formatTime(recom.duration)}}</div>
           </div>
           <div class="sound-info">
-            <h3 class="sound-name">听妈妈的话 晚点再恋爱吧 「Boys Like You」 </h3>
-            <h4 class="channel"><a href="" class="link">欧美流行指南</a>频道</h4>
+            <h3 class="sound-name">{{recom.name}}</h3>
+            <h4 class="channel"><a :href="'#/channel/' + recom.channelId" class="link">{{recom.channelName}}</a>频道</h4>
             <ul class="sound-status">
               <li class="status status-share">
                 <i class="icon"></i>
-                <span class="count">88</span>
+                <span class="count">{{recom.shareCount}}</span>
               </li>
               <li class="status status-like">
                 <i class="icon"></i>
-                <span class="count">88</span>
+                <span class="count">{{recom.likeCount}}</span>
               </li>
               <li class="status status-comment">
                 <i class="icon"></i>
-                <span class="count">88</span>
+                <span class="count">{{recom.commentCount}}</span>
               </li>
             </ul>
           </div>
@@ -45,9 +45,17 @@
 
 <script type="text/ecmascript-6">
   import {getTodayRecom} from 'api/home'
+  import {STATUS_OK} from 'api/config'
+  import Sound from 'common/js/sound'
 
   export default {
     name: 'TodayRecommend',
+    data () {
+      return {
+        // 今日推荐列表
+        recomList: []
+      }
+    },
     created () {
       this._getTodayRecom()
     },
@@ -56,9 +64,33 @@
       _getTodayRecom (page = 1) {
         getTodayRecom(page).then(res => {
           console.log('res', res)
+          if (res.status === STATUS_OK) {
+            this.handleToayRecom(res)
+          }
         }).catch(err => {
           console.log('api/getTodayRecom error', err)
         })
+      },
+      /* 处理首页今日推荐数据 */
+      handleToayRecom (data) {
+        data.list.forEach((item) => {
+          this.recomList.push(new Sound(item.sound))
+        })
+        console.log('list', this.recomList)
+      },
+      /* 格式化时间 */
+      formatTime (second) {
+        let minute = Math.floor(second / 60)
+        let restSecond = second % 60
+        return this.padNum(minute, 2) + ':' + this.padNum(restSecond, 2)
+      },
+      /* 为位数不足的数值添加前导零 */
+      padNum (num, bit) {
+        let str = String(num)
+        while (str.length < bit) {
+          str = '0' + str
+        }
+        return str
       }
     }
   }
@@ -135,6 +167,7 @@
               height: 14px;
               padding-left: 19px;
               font-size: @font-size-small-s;
+              font-family: "Microsoft YaHei", sans-serif;
               line-height: 14px;
               color: #fff;
               background: url("./play-mini.png") no-repeat 0 0;
@@ -156,6 +189,7 @@
               margin: 0 15px 8px;
               overflow: hidden;
               font-size: @font-size-small;
+              font-weight: normal;
               line-height: 16px;
               text-overflow: ellipsis;
               white-space: nowrap;
