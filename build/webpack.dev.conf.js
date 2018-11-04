@@ -84,6 +84,51 @@ const devWebpackConfig = merge(baseWebpackConfig, {
           console.log('api/getTodayRecom error', e)
         })
       })
+      /* 获取热门回声榜数据 */
+      app.get('/api/rank/sound-hot', function (req, res) {
+        const url = 'http://www.app-echo.com/api/rank/sound-hot'
+        axios.get(url, {
+          headers: {
+            host: 'www.app-echo.com',
+            referer: 'http://www.app-echo.com'
+          },
+          params: req.query
+        }).then(response => {
+          res.json(response.data)
+        }).catch(e => {
+          console.log('api/rank/sound-hot error', e)
+        })
+      })
+      /* 获取原创回声榜数据 */
+      app.get('/api/rank/sound-origin', function (req, res) {
+        const url = 'http://www.app-echo.com/api/rank/sound-origin'
+        axios.get(url, {
+          headers: {
+            host: 'www.app-echo.com',
+            referer: 'http://www.app-echo.com'
+          },
+          params: req.query
+        }).then(response => {
+          res.json(response.data)
+        }).catch(e => {
+          console.log('api/rank/sound-origin error', e)
+        })
+      })
+      /* 获取视频回声榜数据 */
+      app.get('/api/rank/mv-hot', function (req, res) {
+        const url = 'http://www.app-echo.com/api/rank/mv-hot'
+        axios.get(url, {
+          headers: {
+            host: 'www.app-echo.com',
+            referer: 'http://www.app-echo.com'
+          },
+          params: req.query
+        }).then(response => {
+          res.json(response.data)
+        }).catch(e => {
+          console.log('api/rank/mv-hot error', e)
+        })
+      })
     },
     clientLogLevel: 'warning',
     historyApiFallback: {
