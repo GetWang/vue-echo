@@ -1,6 +1,5 @@
 <template>
   <main class="sound-origin">
-    sound-origin
     <echo-rank></echo-rank>
   </main>
 </template>

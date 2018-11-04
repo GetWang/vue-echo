@@ -1,6 +1,5 @@
 <template>
   <main class="mv-hot">
-    mv-hot
     <echo-rank></echo-rank>
   </main>
 </template>
