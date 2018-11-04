@@ -1,8 +1,8 @@
 <template>
-  <div class="sound-origin">
+  <main class="sound-origin">
     sound-origin
     <echo-rank></echo-rank>
-  </div>
+  </main>
 </template>
 
 <script type="text/ecmascript-6">

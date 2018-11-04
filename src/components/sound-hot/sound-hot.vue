@@ -1,8 +1,7 @@
 <template>
-  <div class="sound-hot">
-    sound-hot
+  <main class="sound-hot">
     <echo-rank></echo-rank>
-  </div>
+  </main>
 </template>
 
 <script type="text/ecmascript-6">

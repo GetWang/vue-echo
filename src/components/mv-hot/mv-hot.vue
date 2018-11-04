@@ -1,8 +1,8 @@
 <template>
-  <div class="mv-hot">
+  <main class="mv-hot">
     mv-hot
     <echo-rank></echo-rank>
-  </div>
+  </main>
 </template>
 
 <script type="text/ecmascript-6">

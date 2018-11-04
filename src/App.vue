@@ -22,6 +22,5 @@
   #app {
     font-size: @font-size-small;
     color: @color-text;
-    background-color: @color-background;
   }
 </style>
