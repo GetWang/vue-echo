@@ -8,18 +8,26 @@
   import EchoRank from 'components/echo-rank/echo-rank'
   import {getSoundHotRank} from 'api/rank'
   import {STATUS_OK} from 'api/config'
+  import Sound from 'common/js/sound'
 
   // 回声榜数据的时间段
   const periodArr = ['daily', 'weekly', 'monthly']
+  // 回声榜时间段标题
+  const periodTitleArr = ['热门日榜 TOP 1', '热门回声周榜', '热门回声月榜']
+  // 每个榜单的 sound 数量
+  const limitNum = 10
 
   export default {
     name: 'SoundHot',
     data () {
       return {
         // 日榜数据
-        dailyRank: {},
+        dailyRank: {
+          title: '',
+          list: []
+        },
         // 周榜和月榜数据
-        otherRank: []
+        otherRankList: []
       }
     },
     created () {
@@ -28,9 +36,8 @@
     methods: {
       /* 获取热门回声榜数据 */
       _getSoundHotRank () {
-        const limit = 10
         periodArr.forEach((period) => {
-          getSoundHotRank(period, limit).then(res => {
+          getSoundHotRank(period, limitNum).then(res => {
             console.log('res', res)
             if (res.status === STATUS_OK) {
               this.handleRank(res, period)
@@ -39,7 +46,33 @@
         })
       },
       /* 处理回声榜数据 */
-      handleRank (data, period) {}
+      handleRank (data, period) {
+        let rankList = data.lists[period]
+        if (period === periodArr[0]) {
+          this.dailyRank.title = periodTitleArr[0]
+          this.$set(this.dailyRank, 'top1', new Sound(rankList[0]))
+          for (let i = 1, len = rankList.length; i < len; i++) {
+            this.dailyRank.list.push(new Sound(rankList[i]))
+          }
+          console.log('daily', this.dailyRank)
+        } else if (period === periodArr[1]) {
+          this.weeklyRank = {
+            title: periodTitleArr[1],
+            list: rankList.map((item) => {
+              return new Sound(item)
+            })
+          }
+        } else if (period === periodArr[2]) {
+          this.monthlyRank = {
+            title: periodTitleArr[2],
+            list: rankList.map((item) => {
+              return new Sound(item)
+            })
+          }
+        }
+        this.weeklyRank && this.monthlyRank && this.otherRankList.push(this.weeklyRank, this.monthlyRank)
+        console.log('weekly & monthly', this.otherRankList)
+      }
     },
     components: {
       EchoRank

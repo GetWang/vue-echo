@@ -1,6 +1,6 @@
 /* 回声音乐类 */
 export default class Sound {
-  constructor ({id, name, length, exchange_count, like_count, comment_count, user, pic_100, pic_200, channel}) {
+  constructor ({id, name, length, exchange_count, like_count, comment_count, user, pic_100, pic_200, channel, channel_id}) {
     this.id = id
     this.name = name
     this.duration = +length
@@ -12,7 +12,7 @@ export default class Sound {
     this.userId = user.id
     this.userName = user.name
     this.avatar_50 = user.avatar_50
-    this.channelId = channel.id
-    this.channelName = channel.name
+    this.channelId = channel ? channel.id : (channel_id || '')
+    this.channelName = channel ? channel.name : ''
   }
 }
