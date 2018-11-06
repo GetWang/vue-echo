@@ -5,14 +5,14 @@
       <div class="rank-header">
         <div class="daily-top1">
           <div class="top1-pic">
-            <a class="top1-link" :href="'#/sound/' + dailyRank.top1.id">
-              <img :src="dailyRank.top1.pic_200" :alt="dailyRank.top1.name" class="cover">
+            <a class="top1-link" :href="linkPrefix + dailyRank.top1.id">
+              <img :src="dailyRank.top1.pic_200 || dailyRank.top1.cover_url_260" :alt="dailyRank.top1.name" class="cover">
             </a>
           </div>
           <div class="sound-info">
             <h1 class="title">{{dailyRank.title}}</h1>
             <h2 class="sound-name">
-              <a :href="'#/sound/' + dailyRank.top1.id" class="link">{{dailyRank.top1.name}}</a>
+              <a :href="linkPrefix + dailyRank.top1.id" class="link">{{dailyRank.top1.name}}</a>
             </h2>
             <p class="user-info">
               <a :href="'#/user/' + dailyRank.top1.userId" class="link">
@@ -28,8 +28,8 @@
       </div>
       <ul class="rank-list">
         <li class="rank-item" v-for="(item, index) in dailyRank.list" :key="item.id">
-          <a :href="'#/sound/' + item.id" class="sound-link">
-            <img :src="item.pic_200" :alt="item.name" class="cover">
+          <a :href="linkPrefix + item.id" class="sound-link">
+            <img :src="item.pic_200 || item.cover_url_260" :alt="item.name" class="cover">
             <div class="sound-info">
               <span class="rank-num">{{index + 2}}</span>
               <div class="intro">
@@ -47,15 +47,15 @@
       <li class="rank" v-for="(rank, i) in otherRankList" :key="'rank-' + i">
         <div class="rank-header">
           <h1 class="title">{{rank.title}}</h1>
-          <div class="play-btn">
+          <div class="play-btn" v-if="rankType !== 'mv'">
             <i class="play-icon"></i>
-            <span class="text" v-if="rankType !== 'mv'">播放全部</span>
+            <span class="text">播放全部</span>
           </div>
         </div>
         <ul class="rank-list">
           <li class="rank-item" v-for="(item, index) in rank.list" :key="item.id">
-            <a :href="'#/sound/' + item.id" class="sound-link">
-              <img :src="item.pic_200" :alt="item.name" class="cover">
+            <a :href="linkPrefix + item.id" class="sound-link">
+              <img :src="item.pic_200 || item.cover_url_260" :alt="item.name" class="cover">
               <div class="sound-info">
                 <span class="rank-num">{{index + 1}}</span>
                 <div class="intro">
@@ -92,6 +92,16 @@
         type: String,
         default: ''
       }
+    },
+    created () {
+      // 视频回声榜类型常量
+      this.mvType = 'mv'
+    },
+    computed: {
+      // 榜单中每个 sound 或 mv 的链接前缀
+      linkPrefix () {
+        return this.rankType === this.mvType ? '#/mv/' : '#/sound/'
+      }
     }
   }
 </script>
@@ -104,13 +114,15 @@
     .daily-rank {
       margin-bottom: 50px;
       .rank-header {
-        position: relative;
         height: 300px;
         margin-bottom: 115px;
+        padding-top: 88px;
+        box-sizing: border-box;
         .daily-top1 {
-          position: absolute;
-          top: 88px;
-          left: 125px;
+          // 解决浏览器视口宽度减小到某一值时，右边浮动的 sound 信息部分被挤到下一行显示的 bug
+          width: 985px;
+          margin: 0 auto;
+          overflow: hidden;
           .top1-pic {
             float: left;
             width: 435px;
@@ -127,7 +139,8 @@
                 display: block;
                 width: 100%;
                 height: 100%;
-                background: red;
+                // 使图片正常（不变形，即拉伸或压缩）显示
+                object-fit: cover;
               }
             }
           }
@@ -177,7 +190,6 @@
                   width: 30px;
                   height: 30px;
                   border-radius: 50%;
-                  background: red;
                 }
                 .user-name {
                   margin-left: 10px;
@@ -217,7 +229,8 @@
               display: block;
               width: 245px;
               height: 245px;
-              background: red;
+              // 使图片正常（不变形，即拉伸或压缩）显示
+              object-fit: cover;
             }
             .sound-info {
               padding-top: 5px;
@@ -320,7 +333,8 @@
                 display: block;
                 width: 245px;
                 height: 245px;
-                background: red;
+                // 使图片正常（不变形，即拉伸或压缩）显示
+                object-fit: cover;
               }
               .sound-info {
                 padding-top: 5px;
@@ -381,7 +395,47 @@
     &.mv {
       .daily-rank {
         .rank-header {
+          padding-top: 120px;
           background-color: @color-rank-mv;
+          .daily-top1 {
+            width: 1080px;
+            .top1-pic {
+              width: 553px;
+              height: 208px;
+              margin-right: 0;
+              background: url("./top1-mv-pic.png") no-repeat center bottom;
+              .top1-link {
+                width: 380px;
+                height: 200px;
+                margin-left: 91px;
+              }
+            }
+            .sound-info {
+              margin-left: -30px;
+            }
+          }
+        }
+        .rank-list {
+          .rank-item {
+            .sound-link {
+              .cover {
+                height: 129px;
+              }
+            }
+          }
+        }
+      }
+      .other-rank {
+        .rank {
+          .rank-list {
+            .rank-item {
+              .sound-link {
+                .cover {
+                  height: 129px;
+                }
+              }
+            }
+          }
         }
       }
     }

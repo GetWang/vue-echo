@@ -40,7 +40,6 @@
       _getSoundHotRank () {
         periodArr.forEach((period) => {
           getSoundHotRank(period, limitNum).then(res => {
-            console.log('res', res)
             if (res.status === STATUS_OK) {
               this.handleRank(res, period)
             }
@@ -56,7 +55,6 @@
           for (let i = 1, len = rankList.length; i < len; i++) {
             this.dailyRank.list.push(new Sound(rankList[i]))
           }
-          console.log('daily', this.dailyRank)
         } else if (period === periodArr[1]) {
           this.weeklyRank = {
             title: periodTitleArr[1],
@@ -72,8 +70,11 @@
             })
           }
         }
-        this.weeklyRank && this.monthlyRank && this.otherRankList.push(this.weeklyRank, this.monthlyRank)
-        console.log('weekly & monthly', this.otherRankList)
+        if (this.weeklyRank && this.monthlyRank) {
+          this.otherRankList.push(this.weeklyRank, this.monthlyRank)
+          this.weeklyRank = null
+          this.monthlyRank = null
+        }
       }
     },
     components: {
