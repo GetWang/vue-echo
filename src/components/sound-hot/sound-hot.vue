@@ -1,6 +1,6 @@
 <template>
   <main class="sound-hot">
-    <echo-rank></echo-rank>
+    <echo-rank :daily-rank="dailyRank" :other-rank-list="otherRankList" :rank-type="rankType"></echo-rank>
   </main>
 </template>
 
@@ -27,7 +27,9 @@
           list: []
         },
         // 周榜和月榜数据
-        otherRankList: []
+        otherRankList: [],
+        // 回声榜类型
+        rankType: 'hot'
       }
     },
     created () {

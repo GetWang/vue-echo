@@ -1,35 +1,42 @@
 <template>
-  <div class="echo-rank">
+  <div class="echo-rank" :class="[rankType]"
+       v-if="dailyRank.title && otherRankList.length > 0">
     <div class="daily-rank">
       <div class="rank-header">
         <div class="daily-top1">
           <div class="top1-pic">
-            <a class="top1-link" href="">
-              <img src="" alt="" class="cover">
+            <a class="top1-link" :href="'#/sound/' + dailyRank.top1.id">
+              <img :src="dailyRank.top1.pic_200" :alt="dailyRank.top1.name" class="cover">
             </a>
           </div>
           <div class="sound-info">
-            <h1 class="title">热门日榜 TOP 1</h1>
-            <h2 class="sound-name"><a href="" class="link">忘记拥抱 梁昊龙忘记拥抱 梁昊龙忘记拥抱 梁昊龙忘记拥抱 梁昊龙忘记拥抱</a></h2>
+            <h1 class="title">{{dailyRank.title}}</h1>
+            <h2 class="sound-name">
+              <a :href="'#/sound/' + dailyRank.top1.id" class="link">{{dailyRank.top1.name}}</a>
+            </h2>
             <p class="user-info">
-              <a href="" class="link">
-                <img src="" alt="" class="avatar">
-                <span class="user-name">梁昊龙_APEinT梁昊龙_APEinT梁昊龙_APEinT梁昊龙_APEinT梁昊龙_APEinT梁昊龙_APEinT</span>
+              <a :href="'#/user/' + dailyRank.top1.userId" class="link">
+                <img :src="dailyRank.top1.avatar_50" :alt="dailyRank.top1.userName" class="avatar">
+                <span class="user-name">{{dailyRank.top1.userName}}</span>
               </a>
             </p>
-            <div class="play-btn"><span class="text">一键播放</span></div>
+            <div class="play-btn" v-if="rankType !== 'mv'">
+              <span class="text">一键播放</span>
+            </div>
           </div>
         </div>
       </div>
       <ul class="rank-list">
-        <li class="rank-item">
-          <a href="" class="sound-link">
-            <img src="" alt="" class="cover">
+        <li class="rank-item" v-for="(item, index) in dailyRank.list" :key="item.id">
+          <a :href="'#/sound/' + item.id" class="sound-link">
+            <img :src="item.pic_200" :alt="item.name" class="cover">
             <div class="sound-info">
-              <span class="rank-num">2</span>
+              <span class="rank-num">{{index + 2}}</span>
               <div class="intro">
-                <h2 class="sound-name">分秒必争///陪我长大钢琴版分秒必争///陪我长大钢琴版分秒必争///陪我长大钢琴版分秒必争///陪我长大钢琴版分秒必争///陪我长大钢琴版</h2>
-                <p class="user-name"><a href="" class="link">钢琴师MT1990钢琴师MT1990钢琴师MT1990钢琴师MT1990</a></p>
+                <h2 class="sound-name">{{item.name}}</h2>
+                <p class="user-name">
+                  <a :href="'#/user/' + item.userId" class="link">{{item.userName}}</a>
+                </p>
               </div>
             </div>
           </a>
@@ -37,23 +44,25 @@
       </ul>
     </div>
     <ul class="other-rank">
-      <li class="rank">
+      <li class="rank" v-for="(rank, i) in otherRankList" :key="'rank-' + i">
         <div class="rank-header">
-          <h1 class="title">热门回声周榜</h1>
+          <h1 class="title">{{rank.title}}</h1>
           <div class="play-btn">
             <i class="play-icon"></i>
-            <span class="text">播放全部</span>
+            <span class="text" v-if="rankType !== 'mv'">播放全部</span>
           </div>
         </div>
         <ul class="rank-list">
-          <li class="rank-item">
-            <a href="" class="sound-link">
-              <img src="" alt="" class="cover">
+          <li class="rank-item" v-for="(item, index) in rank.list" :key="item.id">
+            <a :href="'#/sound/' + item.id" class="sound-link">
+              <img :src="item.pic_200" :alt="item.name" class="cover">
               <div class="sound-info">
-                <span class="rank-num">1</span>
+                <span class="rank-num">{{index + 1}}</span>
                 <div class="intro">
-                  <h2 class="sound-name">分秒必争///陪我长大钢琴版分秒必争///陪我长大钢琴版分秒必争///陪我长大钢琴版分秒必争///陪我长大钢琴版分秒必争///陪我长大钢琴版</h2>
-                  <p class="user-name"><a href="" class="link">钢琴师MT1990钢琴师MT1990钢琴师MT1990钢琴师MT1990</a></p>
+                  <h2 class="sound-name">{{item.name}}</h2>
+                  <p class="user-name">
+                    <a :href="'#/user/' + item.userId" class="link">{{item.userName}}</a>
+                  </p>
                 </div>
               </div>
             </a>
@@ -66,7 +75,24 @@
 
 <script type="text/ecmascript-6">
   export default {
-    name: 'EchoRank'
+    name: 'EchoRank',
+    props: {
+      // 日榜数据
+      dailyRank: {
+        type: Object,
+        default: () => ({})
+      },
+      // 周榜、月榜数据
+      otherRankList: {
+        type: Array,
+        default: () => []
+      },
+      // 回声榜类型
+      rankType: {
+        type: String,
+        default: ''
+      }
+    }
   }
 </script>
 
@@ -81,7 +107,6 @@
         position: relative;
         height: 300px;
         margin-bottom: 115px;
-        background: pink;
         .daily-top1 {
           position: absolute;
           top: 88px;
@@ -336,6 +361,27 @@
               }
             }
           }
+        }
+      }
+    }
+    &.hot {
+      .daily-rank {
+        .rank-header {
+          background-color: @color-rank-hot;
+        }
+      }
+    }
+    &.origin {
+      .daily-rank {
+        .rank-header {
+          background-color: @color-rank-origin;
+        }
+      }
+    }
+    &.mv {
+      .daily-rank {
+        .rank-header {
+          background-color: @color-rank-mv;
         }
       }
     }
