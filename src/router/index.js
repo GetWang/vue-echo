@@ -4,6 +4,7 @@ import Home from '@/components/home/home'
 import SoundHot from 'components/sound-hot/sound-hot'
 import SoundOrigin from 'components/sound-origin/sound-origin'
 import MVHot from 'components/mv-hot/mv-hot'
+import Famous from 'components/famous/famous'
 
 Vue.use(Router)
 
@@ -38,6 +39,11 @@ export default new Router({
       path: '/rank/mv-hot',
       name: 'MVHot',
       component: MVHot
+    },
+    {
+      path: '/famous',
+      name: 'Famous',
+      component: Famous
     }
   ]
 })
