@@ -1,4 +1,5 @@
 <template>
+  <!-- 回声榜组件 -->
   <div class="echo-rank" :class="[rankType]"
        v-if="dailyRank.title && otherRankList.length > 0">
     <div class="daily-rank">

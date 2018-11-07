@@ -1,13 +1,20 @@
 <template>
   <!-- 名人页面 -->
   <main class="famous">
-    <div class="content">famous</div>
+    <div class="content">
+      <famous-slide></famous-slide>
+    </div>
   </main>
 </template>
 
 <script type="text/ecmascript-6">
+  import FamousSlide from 'components/famous-slide/famous-slide'
+
   export default {
-    name: 'Famous'
+    name: 'Famous',
+    components: {
+      FamousSlide
+    }
   }
 </script>
 
@@ -20,6 +27,8 @@
     .content {
       width: 755px;
       margin: 0 auto;
+      padding-top: 30px;
+      overflow: hidden;
       background-color: #fff;
     }
   }

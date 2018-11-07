@@ -1,4 +1,5 @@
 <template>
+  <!-- 原创回声榜页面 -->
   <main class="sound-origin">
     <echo-rank :daily-rank="dailyRank" :other-rank-list="otherRankList" :rank-type="rankType"></echo-rank>
   </main>

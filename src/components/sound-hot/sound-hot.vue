@@ -1,4 +1,5 @@
 <template>
+  <!-- 热门回声榜页面 -->
   <main class="sound-hot">
     <echo-rank :daily-rank="dailyRank" :other-rank-list="otherRankList" :rank-type="rankType"></echo-rank>
   </main>

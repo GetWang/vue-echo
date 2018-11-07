@@ -125,7 +125,7 @@
     },
     created () {
       this._getRankChoose()
-      this._getFamousUser()
+      this._getFamousUser(5)
       this._getHomeAlbum()
     },
     methods: {
@@ -140,8 +140,8 @@
         })
       },
       /* 获取首页 echo 名人数据 */
-      _getFamousUser () {
-        getFamousUser().then(res => {
+      _getFamousUser (limit) {
+        getFamousUser(limit).then(res => {
           if (res.status === STATUS_OK) {
             this.handleFamousUser(res)
           }

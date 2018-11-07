@@ -1,4 +1,5 @@
 <template>
+  <!-- 视频回声榜页面 -->
   <main class="mv-hot">
     <echo-rank :daily-rank="dailyRank" :other-rank-list="otherRankList" :rank-type="rankType"></echo-rank>
   </main>

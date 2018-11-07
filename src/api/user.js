@@ -1,10 +1,10 @@
 import axios from 'axios'
 
-/* 获取首页 echo 名人数据 */
-export function getFamousUser () {
+/* 获取首页和名人页面的 echo 名人数据 */
+export function getFamousUser (limit) {
   const url = '/api/getFamousUser'
   const data = {
-    limit: 5
+    limit
   }
   return axios.get(url, {
     params: data
