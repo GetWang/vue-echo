@@ -129,6 +129,21 @@ const devWebpackConfig = merge(baseWebpackConfig, {
           console.log('api/rank/mv-hot error', e)
         })
       })
+      /* 获取名人页 echo 群星数据 */
+      app.get('/api/getTopUser', function (req, res) {
+        const url = 'http://www.app-echo.com/api/famous/top-user'
+        axios.get(url, {
+          headers: {
+            host: 'www.app-echo.com',
+            referer: 'http://www.app-echo.com'
+          },
+          params: req.query
+        }).then(response => {
+          res.json(response.data)
+        }).catch(e => {
+          console.log('api/getTopUser error', e)
+        })
+      })
     },
     clientLogLevel: 'warning',
     historyApiFallback: {

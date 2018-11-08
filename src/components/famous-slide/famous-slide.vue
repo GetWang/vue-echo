@@ -52,15 +52,15 @@
       this._getFamousUser(limit)
     },
     computed: {
-      // 上一页按钮禁用类名
+      /* 上一页按钮禁用类名 */
       prevDisableCls () {
         return this.currPage === 1 ? 'disable' : ''
       },
-      // 下一页按钮禁用类名
+      /* 下一页按钮禁用类名 */
       nextDisableCls () {
         return this.currPage === this.totalPage ? 'disable' : ''
       },
-      // “.famous-list” 元素在 X 轴上移动的样式
+      /* “.famous-list” 元素在 X 轴上移动的样式 */
       translateXStyle () {
         return {
           transform: `translateX(-${this.translateXWidth}px)`
@@ -84,7 +84,7 @@
           this.famousUserList.push(new User(item))
         })
       },
-      // 上一页名人
+      /* 上一页名人 */
       prevPage () {
         if (this.currPage <= 1) {
           return
@@ -93,7 +93,7 @@
         // 确保 “this.currPage” 属性值不小于 1
         this.currPage = Math.max(1, --this.currPage)
       },
-      // 下一页名人
+      /* 下一页名人 */
       nextPage () {
         if (this.currPage >= this.totalPage) {
           return
