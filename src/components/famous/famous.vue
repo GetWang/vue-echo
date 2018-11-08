@@ -11,13 +11,13 @@
           <a class="enter-top" href="">查看全部</a>
         </div>
         <ul class="top-list">
-          <li class="top-item">
-            <a href="" class="user-link">
-              <img src="" alt="" class="avatar">
+          <li class="top-item" v-for="top in topUserList" :key="top.id">
+            <a :href="'#/user/' + top.id" class="user-link">
+              <img :src="top.avatar_50" alt="" class="avatar">
               <i class="v-icon">v</i>
             </a>
-            <a href="" class="user-name">周杰伦周杰伦周杰伦周杰伦</a>
-            <p class="user-desc">中国流行男歌手，著名音乐人中国流行男歌手，著名音乐人</p>
+            <a :href="'#/user/' + top.id" class="user-name">{{top.name}}</a>
+            <p class="user-desc">{{top.desc}}</p>
           </li>
         </ul>
       </div>
@@ -27,9 +27,37 @@
 
 <script type="text/ecmascript-6">
   import FamousSlide from 'components/famous-slide/famous-slide'
+  import {getTopUser} from 'api/user'
+  import {STATUS_OK} from 'api/config'
+  import User from 'common/js/user'
 
   export default {
     name: 'Famous',
+    data () {
+      return {
+        // echo 群星列表
+        topUserList: []
+      }
+    },
+    created () {
+      this._getTopUser(1, 12)
+    },
+    methods: {
+      /* 获取 echo 群星数据 */
+      _getTopUser (page, limit) {
+        getTopUser(page, limit).then(res => {
+          if (res.status === STATUS_OK) {
+            this.handleTopUser(res)
+          }
+        })
+      },
+      /* 处理 echo 群星数据 */
+      handleTopUser (data) {
+        data.lists.forEach((item) => {
+          this.topUserList.push(new User(item))
+        })
+      }
+    },
     components: {
       FamousSlide
     }
@@ -87,7 +115,6 @@
                 width: 50px;
                 height: 50px;
                 border-radius: 50%;
-                background: red;
               }
               .v-icon {
                 position: absolute;
