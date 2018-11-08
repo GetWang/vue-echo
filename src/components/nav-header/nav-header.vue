@@ -5,7 +5,6 @@
       <router-link to="/home" class="link">首页</router-link>
       <router-link to="/channel" class="link">频道</router-link>
       <router-link to="/famous" class="link">名人</router-link>
-      <router-link to="/store" class="link">商城</router-link>
     </nav>
     <a href="#/home" class="logo-link"><img src="./logo.png" class="logo" alt="logo"></a>
   </header>

@@ -1,4 +1,5 @@
 <template>
+  <!-- 名人页面 echo 名人切换组件 -->
   <div class="famous-slide">
     <div class="famous-header">
       <h2 class="title">echo名人</h2>
