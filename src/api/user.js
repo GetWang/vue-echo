@@ -26,3 +26,45 @@ export function getTopUser (page, limit) {
     return Promise.resolve(res.data)
   })
 }
+
+/* 获取名人页新入驻名人用户的数据 */
+export function getLatestUser (page, limit) {
+  const url = '/api/getLatestUser'
+  const data = {
+    page,
+    limit
+  }
+  return axios.get(url, {
+    params: data
+  }).then(res => {
+    return Promise.resolve(res.data)
+  })
+}
+
+/* 获取名人页 echo 推荐名人用户的数据 */
+export function getRecomUser (page, limit) {
+  const url = '/api/getRecomUser'
+  const data = {
+    page,
+    limit
+  }
+  return axios.get(url, {
+    params: data
+  }).then(res => {
+    return Promise.resolve(res.data)
+  })
+}
+
+/* 获取名人页24小时热门名人用户的数据 */
+export function getDailyHotUser (page, limit) {
+  const url = '/api/getDailyHotUser'
+  const data = {
+    page,
+    limit
+  }
+  return axios.get(url, {
+    params: data
+  }).then(res => {
+    return Promise.resolve(res.data)
+  })
+}

@@ -50,20 +50,30 @@
 
 <script type="text/ecmascript-6">
   import FamousSlide from 'components/famous-slide/famous-slide'
-  import {getTopUser} from 'api/user'
+  import {getTopUser, getLatestUser, getRecomUser, getDailyHotUser} from 'api/user'
   import {STATUS_OK} from 'api/config'
   import User from 'common/js/user'
+
+  // 新入驻、echo 推荐、24小时热门名人用户类型
+  const famousType = ['latest', 'recommend', 'daily-hot']
+  // 新入驻、echo 推荐、24小时热门名人用户标题
+  const famousTypeTitle = ['新入驻', 'echo 推荐', '24小时热门']
 
   export default {
     name: 'Famous',
     data () {
       return {
         // echo 群星列表
-        topUserList: []
+        topUserList: [],
+        // 新入驻、echo 推荐、24小时热门名人用户列表
+        recomFamousList: []
       }
     },
     created () {
       this._getTopUser(1, 12)
+      this._getLatestUser(1, 5)
+      this._getRecomUser(1, 5)
+      this._getDailyHotUser(1, 5)
     },
     methods: {
       /* 获取 echo 群星数据 */
@@ -74,11 +84,70 @@
           }
         })
       },
+      /* 获取新入驻名人用户的数据 */
+      _getLatestUser (page, limit) {
+        getLatestUser(page, limit).then(res => {
+          console.log('latest', res)
+          if (res.status === STATUS_OK) {
+            this.handleRecomFamous(res, famousType[0])
+          }
+        })
+      },
+      /* 获取 echo 推荐名人用户的数据 */
+      _getRecomUser (page, limit) {
+        getRecomUser(page, limit).then(res => {
+          console.log('Recom', res)
+          if (res.status === STATUS_OK) {
+            this.handleRecomFamous(res, famousType[1])
+          }
+        })
+      },
+      /* 获取24小时热门名人用户的数据 */
+      _getDailyHotUser (page, limit) {
+        getDailyHotUser(page, limit).then(res => {
+          console.log('DailyHot', res)
+          if (res.status === STATUS_OK) {
+            this.handleRecomFamous(res, famousType[2])
+          }
+        })
+      },
       /* 处理 echo 群星数据 */
       handleTopUser (data) {
         data.lists.forEach((item) => {
           this.topUserList.push(new User(item))
         })
+      },
+      /* 处理新入驻、echo 推荐、24小时热门名人用户数据 */
+      handleRecomFamous (data, type) {
+        if (type === famousType[0]) {
+          this.latestUserObj = {
+            title: famousTypeTitle[0],
+            list: data.lists.map((item) => {
+              return new User(item)
+            })
+          }
+        } else if (type === famousType[1]) {
+          this.recomUserObj = {
+            title: famousTypeTitle[1],
+            list: data.lists.map((item) => {
+              return new User(item)
+            })
+          }
+        } else if (type === famousType[2]) {
+          this.dailyHotUserObj = {
+            title: famousTypeTitle[2],
+            list: data.lists.map((item) => {
+              return new User(item)
+            })
+          }
+        }
+        if (this.latestUserObj && this.recomUserObj && this.dailyHotUserObj) {
+          this.recomFamousList.push(this.latestUserObj, this.recomUserObj, this.dailyHotUserObj)
+          this.latestUserObj = null
+          this.recomUserObj = null
+          this.dailyHotUserObj = null
+          console.log('all', this.recomFamousList)
+        }
       }
     },
     components: {

@@ -144,6 +144,51 @@ const devWebpackConfig = merge(baseWebpackConfig, {
           console.log('api/getTopUser error', e)
         })
       })
+      /* 获取名人页新入驻名人用户的数据 */
+      app.get('/api/getLatestUser', function (req, res) {
+        const url = 'http://www.app-echo.com/api/famous/latest-users'
+        axios.get(url, {
+          headers: {
+            host: 'www.app-echo.com',
+            referer: 'http://www.app-echo.com'
+          },
+          params: req.query
+        }).then(response => {
+          res.json(response.data)
+        }).catch(e => {
+          console.log('api/getLatestUser error', e)
+        })
+      })
+      /* 获取名人页 echo 推荐名人用户的数据 */
+      app.get('/api/getRecomUser', function (req, res) {
+        const url = 'http://www.app-echo.com/api/famous/recommend-users'
+        axios.get(url, {
+          headers: {
+            host: 'www.app-echo.com',
+            referer: 'http://www.app-echo.com'
+          },
+          params: req.query
+        }).then(response => {
+          res.json(response.data)
+        }).catch(e => {
+          console.log('api/getRecomUser error', e)
+        })
+      })
+      /* 获取名人页24小时热门名人用户的数据 */
+      app.get('/api/getDailyHotUser', function (req, res) {
+        const url = 'http://www.app-echo.com/api/famous/daily-commend-users'
+        axios.get(url, {
+          headers: {
+            host: 'www.app-echo.com',
+            referer: 'http://www.app-echo.com'
+          },
+          params: req.query
+        }).then(response => {
+          res.json(response.data)
+        }).catch(e => {
+          console.log('api/getDailyHotUser error', e)
+        })
+      })
     },
     clientLogLevel: 'warning',
     historyApiFallback: {
