@@ -23,18 +23,18 @@
       </div>
       <!-- 新入驻、echo 推荐、24小时热门 -->
       <ul class="user-recom-list">
-        <li class="user-recom-item">
-          <h2 class="title">新入驻</h2>
+        <li class="user-recom-item" v-for="(item, i) in recomFamousList" :key="'type-' + i">
+          <h2 class="title">{{item.title}}</h2>
           <div class="recom-content">
             <ul class="user-list">
-              <li class="user-item">
-                <a href="" class="user-link">
-                  <img src="" alt="" class="avatar">
+              <li class="user-item" v-for="user in item.list" :key="user.id">
+                <a :href="'#/user/' + user.id" class="user-link">
+                  <img :src="user.avatar_50" :alt="user.name" class="avatar">
                   <i class="v-icon">v</i>
                 </a>
                 <div class="user-info">
-                  <a href="" class="user-name">JC陈泳彤JC陈泳彤JC陈泳彤</a>
-                  <p class="desc">中国香港流行乐女歌手中国香港流行乐女歌手</p>
+                  <a :href="'#/user/' + user.id" class="user-name">{{user.name}}</a>
+                  <p class="desc">{{user.desc}}</p>
                 </div>
               </li>
             </ul>
@@ -250,7 +250,10 @@
         .user-recom-item {
           display: inline-block;
           width: 220px;
-          margin-right: 18px;
+          margin-right: 16px;
+          &:last-child {
+            margin-right: 0;
+          }
           .title {
             height: 36px;
             margin-bottom: 25px;
@@ -278,7 +281,6 @@
                     width: 100%;
                     height: 100%;
                     border-radius: 50%;
-                    background: red;
                   }
                   .v-icon {
                     position: absolute;
