@@ -44,12 +44,15 @@
           </div>
         </li>
       </ul>
+      <!-- 名人分类 -->
+      <famous-kinds></famous-kinds>
     </div>
   </main>
 </template>
 
 <script type="text/ecmascript-6">
   import FamousSlide from 'components/famous-slide/famous-slide'
+  import FamousKinds from 'components/famous-kinds/famous-kinds'
   import {getTopUser, getLatestUser, getRecomUser, getDailyHotUser} from 'api/user'
   import {STATUS_OK} from 'api/config'
   import User from 'common/js/user'
@@ -151,7 +154,8 @@
       }
     },
     components: {
-      FamousSlide
+      FamousSlide,
+      FamousKinds
     }
   }
 </script>
