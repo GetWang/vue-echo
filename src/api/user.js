@@ -68,3 +68,25 @@ export function getDailyHotUser (page, limit) {
     return Promise.resolve(res.data)
   })
 }
+
+/* 获取名人页面名人分类的 type 列表 */
+export function getFamousTypeList () {
+  const url = '/api/getFamousTypeList'
+  return axios.get(url).then(res => {
+    return Promise.resolve(res.data)
+  })
+}
+
+/* 根据名人类别获取名人页面的名人列表 */
+export function getFamousListByType (famous_type, limit) {
+  const url = '/api/getFamousListByType'
+  const data = {
+    famous_type,
+    limit
+  }
+  return axios.get(url, {
+    params: data
+  }).then(res => {
+    return Promise.resolve(res.data)
+  })
+}

@@ -85,33 +85,38 @@
           if (res.status === STATUS_OK) {
             this.handleTopUser(res)
           }
+        }).catch(err => {
+          console.log('api/getTopUser error', err)
         })
       },
       /* 获取新入驻名人用户的数据 */
       _getLatestUser (page, limit) {
         getLatestUser(page, limit).then(res => {
-          console.log('latest', res)
           if (res.status === STATUS_OK) {
             this.handleRecomFamous(res, famousType[0])
           }
+        }).catch(err => {
+          console.log('api/getLatestUser error', err)
         })
       },
       /* 获取 echo 推荐名人用户的数据 */
       _getRecomUser (page, limit) {
         getRecomUser(page, limit).then(res => {
-          console.log('Recom', res)
           if (res.status === STATUS_OK) {
             this.handleRecomFamous(res, famousType[1])
           }
+        }).catch(err => {
+          console.log('api/getRecomUser error', err)
         })
       },
       /* 获取24小时热门名人用户的数据 */
       _getDailyHotUser (page, limit) {
         getDailyHotUser(page, limit).then(res => {
-          console.log('DailyHot', res)
           if (res.status === STATUS_OK) {
             this.handleRecomFamous(res, famousType[2])
           }
+        }).catch(err => {
+          console.log('api/getDailyHotUser error', err)
         })
       },
       /* 处理 echo 群星数据 */
@@ -149,7 +154,6 @@
           this.latestUserObj = null
           this.recomUserObj = null
           this.dailyHotUserObj = null
-          console.log('all', this.recomFamousList)
         }
       }
     },

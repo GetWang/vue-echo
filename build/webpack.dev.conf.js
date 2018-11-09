@@ -90,7 +90,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
         axios.get(url, {
           headers: {
             host: 'www.app-echo.com',
-            referer: 'http://www.app-echo.com'
+            referer: 'http://www.app-echo.com/'
           },
           params: req.query
         }).then(response => {
@@ -105,7 +105,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
         axios.get(url, {
           headers: {
             host: 'www.app-echo.com',
-            referer: 'http://www.app-echo.com'
+            referer: 'http://www.app-echo.com/'
           },
           params: req.query
         }).then(response => {
@@ -120,7 +120,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
         axios.get(url, {
           headers: {
             host: 'www.app-echo.com',
-            referer: 'http://www.app-echo.com'
+            referer: 'http://www.app-echo.com/'
           },
           params: req.query
         }).then(response => {
@@ -135,7 +135,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
         axios.get(url, {
           headers: {
             host: 'www.app-echo.com',
-            referer: 'http://www.app-echo.com'
+            referer: 'http://www.app-echo.com/'
           },
           params: req.query
         }).then(response => {
@@ -150,7 +150,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
         axios.get(url, {
           headers: {
             host: 'www.app-echo.com',
-            referer: 'http://www.app-echo.com'
+            referer: 'http://www.app-echo.com/'
           },
           params: req.query
         }).then(response => {
@@ -165,7 +165,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
         axios.get(url, {
           headers: {
             host: 'www.app-echo.com',
-            referer: 'http://www.app-echo.com'
+            referer: 'http://www.app-echo.com/'
           },
           params: req.query
         }).then(response => {
@@ -180,13 +180,43 @@ const devWebpackConfig = merge(baseWebpackConfig, {
         axios.get(url, {
           headers: {
             host: 'www.app-echo.com',
-            referer: 'http://www.app-echo.com'
+            referer: 'http://www.app-echo.com/'
           },
           params: req.query
         }).then(response => {
           res.json(response.data)
         }).catch(e => {
           console.log('api/getDailyHotUser error', e)
+        })
+      })
+      /* 获取名人页面名人分类的 type 列表 */
+      app.get('/api/getFamousTypeList', function (req, res) {
+        const url = 'http://www.app-echo.com/api/famous/type-list'
+        axios.get(url, {
+          headers: {
+            host: 'www.app-echo.com',
+            referer: 'http://www.app-echo.com/'
+          },
+          params: req.query
+        }).then(response => {
+          res.json(response.data)
+        }).catch(e => {
+          console.log('api/getFamousTypeList error', e)
+        })
+      })
+      /* 根据名人类别获取名人页面的名人列表 */
+      app.get('/api/getFamousListByType', function (req, res) {
+        const url = 'http://www.app-echo.com/api/famous/user-list-by-type'
+        axios.get(url, {
+          headers: {
+            host: 'www.app-echo.com',
+            referer: 'http://www.app-echo.com/'
+          },
+          params: req.query
+        }).then(response => {
+          res.json(response.data)
+        }).catch(e => {
+          console.log('api/getFamousListByType error', e)
         })
       })
     },

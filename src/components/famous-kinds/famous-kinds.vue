@@ -16,8 +16,36 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import {getFamousTypeList, getFamousListByType} from 'api/user'
+  // import {STATUS_OK} from 'api/config'
+
+  // 根据名人类别获取名人的个数限制
+  const limit = 44
+
   export default {
-    name: 'FamousKinds'
+    name: 'FamousKinds',
+    created () {
+      this._getFamousTypeList()
+      this._getFamousListByType(1, limit)
+    },
+    methods: {
+      /* 获取名人页面名人分类的 type 列表 */
+      _getFamousTypeList () {
+        getFamousTypeList().then(res => {
+          console.log('res-type', res)
+        }).catch(err => {
+          console.log('api/getFamousTypeList error', err)
+        })
+      },
+      /* 根据名人类别获取名人页面的名人列表 */
+      _getFamousListByType (famous_type, limit) {
+        getFamousListByType(famous_type, limit).then(res => {
+          console.log('res-famous-list', res)
+        }).catch(err => {
+          console.log('api/getFamousListByType error', err)
+        })
+      }
+    }
   }
 </script>
 
@@ -36,7 +64,7 @@
         font-size: @font-size-large-x;
         font-weight: normal;
         line-height: 36px;
-        color: @color-text; 
+        color: @color-text;
       }
       .kinds-list {
         font-size: 0;
