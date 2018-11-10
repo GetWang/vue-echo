@@ -8,7 +8,7 @@
       <div class="top-user">
         <div class="top-header">
           <h2 class="title">echo 群星</h2>
-          <a class="enter-top" href="">查看全部</a>
+          <a class="enter-top" href="#/famous/top-user">查看全部</a>
         </div>
         <ul class="top-list">
           <li class="top-item" v-for="top in topUserList" :key="top.id">
@@ -39,7 +39,7 @@
               </li>
             </ul>
             <p class="view-more">
-              <a href="" class="more-link">查看全部&nbsp;&gt;</a>
+              <a :href="'#/famous/' + item.name" class="more-link">查看全部&nbsp;&gt;</a>
             </p>
           </div>
         </li>
@@ -58,7 +58,7 @@
   import User from 'common/js/user'
 
   // 新入驻、echo 推荐、24小时热门名人用户类型
-  const famousType = ['latest', 'recommend', 'daily-hot']
+  const famousType = ['latest-user', 'recommend-user', 'daily-hot-user']
   // 新入驻、echo 推荐、24小时热门名人用户标题
   const famousTypeTitle = ['新入驻', 'echo 推荐', '24小时热门']
 
@@ -129,6 +129,7 @@
       handleRecomFamous (data, type) {
         if (type === famousType[0]) {
           this.latestUserObj = {
+            name: famousType[0],
             title: famousTypeTitle[0],
             list: data.lists.map((item) => {
               return new User(item)
@@ -136,6 +137,7 @@
           }
         } else if (type === famousType[1]) {
           this.recomUserObj = {
+            name: famousType[1],
             title: famousTypeTitle[1],
             list: data.lists.map((item) => {
               return new User(item)
@@ -143,6 +145,7 @@
           }
         } else if (type === famousType[2]) {
           this.dailyHotUserObj = {
+            name: famousType[2],
             title: famousTypeTitle[2],
             list: data.lists.map((item) => {
               return new User(item)
