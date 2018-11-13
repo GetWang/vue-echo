@@ -86,21 +86,23 @@
       },
       /* 上一页名人 */
       prevPage () {
-        if (this.currPage <= 1) {
+        let page = this.currPage
+        if (page <= 1) {
           return
         }
-        this.translateXWidth = (this.currPage - 2) * size * itemWidth
+        this.translateXWidth = (page - 2) * size * itemWidth
         // 确保 “this.currPage” 属性值不小于 1
-        this.currPage = Math.max(1, --this.currPage)
+        this.currPage = Math.max(1, --page)
       },
       /* 下一页名人 */
       nextPage () {
-        if (this.currPage >= this.totalPage) {
+        let page = this.currPage
+        if (page >= this.totalPage) {
           return
         }
-        this.translateXWidth = this.currPage * size * itemWidth
+        this.translateXWidth = page * size * itemWidth
         // 确保 “this.currPage” 属性值不大于 “this.totalPage”
-        this.currPage = Math.min(this.totalPage, ++this.currPage)
+        this.currPage = Math.min(this.totalPage, ++page)
       }
     }
   }

@@ -14,7 +14,9 @@
         </li>
       </ul>
       <div class="pager-wrapper">
-        <pager></pager>
+        <pager :pageSize="pageSize"
+               :totalCount="totalCount"
+               @pageChange="changePage"></pager>
       </div>
     </div>
   </main>
@@ -41,13 +43,17 @@
         currListTitle: '',
         // 当前列表页数
         currPage: 1,
+        // 每页的大小
+        pageSize: 16,
+        // 当前列表类型总的名人数量
+        totalCount: 0,
         // 名人列表
         userList: []
       }
     },
     created () {
       this.checkCurrListName()
-      this._getUserList(1, 16)
+      this._getUserList(1, this.pageSize)
     },
     methods: {
       /* 检查名人列表页面类型的名字是否存在 */
@@ -92,9 +98,15 @@
       },
       /* 处理当前名人列表数据 */
       handleUserList (data) {
+        this.totalCount = data.pages.totalCount
+        this.userList.splice(0, this.userList.length)
         data.lists.forEach((item) => {
           this.userList.push(new User(item))
         })
+      },
+      /* 页码已更改，获取新的名人列表数据 */
+      changePage (newPage) {
+        this._getUserList(newPage, this.pageSize)
       }
     },
     components: {
