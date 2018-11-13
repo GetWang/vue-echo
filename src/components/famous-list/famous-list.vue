@@ -13,11 +13,15 @@
           <p class="user-desc">{{user.desc}}</p>
         </li>
       </ul>
+      <div class="pager-wrapper">
+        <pager></pager>
+      </div>
     </div>
   </main>
 </template>
 
 <script type="text/ecmascript-6">
+  import Pager from 'base/pager/pager'
   import {getTopUser, getLatestUser, getRecomUser, getDailyHotUser} from 'api/user'
   import {STATUS_OK} from 'api/config'
   import User from 'common/js/user'
@@ -92,6 +96,9 @@
           this.userList.push(new User(item))
         })
       }
+    },
+    components: {
+      Pager
     }
   }
 </script>
@@ -175,6 +182,10 @@
             color: @color-text;
           }
         }
+      }
+      .pager-wrapper {
+        margin: 20px 0;
+        text-align: center;
       }
     }
   }
