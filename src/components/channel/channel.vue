@@ -4,32 +4,20 @@
     <div class="content">
       <div class="channel-navs">
         <ul class="order-nav">
-          <li class="order">
-            <a href="#/channel" class="link">
-              <i class="curr-icon"></i>
-              频道首页
-            </a>
-          </li>
-          <li class="order">
-            <a href="#/channel?order=latest" class="link">
-              <i class="curr-icon"></i>
-              最新
-            </a>
-          </li>
-          <li class="order">
-            <a href="#/channel?order=hot" class="link">
-              <i class="curr-icon"></i>
-              最热
+          <li class="order" v-for="order in channelOrders" :key="order.id">
+            <a :href="order.link" class="link">
+              <i class="curr-icon" v-show="order.link === currHash"></i>
+              {{order.name}}
             </a>
           </li>
         </ul>
         <div class="tag-nav">
           <h2 class="tag-title">频道分类</h2>
           <ul class="tag-list">
-            <li class="tag-item">
-              <a href="" class="link">
-                <i class="curr-icon"></i>
-                二次元
+            <li class="tag-item" v-for="tag in tagList" :key="tag.id">
+              <a :href="tag.link" class="link">
+                <i class="curr-icon" v-show="tag.link === currHash"></i>
+                {{tag.name}}
               </a>
             </li>
           </ul>
@@ -46,14 +34,43 @@
 
   export default {
     name: 'Channel',
+    data () {
+      return {
+        // 频道标签列表
+        tagList: [],
+        // 当前页面的 hash 值
+        currHash: ''
+      }
+    },
     created () {
       this._getChannelTags()
+      // 初始化“this.currHash”
+      this.currHash = '#' + this.$route.fullPath
+      // 左侧导航的上部分的频道 order
+      this.channelOrders = [{
+        id: 'home',
+        name: '频道首页',
+        link: '#/channel'
+      }, {
+        id: 'latest',
+        name: '最新',
+        link: '#/channel?order=latest'
+      }, {
+        id: 'hot',
+        name: '最热',
+        link: '#/channel?order=hot'
+      }]
+    },
+    watch: {
+      /* 监听页面路由的变化，在发生变化时修改“this.currHash” */
+      $route (to, from) {
+        this.currHash = '#' + to.fullPath
+      }
     },
     methods: {
       /* 获取频道标签数据 */
       _getChannelTags () {
         getChannelTags().then(res => {
-          console.log('res', res)
           if (res.status === STATUS_OK) {
             this.handleChannelTags(res)
           }
@@ -63,6 +80,13 @@
       },
       /* 处理频道标签数据 */
       handleChannelTags (data) {
+        data.categories.forEach((item) => {
+          this.tagList.push({
+            id: item.id,
+            name: item.name,
+            link: '#/channel?tag=' + item.id
+          })
+        })
       }
     }
   }
