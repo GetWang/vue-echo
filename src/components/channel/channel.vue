@@ -6,7 +6,8 @@
         <ul class="order-nav">
           <li class="order" v-for="order in channelOrders" :key="order.id">
             <a :href="order.link" class="link">
-              <i class="curr-icon" v-show="order.link === currHash"></i>
+              <i class="curr-icon"
+                 v-show="(order.link === currHash) && getListTitle(order)"></i>
               {{order.name}}
             </a>
           </li>
@@ -16,19 +17,23 @@
           <ul class="tag-list">
             <li class="tag-item" v-for="tag in tagList" :key="tag.id">
               <a :href="tag.link" class="link">
-                <i class="curr-icon" v-show="tag.link === currHash"></i>
+                <i class="curr-icon"
+                   v-show="(tag.link === currHash) && getListTitle(tag)"></i>
                 {{tag.name}}
               </a>
             </li>
           </ul>
         </div>
       </div>
-      <div class="list-wrapper">right</div>
+      <div class="list-wrapper">
+        <channel-list :title="listTitle"></channel-list>
+      </div>
     </div>
   </main>
 </template>
 
 <script type="text/ecmascript-6">
+  import ChannelList from 'components/channel-list/channel-list'
   import {getChannelTags} from 'api/channel'
   import {STATUS_OK} from 'api/config'
 
@@ -39,7 +44,9 @@
         // 频道标签列表
         tagList: [],
         // 当前页面的 hash 值
-        currHash: ''
+        currHash: '',
+        // 当前频道的标题
+        listTitle: ''
       }
     },
     created () {
@@ -50,15 +57,18 @@
       this.channelOrders = [{
         id: 'home',
         name: '频道首页',
-        link: '#/channel'
+        link: '#/channel',
+        title: '热门频道'
       }, {
         id: 'latest',
         name: '最新',
-        link: '#/channel?order=latest'
+        link: '#/channel?order=latest',
+        title: '最新频道'
       }, {
         id: 'hot',
         name: '最热',
-        link: '#/channel?order=hot'
+        link: '#/channel?order=hot',
+        title: '热门频道'
       }]
     },
     watch: {
@@ -84,10 +94,19 @@
           this.tagList.push({
             id: item.id,
             name: item.name,
-            link: '#/channel?tag=' + item.id
+            link: '#/channel?tag=' + item.id,
+            title: item.name
           })
         })
+      },
+      /* 获取当前频道的标题 */
+      getListTitle (obj) {
+        this.listTitle = obj.title
+        return true
       }
+    },
+    components: {
+      ChannelList
     }
   }
 </script>
@@ -172,6 +191,7 @@
       }
       .list-wrapper {
         float: left;
+        width: 785px;
         background: #fff;
       }
     }
