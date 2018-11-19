@@ -41,8 +41,30 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import {getChannelTags} from 'api/channel'
+  import {STATUS_OK} from 'api/config'
+
   export default {
-    name: 'Channel'
+    name: 'Channel',
+    created () {
+      this._getChannelTags()
+    },
+    methods: {
+      /* 获取频道标签数据 */
+      _getChannelTags () {
+        getChannelTags().then(res => {
+          console.log('res', res)
+          if (res.status === STATUS_OK) {
+            this.handleChannelTags(res)
+          }
+        }).catch(err => {
+          console.log('api/getChannelTags error', err)
+        })
+      },
+      /* 处理频道标签数据 */
+      handleChannelTags (data) {
+      }
+    }
   }
 </script>
 
