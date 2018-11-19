@@ -6,6 +6,7 @@ import SoundOrigin from 'components/sound-origin/sound-origin'
 import MVHot from 'components/mv-hot/mv-hot'
 import Famous from 'components/famous/famous'
 import FamousList from 'components/famous-list/famous-list'
+import Channel from 'components/channel/channel'
 
 Vue.use(Router)
 
@@ -50,6 +51,11 @@ export default new Router({
       path: '/famous/:listName',
       name: 'FamousList',
       component: FamousList
+    },
+    {
+      path: '/channel',
+      name: 'Channel',
+      component: Channel
     }
   ]
 })
