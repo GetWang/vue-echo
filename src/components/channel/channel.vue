@@ -162,6 +162,7 @@
             color: @color-text;
           }
           .tag-list {
+            border-radius: 4px;
             background: #fff;
             .tag-item {
               .link {
@@ -192,6 +193,7 @@
       .list-wrapper {
         float: left;
         width: 785px;
+        border-radius: 4px;
         background: #fff;
       }
     }
