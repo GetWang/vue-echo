@@ -234,6 +234,21 @@ const devWebpackConfig = merge(baseWebpackConfig, {
           console.log('api/getChannelTags error', e)
         })
       })
+      /* 获取频道列表组件的频道列表数据 */
+      app.get('/api/getChannelList', function (req, res) {
+        const url = 'http://www.app-echo.com/api/channel/index'
+        axios.get(url, {
+          headers: {
+            host: 'www.app-echo.com',
+            referer: 'http://www.app-echo.com/'
+          },
+          params: req.query
+        }).then(response => {
+          res.json(response.data)
+        }).catch(e => {
+          console.log('api/getChannelList error', e)
+        })
+      })
     },
     clientLogLevel: 'warning',
     historyApiFallback: {

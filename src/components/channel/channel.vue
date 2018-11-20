@@ -62,7 +62,7 @@
       }, {
         id: 'latest',
         name: '最新',
-        link: '#/channel?order=latest',
+        link: '#/channel?order=new',
         title: '最新频道'
       }, {
         id: 'hot',

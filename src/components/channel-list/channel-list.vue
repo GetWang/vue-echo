@@ -50,6 +50,8 @@
 </template>
 
 <script type="text/ecmascript">
+  import {getChannelList} from 'api/channel'
+
   export default {
     name: 'ChannelList',
     props: {
@@ -57,6 +59,36 @@
       title: {
         type: String,
         default: ''
+      }
+    },
+    created () {
+      this._getChannelList()
+    },
+    watch: {
+      /* 当页面路由发生变化时，请求新的频道列表数据 */
+      $route () {
+        this._getChannelList()
+      }
+    },
+    methods: {
+      /* 获取频道列表组件的频道列表数据 */
+      _getChannelList () {
+        getChannelList(this.getChannelType()).then(res => {
+          console.log('res', res)
+        })
+      },
+      /* 根据“this.$route.query”得出当前页面路径所属的频道类型 */
+      getChannelType () {
+        const typeObj = {}
+        const query = this.$route.query
+        if (query.order) {
+          typeObj.type = 'order'
+          typeObj.id = query.order
+        } else if (query.tag) {
+          typeObj.type = 'tag_id'
+          typeObj.id = query.tag
+        }
+        return typeObj
       }
     }
   }
