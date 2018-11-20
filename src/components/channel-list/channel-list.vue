@@ -3,28 +3,28 @@
   <div class="channels-wrapper">
     <h1 class="list-title">{{title}}</h1>
     <ul class="channel-list">
-      <li class="channel-item">
+      <li class="channel-item" v-for="channel in channelList" :key="channel.id">
         <div class="channel">
-          <a href="" class="link">
-            <img src="" alt="" class="cover">
+          <a :href="'#/channel/' + channel.id" class="link">
+            <img :src="channel.pic_500" :alt="channel.name" class="cover">
           </a>
           <div class="disc-pic"></div>
           <div class="play-btn"></div>
-          <a href="" class="link">
+          <a :href="'#/channel/' + channel.id" class="link">
             <div class="channel-info">
-              <h2 class="channel-name">3D音乐奇幻旋律馆3D音乐奇幻旋律馆</h2>
+              <h2 class="channel-name">{{channel.name}}</h2>
               <ul class="status-info">
                 <li class="status-item sound">
                   <i class="icon"></i>
-                  <span class="count">4.6万</span>
+                  <span class="count">{{channel.soundCount}}</span>
                 </li>
                 <li class="status-item follow">
                   <i class="icon"></i>
-                  <span class="count">135.7万</span>
+                  <span class="count">{{channel.followCount}}</span>
                 </li>
                 <li class="status-item share">
                   <i class="icon"></i>
-                  <span class="count">1.7万</span>
+                  <span class="count">{{channel.shareCount}}</span>
                 </li>
               </ul>
             </div>
@@ -33,12 +33,12 @@
         <div class="sounds-wrapper">
           <h3 class="title">频道热门回声</h3>
           <ul class="sound-list">
-            <li class="sound-item">
-              <a href="" class="sound-link">
-                <img src="" alt="" class="avatar">
+            <li class="sound-item" v-for="sound in channel.soundList" :key="sound.id">
+              <a :href="'#/sound/' + sound.id" class="sound-link">
+                <img :src="sound.pic_100" :alt="sound.name" class="avatar">
                 <div class="sound-info">
-                  <h4 class="sound-name">「3D音效」Fade 超人气小清新电音</h4>
-                  <p class="user">ZEM音乐ZEM音乐ZEM音乐ZEM音乐</p>
+                  <h4 class="sound-name">{{sound.name}}</h4>
+                  <p class="user">{{sound.userName}}</p>
                 </div>
               </a>
             </li>
@@ -51,6 +51,8 @@
 
 <script type="text/ecmascript">
   import {getChannelList} from 'api/channel'
+  import {STATUS_OK} from 'api/config'
+  import Channel from 'common/js/channel'
 
   export default {
     name: 'ChannelList',
@@ -59,6 +61,12 @@
       title: {
         type: String,
         default: ''
+      }
+    },
+    data () {
+      return {
+        // 频道列表
+        channelList: []
       }
     },
     created () {
@@ -75,7 +83,18 @@
       _getChannelList () {
         getChannelList(this.getChannelType()).then(res => {
           console.log('res', res)
+          if (res.status === STATUS_OK) {
+            this.handleChannelList(res)
+          }
         })
+      },
+      /* 处理频道列表数据 */
+      handleChannelList (data) {
+        this.channelList.splice(0, this.channelList.length)
+        data.channels.forEach((item) => {
+          this.channelList.push(new Channel(item))
+        })
+        console.log('list', this.channelList)
       },
       /* 根据“this.$route.query”得出当前页面路径所属的频道类型 */
       getChannelType () {
@@ -128,9 +147,11 @@
           .cover {
             position: absolute;
             top: 0;
-            bottom: 0;
+            left: 0;
             width: 100%;
+            height: 100%;
             z-index: 2;
+            object-fit: cover;
             background: pink;
           }
           .disc-pic {
