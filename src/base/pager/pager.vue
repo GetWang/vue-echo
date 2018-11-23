@@ -5,9 +5,9 @@
          @click="prevPage"></div>
     <ul class="nums-btn-wrapper">
       <li class="btn num-btn"
-          :class="{current: currPage === i}"
-          @click="changePageNum(i)"
-          v-for="i in pageCount" :key="i">{{i}}</li>
+          :class="{current: currPage === startPage + i}"
+          @click="changePageNum(startPage + i)"
+          v-for="i in btnCount" :key="i">{{startPage + i}}</li>
     </ul>
     <div class="btn next-btn"
          :class="{disable: currPage === pageCount}"
@@ -28,34 +28,72 @@
       totalCount: {
         type: Number,
         default: 0
+      },
+      // 数字按钮的最多个数
+      maxBtnCount: {
+        type: Number,
+        default: 12
       }
     },
     data () {
       return {
-        // 总页数
-        pageCount: 0,
         // 当前页码
-        currPage: 1
+        currPage: 1,
+        // 起始显示的数字页码中间值
+        startPage: 0
       }
     },
     created () {
-      this.computePageCount()
+      // this.computePageCenter()
     },
     watch: {
-      /* 总的数量发生变化，更新总页数 */
-      totalCount () {
-        this.computePageCount()
-      },
       /* 当页码发生变化时，派发 “页码更改” 事件 */
       currPage (newPage, oldPage) {
         console.log(newPage, oldPage)
         this.$emit('pageChange', newPage)
+        if (this.pageCount > this.maxBtnCount) {
+          this.alignPageCenter()
+        }
+      }
+    },
+    computed: {
+      /* 总页数 */
+      pageCount () {
+        return Math.ceil(this.totalCount / this.pageSize)
+      },
+      /* 数字页码按钮的数量 */
+      btnCount () {
+        if (this.pageCount > this.maxBtnCount) {
+          this.computePageCenter()
+          return this.maxBtnCount
+        } else {
+          return this.pageCount
+        }
       }
     },
     methods: {
-      /* 计算总页数 */
-      computePageCount () {
-        this.pageCount = Math.ceil(this.totalCount / this.pageSize)
+      /* 计算页码居中相关的信息 */
+      computePageCenter () {
+        let num = this.maxBtnCount - 1
+        this.pageCenter = {
+          leftNum: Math.floor(num / 2),
+          rightNum: Math.ceil(num / 2)
+        }
+      },
+      /* 使当前页码居中显示 */
+      alignPageCenter () {
+        // “this.maxBtnCount”个数字按钮的起始页码
+        let firstNum = this.currPage - this.pageCenter.leftNum
+        // “this.maxBtnCount”个数字按钮的结束页码
+        let lastNum = this.currPage + this.pageCenter.rightNum
+        if (firstNum <= 1) {
+          // 此时起始显示的页码中间值为 0
+          this.startPage = 0
+        } else if (firstNum > 1 && lastNum <= this.pageCount) {
+          this.startPage = firstNum - 1
+        } else if (lastNum > this.pageCount) {
+          this.startPage = this.pageCount - this.maxBtnCount
+        }
       },
       /* 指定新的页码 */
       changePageNum (num) {
@@ -113,6 +151,9 @@
         color: @color-text-ll;
         &:last-child {
           margin-right: 0;
+        }
+        &.current {
+          cursor: default;
         }
         &.current, &:hover {
           color: @color-theme;

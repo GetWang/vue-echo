@@ -46,10 +46,17 @@
         </div>
       </li>
     </ul>
+    <div class="pager-wrapper">
+      <pager :pageSize="pageSize"
+             :totalCount="totalCount"
+             :maxBtnCount="maxBtnCount"
+             @pageChange="_getChannelList"></pager>
+    </div>
   </div>
 </template>
 
 <script type="text/ecmascript">
+  import Pager from 'base/pager/pager'
   import {getChannelList} from 'api/channel'
   import {STATUS_OK} from 'api/config'
   import Channel from 'common/js/channel'
@@ -66,7 +73,15 @@
     data () {
       return {
         // 频道列表
-        channelList: []
+        channelList: [],
+        // 当前页码
+        currPage: 1,
+        // 每页的大小
+        pageSize: 5,
+        // 当前类型频道的总个数
+        totalCount: 0,
+        // 分页器最多的数字按钮个数
+        maxBtnCount: 10
       }
     },
     created () {
@@ -80,8 +95,8 @@
     },
     methods: {
       /* 获取频道列表组件的频道列表数据 */
-      _getChannelList () {
-        getChannelList(this.getChannelType()).then(res => {
+      _getChannelList (page = 1) {
+        getChannelList(this.getChannelType(), page).then(res => {
           console.log('res', res)
           if (res.status === STATUS_OK) {
             this.handleChannelList(res)
@@ -90,6 +105,8 @@
       },
       /* 处理频道列表数据 */
       handleChannelList (data) {
+        this.totalCount = data.pages.totalCount
+        // 先清空列表数据
         this.channelList.splice(0, this.channelList.length)
         data.channels.forEach((item) => {
           this.channelList.push(new Channel(item))
@@ -109,6 +126,9 @@
         }
         return typeObj
       }
+    },
+    components: {
+      Pager
     }
   }
 </script>
@@ -300,6 +320,9 @@
           }
         }
       }
+    }
+    .pager-wrapper {
+      text-align: center;
     }
   }
 </style>

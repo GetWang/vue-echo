@@ -9,9 +9,10 @@ export function getChannelTags () {
 }
 
 /* 获取频道列表组件的频道列表数据 */
-export function getChannelList (typeObj) {
+export function getChannelList (typeObj, page) {
   const url = '/api/getChannelList'
   const data = (typeObj && typeObj.type) ? {[typeObj.type]: typeObj.id} : {}
+  data.page = page
   return axios.get(url, {
     params: data
   }).then(res => {
