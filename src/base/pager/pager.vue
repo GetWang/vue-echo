@@ -47,6 +47,11 @@
       // this.computePageCenter()
     },
     watch: {
+      /* 当总的数量发生变化时，重置相关数据 */
+      totalCount () {
+        this.startPage = 0
+        this.currPage = 1
+      },
       /* 当页码发生变化时，派发 “页码更改” 事件 */
       currPage (newPage, oldPage) {
         console.log(newPage, oldPage)

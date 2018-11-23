@@ -16,15 +16,15 @@
               <ul class="status-info">
                 <li class="status-item sound">
                   <i class="icon"></i>
-                  <span class="count">{{channel.soundCount}}</span>
+                  <span class="count">{{normalizeNum(channel.soundCount)}}</span>
                 </li>
                 <li class="status-item follow">
                   <i class="icon"></i>
-                  <span class="count">{{channel.followCount}}</span>
+                  <span class="count">{{normalizeNum(channel.followCount)}}</span>
                 </li>
                 <li class="status-item share">
                   <i class="icon"></i>
-                  <span class="count">{{channel.shareCount}}</span>
+                  <span class="count">{{normalizeNum(channel.shareCount)}}</span>
                 </li>
               </ul>
             </div>
@@ -97,10 +97,11 @@
       /* 获取频道列表组件的频道列表数据 */
       _getChannelList (page = 1) {
         getChannelList(this.getChannelType(), page).then(res => {
-          console.log('res', res)
           if (res.status === STATUS_OK) {
             this.handleChannelList(res)
           }
+        }).catch(err => {
+          console.log('api/getChannelList error', err)
         })
       },
       /* 处理频道列表数据 */
@@ -111,7 +112,6 @@
         data.channels.forEach((item) => {
           this.channelList.push(new Channel(item))
         })
-        console.log('list', this.channelList)
       },
       /* 根据“this.$route.query”得出当前页面路径所属的频道类型 */
       getChannelType () {
@@ -125,6 +125,13 @@
           typeObj.id = query.tag
         }
         return typeObj
+      },
+      /* 将大于或等于 10000 的数字转成“xxx 万”的形式 */
+      normalizeNum (num) {
+        if (+num >= 10000) {
+          return (+num / 10000).toFixed(1) + '万'
+        }
+        return num
       }
     },
     components: {
@@ -172,7 +179,7 @@
             height: 100%;
             z-index: 2;
             object-fit: cover;
-            background: pink;
+            background: @color-background-l;
           }
           .disc-pic {
             position: absolute;
@@ -297,7 +304,6 @@
                   width: 60px;
                   height: 60px;
                   margin-right: 10px;
-                  background: pink;
                 }
                 .sound-info {
                   float: left;
