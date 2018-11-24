@@ -7,6 +7,7 @@ import MVHot from 'components/mv-hot/mv-hot'
 import Famous from 'components/famous/famous'
 import FamousList from 'components/famous-list/famous-list'
 import Channel from 'components/channel/channel'
+import ChannelDetail from 'components/channel-detail/channel-detail'
 
 Vue.use(Router)
 
@@ -56,6 +57,11 @@ export default new Router({
       path: '/channel',
       name: 'Channel',
       component: Channel
+    },
+    {
+      path: '/channel/:id',
+      name: 'ChannelDetail',
+      component: ChannelDetail
     }
   ]
 })
