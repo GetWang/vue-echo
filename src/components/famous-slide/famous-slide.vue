@@ -139,7 +139,7 @@
           background-size: 100% auto;
           cursor: pointer;
           &.prev {
-            background-image: url("./prev.png");
+            background-image: url("~common/image/prev-back.png");
           }
           &.next {
             background-image: url("./next.png");
