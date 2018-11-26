@@ -23,7 +23,40 @@
             </div>
           </div>
         </div>
-        <div class="channel-main"></div>
+        <div class="channel-main">
+          <div class="type-tabs">
+            <span class="tab hot current">最热</span>
+            <span class="tab new">最新</span>
+          </div>
+          <ul class="sound-list">
+            <li class="sound-item">
+              <a href="" class="sound-link">
+                <div class="top">
+                  <img src="" alt="" class="cover">
+                  <div class="duration">04:24</div>
+                </div>
+                <div class="sound-info">
+                  <h3 class="sound-name">「3D音效」Fade 超人气小清新电音</h3>
+                  <h4 class="channel"><a href="" class="link">3D音乐奇幻旋律馆</a>频道</h4>
+                  <ul class="sound-status">
+                    <li class="status status-share">
+                      <i class="icon"></i>
+                      <span class="count">25544</span>
+                    </li>
+                    <li class="status status-like">
+                      <i class="icon"></i>
+                      <span class="count">65484</span>
+                    </li>
+                    <li class="status status-comment">
+                      <i class="icon"></i>
+                      <span class="count">1545</span>
+                    </li>
+                  </ul>
+                </div>
+              </a>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
   </main>
@@ -129,6 +162,130 @@
                 text-overflow: ellipsis;
                 white-space: nowrap;
                 color: @color-text;
+              }
+            }
+          }
+        }
+        .channel-main {
+          padding-bottom: 20px;
+          .type-tabs {
+            border-bottom: 1px solid #e8e8e8;
+            .tab {
+              display: inline-block;
+              margin: 0 0 -2px 40px;
+              font-size: @font-size-medium-x;
+              line-height: 26px;
+              color: @color-text-ll;
+              cursor: pointer;
+              &.current {
+                border-bottom: 4px solid @color-theme;
+              }
+            }
+          }
+          .sound-list {
+            width: 964px;
+            margin: 0 auto;
+            padding: 50px 0 20px;
+            overflow: hidden;
+            .sound-item {
+              float: left;
+              width: 160px;
+              margin: 0 16px 25px;
+              background-color: @color-background-l;
+              .sound-link {
+                display: block;
+                text-decoration: none;
+                .top {
+                  position: relative;
+                  .cover {
+                    display: block;
+                    width: 100%;
+                    height: auto;
+                    height: 160px;
+                    background: pink;
+                  }
+                  .duration {
+                    position: absolute;
+                    left: 8px;
+                    bottom: 5px;
+                    height: 14px;
+                    padding-left: 19px;
+                    font-size: @font-size-small-s;
+                    font-family: "Microsoft YaHei", sans-serif;
+                    line-height: 14px;
+                    color: #fff;
+                    background: url("~common/image/play-mini.png") no-repeat 0 0;
+                    background-size: auto 14px;
+                  }
+                }
+                .sound-info {
+                  padding: 12px 0 5px;
+                  .sound-name {
+                    height: 36px;
+                    overflow: hidden;
+                    margin: 0 15px 15px;
+                    font-size: @font-size-small;
+                    font-weight: normal;
+                    line-height: 18px;
+                    color: @color-text-d;
+                  }
+                  .channel {
+                    margin: 0 15px 8px;
+                    overflow: hidden;
+                    font-size: @font-size-small;
+                    font-weight: normal;
+                    line-height: 16px;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                    color: #9a9a9a;
+                    .link {
+                      margin-right: 5px;
+                      text-decoration: none;
+                      color: @color-theme;
+                    }
+                  }
+                  .sound-status {
+                    font-size: 0;
+                    .status {
+                      display: inline-block;
+                      width: 33.33%;
+                      text-align: center;
+                      .icon {
+                        display: inline-block;
+                        width: 14px;
+                        height: 14px;
+                        background-image: url("~common/image/sound-status-sprite.png");
+                        background-repeat: no-repeat;
+                      }
+                      .count {
+                        display: block;
+                        margin-top: 2px;
+                        overflow: hidden;
+                        font-size: @font-size-small-s;
+                        line-height: 16px;
+                        text-align: center;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                        color: @color-text-l;
+                      }
+                      &-share {
+                        .icon {
+                          background-position: 0 -22px;
+                        }
+                      }
+                      &-like {
+                        .icon {
+                          background-position: -16px -22px;
+                        }
+                      }
+                      &-comment {
+                        .icon {
+                          background-position: -33px -22px;
+                        }
+                      }
+                    }
+                  }
+                }
               }
             }
           }

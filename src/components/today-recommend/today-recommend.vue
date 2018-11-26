@@ -178,7 +178,7 @@
               font-family: "Microsoft YaHei", sans-serif;
               line-height: 14px;
               color: #fff;
-              background: url("./play-mini.png") no-repeat 0 0;
+              background: url("~common/image/play-mini.png") no-repeat 0 0;
               background-size: auto 14px;
             }
           }
@@ -218,7 +218,7 @@
                   display: inline-block;
                   width: 14px;
                   height: 14px;
-                  background-image: url("./sound-status-sprite.png");
+                  background-image: url("~common/image/sound-status-sprite.png");
                   background-repeat: no-repeat;
                 }
                 .count {
