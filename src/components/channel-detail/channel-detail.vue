@@ -8,18 +8,18 @@
       <div class="content-main">
         <div class="channel-header">
           <div class="title-wrapper">
-            <h1 class="title">3D音乐奇幻旋律馆</h1>
+            <h1 class="title">{{channel.name}}</h1>
             <ul class="status-list">
-              <li class="status-item sound">4.6万</li>
-              <li class="status-item follow">135.7万</li>
-              <li class="status-item share">1.7万</li>
+              <li class="status-item sound">{{channel.soundCount}}</li>
+              <li class="status-item follow">{{channel.followCount}}</li>
+              <li class="status-item share">{{channel.shareCount}}</li>
             </ul>
           </div>
           <div class="channel">
-            <img src="" alt="" class="cover">
+            <img :src="channel.pic" :alt="channel.name" class="cover">
             <div class="channel-info">
               <h2 class="intro-title">频道简介</h2>
-              <p class="intro">echo独家3D音乐，颠覆你的听觉体验</p>
+              <p class="intro">{{channel.info}}</p>
             </div>
           </div>
         </div>
@@ -29,27 +29,27 @@
             <span class="tab new">最新</span>
           </div>
           <ul class="sound-list">
-            <li class="sound-item">
-              <a href="" class="sound-link">
+            <li class="sound-item" v-for="sound in channel.soundList" :key="sound.id">
+              <a :href="'#/sound/' + sound.id" class="sound-link">
                 <div class="top">
-                  <img src="" alt="" class="cover">
-                  <div class="duration">04:24</div>
+                  <img :src="sound.pic_200" :alt="sound.name" class="cover">
+                  <div class="duration">{{sound.duration}}</div>
                 </div>
                 <div class="sound-info">
-                  <h3 class="sound-name">「3D音效」Fade 超人气小清新电音</h3>
-                  <h4 class="channel"><a href="" class="link">3D音乐奇幻旋律馆</a>频道</h4>
+                  <h3 class="sound-name">{{sound.name}}</h3>
+                  <h4 class="channel"><a :href="'#/channel/' + sound.channelId" class="link">{{channel.name}}</a>频道</h4>
                   <ul class="sound-status">
                     <li class="status status-share">
                       <i class="icon"></i>
-                      <span class="count">25544</span>
+                      <span class="count">{{sound.shareCount}}</span>
                     </li>
                     <li class="status status-like">
                       <i class="icon"></i>
-                      <span class="count">65484</span>
+                      <span class="count">{{sound.likeCount}}</span>
                     </li>
                     <li class="status status-comment">
                       <i class="icon"></i>
-                      <span class="count">1545</span>
+                      <span class="count">{{sound.commentCount}}</span>
                     </li>
                   </ul>
                 </div>
@@ -64,6 +64,8 @@
 
 <script type="text/ecmascript-6">
   import {getChannelInfo} from 'api/channel'
+  import {STATUS_OK} from 'api/config'
+  import Channel from 'common/js/channel'
 
   export default {
     name: 'ChannelDetail',
@@ -72,7 +74,17 @@
         // 频道 sound 类型
         channelOrder: 'hot',
         // 当前页码
-        currPage: 1
+        currPage: 1,
+        // 频道详情
+        channel: {
+          name: '',
+          info: '',
+          pic: '',
+          soundCount: 0,
+          followCount: 0,
+          shareCount: 0,
+          soundList: []
+        }
       }
     },
     created () {
@@ -83,7 +95,15 @@
       _getChannelInfo (id, order, page) {
         getChannelInfo(id, order, page).then(res => {
           console.log('res', res)
+          if (res.status === STATUS_OK) {
+            this.handleChannelInfo(res)
+          }
         })
+      },
+      /* 处理频道详情信息数据 */
+      handleChannelInfo (data) {
+        this.channel = new Channel(Object.assign({sound: data.sounds}, data.channel))
+        console.log('channel', this.channel)
       }
     }
   }
@@ -142,7 +162,6 @@
                 font-size: @font-size-small;
                 line-height: 18px;
                 color: @color-text-l;
-                // background: pink;
                 background-repeat: no-repeat;
                 background-position: left center;
                 &.sound {
@@ -164,7 +183,6 @@
               width: 256px;
               height: 136px;
               margin-right: 16px;
-              background: pink;
             }
             .channel-info {
               float: left;
@@ -223,7 +241,6 @@
                     width: 100%;
                     height: auto;
                     height: 160px;
-                    background: pink;
                   }
                   .duration {
                     position: absolute;
