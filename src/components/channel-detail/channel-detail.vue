@@ -63,8 +63,29 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import {getChannelInfo} from 'api/channel'
+
   export default {
-    name: 'ChannelDetail'
+    name: 'ChannelDetail',
+    data () {
+      return {
+        // 频道 sound 类型
+        channelOrder: 'hot',
+        // 当前页码
+        currPage: 1
+      }
+    },
+    created () {
+      this._getChannelInfo(this.$route.params.id, this.channelOrder, this.currPage)
+    },
+    methods: {
+      /* 获取频道详情信息数据 */
+      _getChannelInfo (id, order, page) {
+        getChannelInfo(id, order, page).then(res => {
+          console.log('res', res)
+        })
+      }
+    }
   }
 </script>
 

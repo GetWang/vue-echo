@@ -19,3 +19,18 @@ export function getChannelList (typeObj, page) {
     return Promise.resolve(res.data)
   })
 }
+
+/* 获取频道详情信息数据 */
+export function getChannelInfo (id, order, page) {
+  const url = '/api/getChannelInfo'
+  const data = {
+    id,
+    order,
+    page
+  }
+  return axios.get(url, {
+    params: data
+  }).then(res => {
+    return Promise.resolve(res.data)
+  })
+}
