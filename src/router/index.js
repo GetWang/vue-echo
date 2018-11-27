@@ -8,6 +8,7 @@ import Famous from 'components/famous/famous'
 import FamousList from 'components/famous-list/famous-list'
 import Channel from 'components/channel/channel'
 import ChannelDetail from 'components/channel-detail/channel-detail'
+import Sound from 'components/sound/sound'
 
 Vue.use(Router)
 
@@ -62,6 +63,11 @@ export default new Router({
       path: '/channel/:id',
       name: 'ChannelDetail',
       component: ChannelDetail
+    },
+    {
+      path: '/sound/:id',
+      name: 'Sound',
+      component: Sound
     }
   ]
 })
