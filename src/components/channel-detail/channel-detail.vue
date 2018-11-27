@@ -10,9 +10,9 @@
           <div class="title-wrapper">
             <h1 class="title">{{channel.name}}</h1>
             <ul class="status-list">
-              <li class="status-item sound">{{channel.soundCount}}</li>
-              <li class="status-item follow">{{channel.followCount}}</li>
-              <li class="status-item share">{{channel.shareCount}}</li>
+              <li class="status-item sound">{{normalizeNum(channel.soundCount)}}</li>
+              <li class="status-item follow">{{normalizeNum(channel.followCount)}}</li>
+              <li class="status-item share">{{normalizeNum(channel.shareCount)}}</li>
             </ul>
           </div>
           <div class="channel">
@@ -25,15 +25,19 @@
         </div>
         <div class="channel-main">
           <div class="type-tabs">
-            <span class="tab hot current">最热</span>
-            <span class="tab new">最新</span>
+            <span class="tab hot"
+                  :class="{current: this.channelOrder === 'hot'}"
+                  @click="changeOrder('hot')">最热</span>
+            <span class="tab new"
+                  :class="{current: this.channelOrder === 'new'}"
+                  @click="changeOrder('new')">最新</span>
           </div>
           <ul class="sound-list">
             <li class="sound-item" v-for="sound in channel.soundList" :key="sound.id">
               <a :href="'#/sound/' + sound.id" class="sound-link">
                 <div class="top">
                   <img :src="sound.pic_200" :alt="sound.name" class="cover">
-                  <div class="duration">{{sound.duration}}</div>
+                  <div class="duration">{{formatTime(sound.duration)}}</div>
                 </div>
                 <div class="sound-info">
                   <h3 class="sound-name">{{sound.name}}</h3>
@@ -41,21 +45,27 @@
                   <ul class="sound-status">
                     <li class="status status-share">
                       <i class="icon"></i>
-                      <span class="count">{{sound.shareCount}}</span>
+                      <span class="count">{{normalizeNum(sound.shareCount)}}</span>
                     </li>
                     <li class="status status-like">
                       <i class="icon"></i>
-                      <span class="count">{{sound.likeCount}}</span>
+                      <span class="count">{{normalizeNum(sound.likeCount)}}</span>
                     </li>
                     <li class="status status-comment">
                       <i class="icon"></i>
-                      <span class="count">{{sound.commentCount}}</span>
+                      <span class="count">{{normalizeNum(sound.commentCount)}}</span>
                     </li>
                   </ul>
                 </div>
               </a>
             </li>
           </ul>
+          <div class="pager-wrapper">
+            <pager :pageSize="pageSize"
+                   :totalCount="totalCount"
+                   :maxBtnCount="maxBtnCount"
+                   @pageChange="changePage"></pager>
+          </div>
         </div>
       </div>
     </div>
@@ -63,6 +73,7 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import Pager from 'base/pager/pager'
   import {getChannelInfo} from 'api/channel'
   import {STATUS_OK} from 'api/config'
   import Channel from 'common/js/channel'
@@ -84,7 +95,13 @@
           followCount: 0,
           shareCount: 0,
           soundList: []
-        }
+        },
+        // 每页的大小
+        pageSize: 1,
+        // 总的 sound 数量
+        totalCount: 0,
+        // 分页器最多的数字按钮数量
+        maxBtnCount: 10
       }
     },
     created () {
@@ -94,17 +111,57 @@
       /* 获取频道详情信息数据 */
       _getChannelInfo (id, order, page) {
         getChannelInfo(id, order, page).then(res => {
-          console.log('res', res)
           if (res.status === STATUS_OK) {
             this.handleChannelInfo(res)
           }
+        }).catch(err => {
+          console.log('api/getChannelInfo error', err)
         })
       },
       /* 处理频道详情信息数据 */
       handleChannelInfo (data) {
+        this.pageSize = data.pages._pageSize
+        this.totalCount = data.pages.totalCount
         this.channel = new Channel(Object.assign({sound: data.sounds}, data.channel))
-        console.log('channel', this.channel)
+      },
+      /* 更改频道的 order */
+      changeOrder (order) {
+        if (order === this.channelOrder) {
+          return
+        }
+        this.channelOrder = order
+        this.currPage = 1
+        this._getChannelInfo(this.$route.params.id, this.channelOrder, this.currPage)
+      },
+      /* 切换 sound 列表分页内容 */
+      changePage (page) {
+        this.currPage = page
+        this._getChannelInfo(this.$route.params.id, this.channelOrder, this.currPage)
+      },
+      /* 格式化时间 */
+      formatTime (second) {
+        let minute = Math.floor(second / 60)
+        let restSecond = second % 60
+        return this.padNum(minute, 2) + ':' + this.padNum(restSecond, 2)
+      },
+      /* 为位数不足的数值添加前导零 */
+      padNum (num, bit) {
+        let str = String(num)
+        while (str.length < bit) {
+          str = '0' + str
+        }
+        return str
+      },
+      /* 将大于或等于 10000 的数字转成“xxx 万”的形式 */
+      normalizeNum (num) {
+        if (+num >= 10000) {
+          return (+num / 10000).toFixed(1) + '万'
+        }
+        return num
       }
+    },
+    components: {
+      Pager
     }
   }
 </script>
@@ -113,7 +170,7 @@
   @import "~common/less/variable";
 
   .channel-detail {
-    padding: 15px 0 40px;
+    padding: 15px 0 60px;
     background: @color-background;
     .content {
       width: 1000px;
@@ -183,6 +240,7 @@
               width: 256px;
               height: 136px;
               margin-right: 16px;
+              object-fit: cover;
             }
             .channel-info {
               float: left;
@@ -224,7 +282,7 @@
           .sound-list {
             width: 964px;
             margin: 0 auto;
-            padding: 50px 0 20px;
+            padding: 50px 0 40px;
             overflow: hidden;
             .sound-item {
               float: left;
@@ -326,6 +384,9 @@
                 }
               }
             }
+          }
+          .pager-wrapper {
+            text-align: center;
           }
         }
       }
