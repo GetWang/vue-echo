@@ -42,17 +42,60 @@
           <div class="user-area">
             <div class="user">
               <div class="user-info">
-                <p class="user-name">梁昊龙_APEinT</p>
+                <a href="" class="user-name">梁昊龙_APEinT</a>
                 <span class="upload-date">2018-11-13 上传</span>
               </div>
-              <div class="avatar-bg">
+              <a href="" class="user-link">
                 <img src="" alt="" class="avatar">
                 <i class="v-icon">v</i>
-              </div>
+              </a>
             </div>
           </div>
         </div>
-        <div class="sound-main"></div>
+        <div class="sound-main">
+          <div class="intro-area">
+            <h2 class="title">简介</h2>
+            <div class="intro">
+              <ul class="song-info">
+                <li class="info-item">
+                  <span class="type">歌曲</span>：<span class="name">Fade</span>
+                </li>
+              </ul>
+              <p class="lyric">Fade
+                超人气小清新电音
+                来自挪威的Alan Walker的作品
+                个人很喜欢这首歌
+                因此自制3D
+                也是因为这首歌
+                改变了我对电音的选择
+                带给大家 很不错的清新电音
+                （感谢NewTon-的指导和帮助）
+
+                ----Saunato
+              </p>
+            </div>
+          </div>
+          <div class="comment-area">
+            <h2 class="title">热门评论</h2>
+            <ul class="comment-list">
+              <li class="comment-item">
+                <a href="" class="user-link">
+                  <img src="" alt="" class="avatar">
+                </a>
+                <div class="detail">
+                  <div class="user-info">
+                    <a href="" class="user-name">-铜锣烧</a>
+                    <span class="date">2015-08-01</span>
+                  </div>
+                  <p class="comment-content">hellohello hellohellohellohellohellohellohellohellohellohellohellohellohellohello为了这首电音我开了一个月会员为了这首电音我开了一个月会员为了这首电音我开了一个月会员为了这首电音我开了一个月会员为了这首电音我我员为了员为了开员为了员为了这首电音我开了一个月会员员为了</p>
+                </div>
+                <div class="status">
+                  <span class="praise">赞(7106)</span>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
   </main>
@@ -189,7 +232,7 @@
               margin-top: -146px;
               padding: 5px;
               border-radius: 4px;
-              background: #fff;
+              background: rgba(255, 255, 255, .6);
               .cover {
                 display: block;
                 width: 282px;
@@ -213,11 +256,13 @@
                 float: left;
                 margin: 10px 15px 0;
                 .user-name {
+                  display: block;
                   margin-bottom: 6px;
                   overflow: hidden;
                   max-width: 250px;
                   font-size: @font-size-small;
                   line-height: 18px;
+                  text-decoration: none;
                   text-overflow: ellipsis;
                   white-space: nowrap;
                   color: @color-text-l;
@@ -228,7 +273,7 @@
                   color: #8e8e8e;
                 }
               }
-              .avatar-bg {
+              .user-link {
                 position: relative;
                 float: left;
                 width: 60px;
@@ -260,6 +305,103 @@
         }
         .sound-main {
           margin-top: 15px;
+          overflow: hidden;
+          .intro-area {
+            float: left;
+            width: 418px;
+            margin-right: 15px;
+            border-radius: 4px;
+            background: #fff;
+            .title {
+              height: 28px;
+              padding: 30px;
+              font-size: @font-size-large-x;
+              font-weight: normal;
+              line-height: 28px;
+              color: @color-text-l;
+            }
+            .intro {
+              padding: 0 60px 35px;
+              font-size: @font-size-small;
+              line-height: 24px;
+              word-break: break-all;
+              word-wrap: break-word;
+              white-space: pre-line;
+              color: @color-text-dd;
+              .song-info {
+                margin-bottom: 30px;
+              }
+            }
+          }
+          .comment-area {
+            float: left;
+            width: 563px;
+            border-radius: 4px;
+            background: #fff;
+            .title {
+              height: 28px;
+              padding: 30px;
+              font-size: @font-size-large-x;
+              font-weight: normal;
+              line-height: 28px;
+              color: @color-text-l;
+            }
+            .comment-list {
+              padding: 0 20px 30px 30px;
+              .comment-item {
+                padding: 10px 0;
+                border-bottom: 1px solid #efefef;
+                .user-link {
+                  float: left;
+                  width: 50px;
+                  height: 50px;
+                  margin-right: 20px;
+                  .avatar {
+                    display: block;
+                    width: 100%;
+                    height: 100%;
+                    border-radius: 50%;
+                    background: pink;
+                  }
+                }
+                .detail {
+                  float: left;
+                  padding-top: 8px;
+                  max-width: 440px;
+                  .user-info {
+                    margin-bottom: 5px;
+                    .user-name {
+                      margin-right: 6px;
+                      font-size: @font-size-small;
+                      line-height: 18px;
+                      text-decoration: none;
+                      color: #898989;
+                    }
+                    .date {
+                      font-size: @font-size-small-s;
+                      line-height: 16px;
+                      color: #b7b7b7;
+                    }
+                  }
+                  .comment-content {
+                    margin-bottom: 5px;
+                    font-size: @font-size-small;
+                    line-height: 18px;
+                    word-break: break-all;
+                    word-wrap: break-word;
+                    color: #535353;
+                  }
+                }
+                .status {
+                  clear: both;
+                  text-align: right;
+                  font-size: @font-size-small-s;
+                  line-height: 16px;
+                  color: #b7b7b7;
+                }
+              }
+            }
+          }
         }
       }
     }
