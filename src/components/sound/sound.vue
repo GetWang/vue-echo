@@ -16,7 +16,7 @@
                   频道
                 </span>
                 <span class="play-info"><span class="count">10000+次</span>播放</span>
-              </p> 
+              </p>
               <ul class="status-list">
                 <li class="status-item share">
                   <i class="icon"></i>
@@ -102,8 +102,21 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import {getSound} from 'api/sound'
+
   export default {
-    name: 'Sound'
+    name: 'Sound',
+    created () {
+      this._getSound(this.$route.params.id)
+    },
+    methods: {
+      /* 获取 sound 详情信息 */
+      _getSound (id, comment = 1) {
+        getSound(id, comment).then(res => {
+          console.log('res', res)
+        })
+      }
+    }
   }
 </script>
 
