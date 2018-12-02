@@ -8,45 +8,45 @@
       <div class="content-main">
         <div class="sound-header">
           <div class="title-wrapper">
-            <h1 class="title">梁昊龙—末日之恋</h1>
+            <h1 class="title">{{sound.name}}</h1>
             <div class="sound-info">
               <p class="channel-plays">
                 <span class="channel-name">
-                  <a href="" class="link">高手在民间</a>
+                  <a :href="'#/channel/' + sound.channelId" class="link">{{sound.channelName}}</a>
                   频道
                 </span>
-                <span class="play-info"><span class="count">10000+次</span>播放</span>
+                <span class="play-info"><span class="count">{{sound.viewCount}}次</span>播放</span>
               </p>
               <ul class="status-list">
                 <li class="status-item share">
                   <i class="icon"></i>
-                  <span class="num">6</span>
+                  <span class="num">{{sound.shareCount}}</span>
                 </li>
                 <li class="status-item like">
                   <i class="icon"></i>
-                  <span class="num">334</span>
+                  <span class="num">{{sound.likeCount}}</span>
                 </li>
                 <li class="status-item comment">
                   <i class="icon"></i>
-                  <span class="num">4</span>
+                  <span class="num">{{sound.commentCount}}</span>
                 </li>
               </ul>
             </div>
           </div>
           <div class="sound">
             <div class="cover-bg">
-              <img src="" alt="" class="cover">
+              <img :src="sound.pic_500" :alt="sound.name" class="cover">
             </div>
           </div>
           <div class="sound-controls"></div>
           <div class="user-area">
             <div class="user">
               <div class="user-info">
-                <a href="" class="user-name">梁昊龙_APEinT</a>
+                <a :href="'#/user/' + sound.userId" class="user-name">{{sound.userName}}</a>
                 <span class="upload-date">2018-11-13 上传</span>
               </div>
-              <a href="" class="user-link">
-                <img src="" alt="" class="avatar">
+              <a :href="'#/user/' + sound.userId" class="user-link">
+                <img :src="sound.avatar" :alt="sound.userName" class="avatar">
                 <i class="v-icon">v</i>
               </a>
             </div>
@@ -57,22 +57,11 @@
             <h2 class="title">简介</h2>
             <div class="intro">
               <ul class="song-info">
-                <li class="info-item">
-                  <span class="type">歌曲</span>：<span class="name">Fade</span>
+                <li class="info-item" v-for="(info, i) in sound.songInfo" :key="'info-' + i">
+                  <span class="type">{{info.type}}</span>：<span class="name">{{info.name}}</span>
                 </li>
               </ul>
-              <p class="lyric">Fade
-                超人气小清新电音
-                来自挪威的Alan Walker的作品
-                个人很喜欢这首歌
-                因此自制3D
-                也是因为这首歌
-                改变了我对电音的选择
-                带给大家 很不错的清新电音
-                （感谢NewTon-的指导和帮助）
-
-                ----Saunato
-              </p>
+              <p class="lyric">{{sound.info + '\n' + sound.lyric}}</p>
             </div>
           </div>
           <div class="comment-area">
@@ -102,10 +91,32 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import Sound from 'common/js/sound'
   import {getSound} from 'api/sound'
+  import {STATUS_OK} from 'api/config'
 
   export default {
     name: 'Sound',
+    data () {
+      return {
+        // 回声 sound
+        sound: {
+          id: '',
+          name: '',
+          shareCount: 0,
+          likeCount: 0,
+          commentCount: 0,
+          viewCount: 0,
+          songInfo: [],
+          info: '',
+          lyric: '',
+          userId: '',
+          userName: '',
+          channelId: '',
+          channelName: ''
+        }
+      }
+    },
     created () {
       this._getSound(this.$route.params.id)
     },
@@ -114,7 +125,25 @@
       _getSound (id, comment = 1) {
         getSound(id, comment).then(res => {
           console.log('res', res)
+          if (res.status === STATUS_OK) {
+            this.handleSound(res)
+          }
         })
+      },
+      /* 处理 sound 详情信息 */
+      handleSound (data) {
+        const keyArr = ['name', 'author', 'album_name']
+        const songInfo = []
+        if (data.info.song_info) {
+          keyArr.forEach((item) => {
+            let obj = data.info.song_info[item]
+            if (obj && obj.name !== '' && obj.name !== '无') {
+              songInfo.push(obj)
+            }
+          })
+        }
+        this.sound = new Sound(Object.assign({songInfo}, data.info))
+        console.log('sound', this.sound)
       }
     }
   }
@@ -159,7 +188,7 @@
               left: 40px;
               margin-top: -14px;
               overflow: hidden;
-              max-width: 400px;
+              max-width: 650px;
               font-size: @font-size-large;
               font-weight: normal;
               text-overflow: ellipsis;
@@ -251,7 +280,6 @@
                 width: 282px;
                 height: 282px;
                 border-radius: 4px;
-                background: red;
               }
             }
           }
