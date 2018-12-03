@@ -20,15 +20,15 @@
               <ul class="status-list">
                 <li class="status-item share">
                   <i class="icon"></i>
-                  <span class="num">{{sound.shareCount}}</span>
+                  <span class="num">{{normalizeNum(sound.shareCount)}}</span>
                 </li>
                 <li class="status-item like">
                   <i class="icon"></i>
-                  <span class="num">{{sound.likeCount}}</span>
+                  <span class="num">{{normalizeNum(sound.likeCount)}}</span>
                 </li>
                 <li class="status-item comment">
                   <i class="icon"></i>
-                  <span class="num">{{sound.commentCount}}</span>
+                  <span class="num">{{normalizeNum(sound.commentCount)}}</span>
                 </li>
               </ul>
             </div>
@@ -67,19 +67,19 @@
           <div class="comment-area">
             <h2 class="title">热门评论</h2>
             <ul class="comment-list">
-              <li class="comment-item">
-                <a href="" class="user-link">
-                  <img src="" alt="" class="avatar">
+              <li class="comment-item" v-for="comment in sound.commentList" :key="comment.id">
+                <a :href="'#/user/' + comment.user.id" class="user-link">
+                  <img :src="comment.user.avatar" :alt="comment.user.name" class="avatar">
                 </a>
                 <div class="detail">
                   <div class="user-info">
-                    <a href="" class="user-name">-铜锣烧</a>
+                    <a :href="'#/user/' + comment.user.id" class="user-name">{{comment.user.name}}</a>
                     <span class="date">2015-08-01</span>
                   </div>
-                  <p class="comment-content">hellohello hellohellohellohellohellohellohellohellohellohellohellohellohellohello为了这首电音我开了一个月会员为了这首电音我开了一个月会员为了这首电音我开了一个月会员为了这首电音我开了一个月会员为了这首电音我我员为了员为了开员为了员为了这首电音我开了一个月会员员为了</p>
+                  <p class="comment-content">{{comment.content}}</p>
                 </div>
                 <div class="status">
-                  <span class="praise">赞(7106)</span>
+                  <span class="praise">赞({{comment.likeCount}})</span>
                 </div>
               </li>
             </ul>
@@ -113,7 +113,8 @@
           userId: '',
           userName: '',
           channelId: '',
-          channelName: ''
+          channelName: '',
+          commentList: []
         }
       }
     },
@@ -142,8 +143,18 @@
             }
           })
         }
-        this.sound = new Sound(Object.assign({songInfo}, data.info))
+        this.sound = new Sound(Object.assign({
+          songInfo,
+          comments: data.comments
+        }, data.info))
         console.log('sound', this.sound)
+      },
+      /* 将大于或等于 10000 的数字转成“xxx 万”的形式 */
+      normalizeNum (num) {
+        if (+num >= 10000) {
+          return (+num / 10000).toFixed(1) + '万'
+        }
+        return num
       }
     }
   }

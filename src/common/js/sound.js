@@ -1,6 +1,26 @@
+import Comment from './comment'
+
 /* 回声音乐类 */
 export default class Sound {
-  constructor ({id, name, length, exchange_count, like_count, comment_count, view_count, songInfo, info, lrc, user, pic_100, pic_200, pic_500, channel, channel_id}) {
+  constructor ({
+    id,
+    name,
+    length,
+    exchange_count,
+    like_count,
+    comment_count,
+    view_count,
+    songInfo,
+    info,
+    lrc,
+    user,
+    pic_100,
+    pic_200,
+    pic_500,
+    channel,
+    channel_id,
+    comments
+  }) {
     this.id = id
     this.name = name
     this.duration = +length
@@ -20,5 +40,8 @@ export default class Sound {
     this.avatar_50 = user.avatar_50
     this.channelId = channel ? channel.id : (channel_id || '')
     this.channelName = channel ? channel.name : ''
+    this.commentList = Array.isArray(comments) ? comments.map((item) => {
+      return new Comment(item)
+    }) : []
   }
 }
