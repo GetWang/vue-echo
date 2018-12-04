@@ -17,6 +17,7 @@ export default class Sound {
     pic_100,
     pic_200,
     pic_500,
+    tags,
     channel,
     channel_id,
     comments
@@ -34,6 +35,7 @@ export default class Sound {
     this.pic_100 = pic_100
     this.pic_200 = pic_200
     this.pic_500 = pic_500
+    this.tagList = tags || []
     this.userId = user.id
     this.userName = user.name
     this.avatar = user.avatar

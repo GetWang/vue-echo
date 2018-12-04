@@ -34,12 +34,20 @@
             </div>
           </div>
           <div class="sound">
+            <img :src="sound.pic_500" :alt="sound.name" class="sound-bg">
+            <div class="bg-mask"></div>
             <div class="cover-bg">
               <img :src="sound.pic_500" :alt="sound.name" class="cover">
             </div>
           </div>
           <div class="sound-controls"></div>
           <div class="user-area">
+            <ul class="tag-list">
+              <li class="tag"
+                  v-if="i < 10"
+                  v-for="(tag, i) in sound.tagList"
+                  :key="tag.id">{{tag.name}}</li>
+            </ul>
             <div class="user">
               <div class="user-info">
                 <a :href="'#/user/' + sound.userId" class="user-name">{{sound.userName}}</a>
@@ -110,6 +118,7 @@
           songInfo: [],
           info: '',
           lyric: '',
+          tagList: [],
           userId: '',
           userName: '',
           channelId: '',
@@ -277,7 +286,20 @@
           .sound {
             position: relative;
             height: 372px;
-            background: pink;
+            overflow: hidden;
+            .sound-bg {
+              display: block;
+              width: 100%;
+              margin-top: -230px;
+              filter: blur(18px);
+            }
+            .bg-mask {
+              position: absolute;
+              top: 0;
+              bottom: 0;
+              width: 100%;
+              background: rgba(255, 255, 255, .6);
+            }
             .cover-bg {
               position: absolute;
               top: 50%;
@@ -285,7 +307,8 @@
               margin-top: -146px;
               padding: 5px;
               border-radius: 4px;
-              background: rgba(255, 255, 255, .6);
+              box-shadow: 0 0 4px 0 rgba(0, 0, 0, .3);
+              background: rgba(255, 255, 255, .85);
               .cover {
                 display: block;
                 width: 282px;
@@ -299,14 +322,33 @@
             background: @color-background-l;
           }
           .user-area {
-            padding: 25px 30px;
-            text-align: right;
+            padding: 15px 30px 25px;
+            overflow: hidden;
+            .tag-list {
+              float: left;
+              width: 670px;
+              font-size: 0;
+              .tag {
+                display: inline-block;
+                height: 28px;
+                margin: 5px 10px 5px 0;
+                padding: 0 12px;
+                border: 1px solid #e8e8e8;
+                border-radius: 14px;
+                font-size: @font-size-small;
+                line-height: 28px;
+                color: @color-text-ll;
+                background: @color-background-l;
+              }
+            }
             .user {
-              display: inline-block;
+              float: right;
+              padding-top: 10px;
               overflow: hidden;
               .user-info {
                 float: left;
                 margin: 10px 15px 0;
+                text-align: right;
                 .user-name {
                   display: block;
                   margin-bottom: 6px;
@@ -335,7 +377,6 @@
                   width: 100%;
                   height: 100%;
                   border-radius: 50%;
-                  background: pink;
                 }
                 .v-icon {
                   position: absolute;
@@ -413,7 +454,6 @@
                     width: 100%;
                     height: 100%;
                     border-radius: 50%;
-                    background: pink;
                   }
                 }
                 .detail {
