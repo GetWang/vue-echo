@@ -6,7 +6,7 @@
       <router-link to="/channel" class="link">频道</router-link>
       <router-link to="/famous" class="link">名人</router-link>
     </nav>
-    <a href="#/home" class="logo-link"><img src="./logo.png" class="logo" alt="logo"></a>
+    <a href="#/home" class="logo-link">echo<img src="./logo.png" class="logo" alt="logo"></a>
   </header>
 </template>
 
@@ -42,7 +42,7 @@
           color: @color-theme;
         }
         &.router-link-active {
-          border-bottom: 2px solid @color-theme;
+          border-bottom: 4px solid @color-theme;
           color: @color-theme;
         }
       }
@@ -54,6 +54,7 @@
       width: 74px;
       height: 28px;
       margin: -14px 0 0 -37px;
+      font-size: 0;
       .logo {
         width: 100%;
         height: 100%;
