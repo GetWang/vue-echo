@@ -1,11 +1,23 @@
 <template>
   <!-- mv 视频详情页面 -->
-  <main class="mv-detail">mv</main>
+  <main class="mv-detail">
+    <!-- sound、mv 组件 -->
+    <sound-mv>
+      <div class="mv" slot="soundWrapper">
+        <video src=""></video>
+      </div>
+    </sound-mv>
+  </main>
 </template>
 
 <script type="text/ecmascript-6">
+  import SoundMv from 'components/sound-mv/sound-mv'
+
   export default {
-    name: 'MV'
+    name: 'MV',
+    components: {
+      SoundMv
+    }
   }
 </script>
 
