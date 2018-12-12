@@ -3,6 +3,7 @@
   <main class="sound-detail">
     <!-- sound、mv 视频组件 -->
     <sound-mv :soundMv="sound">
+      <!-- sound 或 mv 插槽的内容 -->
       <div class="sound-wrapper" slot="soundWrapper">
         <div class="sound">
           <img :src="sound.pic_500" :alt="sound.name" class="sound-bg">
@@ -31,6 +32,7 @@
           </div>
         </div>
       </div>
+      <!-- 简介信息插槽的内容 -->
       <div class="intro" slot="intro">
         <ul class="song-info">
           <li class="info-item" v-for="(info, i) in sound.songInfo" :key="'info-' + i">

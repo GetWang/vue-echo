@@ -32,11 +32,13 @@
             </ul>
           </div>
         </div>
+        <!-- sound 或 mv 插槽 -->
         <slot name="soundWrapper"></slot>
       </div>
       <div class="sound-main">
         <div class="intro-area">
           <h2 class="title">简介</h2>
+          <!-- 简介信息插槽 -->
           <slot name="intro"></slot>
         </div>
         <div class="comment-area">

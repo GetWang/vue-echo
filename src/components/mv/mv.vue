@@ -3,9 +3,12 @@
   <main class="mv-detail">
     <!-- sound、mv 组件 -->
     <sound-mv :soundMv="mv">
+      <!-- sound 或 mv 插槽的内容 -->
       <div class="mv" slot="soundWrapper">
-        <video src=""></video>
+        <!-- 视频播放器组件 -->
+        <mv-player></mv-player>
       </div>
+      <!-- 简介信息插槽的内容 -->
       <div class="intro" slot="intro">
         <p class="info">{{mv.info}}</p>
       </div>
@@ -15,6 +18,7 @@
 
 <script type="text/ecmascript-6">
   import SoundMv from 'components/sound-mv/sound-mv'
+  import MvPlayer from 'components/mv-player/mv-player'
 
   export default {
     name: 'MV',
@@ -36,7 +40,8 @@
       }
     },
     components: {
-      SoundMv
+      SoundMv,
+      MvPlayer
     }
   }
 </script>
@@ -49,10 +54,6 @@
     background: @color-background;
     .mv {
       height: 566px;
-      video {
-        width: 100%;
-        height: 100%;
-      }
     }
     .intro {
       padding: 0 60px 35px;
