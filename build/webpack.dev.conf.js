@@ -279,6 +279,21 @@ const devWebpackConfig = merge(baseWebpackConfig, {
           console.log('api/getSound error', e)
         })
       })
+      /* 获取 mv 详情信息 */
+      app.get('/api/getMv', function (req, res) {
+        const url = 'http://www.app-echo.com/api/mv/info'
+        axios.get(url, {
+          headers: {
+            host: 'www.app-echo.com',
+            referer: 'http://www.app-echo.com/'
+          },
+          params: req.query
+        }).then(response => {
+          res.json(response.data)
+        }).catch(e => {
+          console.log('api/getMv error', e)
+        })
+      })
     },
     clientLogLevel: 'warning',
     historyApiFallback: {

@@ -19,6 +19,9 @@
 <script type="text/ecmascript-6">
   import SoundMv from 'components/sound-mv/sound-mv'
   import MvPlayer from 'components/mv-player/mv-player'
+  import MV from 'common/js/mv'
+  import {getMv} from 'api/mv'
+  import {STATUS_OK} from 'api/config'
 
   export default {
     name: 'MV',
@@ -38,6 +41,24 @@
           commentList: []
         }
       }
+    },
+    created () {
+      this._getMv(this.$route.params.id)
+    },
+    methods: {
+      /* 获取 mv 详情信息 */
+      _getMv (id) {
+        getMv(id).then(res => {
+          console.log('res', res)
+          if (res.status === STATUS_OK) {
+            this.handleMv(res)
+          }
+        }).catch(err => {
+          console.log('api/getMv error', err)
+        })
+      },
+      /* 处理 mv 详情数据 */
+      handleMv (data) {}
     },
     components: {
       SoundMv,

@@ -25,6 +25,7 @@
       top: 0;
       bottom: 0;
       width: 100%;
+      z-index: 5;
       background: #000;
       .cover {
         display: block;
