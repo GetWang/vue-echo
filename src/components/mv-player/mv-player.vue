@@ -1,16 +1,41 @@
 <template>
   <div class="mv-player">
-    <div class="cover-bg">
-      <img src="" alt="" class="cover">
-      <div class="play-btn" title="Play Video"></div>
+    <div class="cover-bg" :class="{hidden: isHidden}">
+      <img :src="cover" alt="" class="cover">
+      <div class="play-btn" title="Play Video"
+           @click="playVideo"></div>
     </div>
-    <video src=""></video>
+    <video :src="mvSource"></video>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
   export default {
-    name: 'MvPlayer'
+    name: 'MvPlayer',
+    props: {
+      // 视频源
+      mvSource: {
+        type: String,
+        default: ''
+      },
+      // 封面
+      cover: {
+        type: String,
+        default: ''
+      }
+    },
+    data () {
+      return {
+        // 封面隐藏标志位
+        isHidden: false
+      }
+    },
+    methods: {
+      /* 播放 mv */
+      playVideo () {
+        this.isHidden = true
+      }
+    }
   }
 </script>
 
@@ -27,6 +52,9 @@
       width: 100%;
       z-index: 5;
       background: #000;
+      &.hidden {
+        display: none;
+      }
       .cover {
         display: block;
         width: 100%;

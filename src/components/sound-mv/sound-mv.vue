@@ -128,6 +128,7 @@
     }
     .content-main {
       .sound-header {
+        padding-bottom: 30px;
         background: #fff;
         .title-wrapper {
           position: relative;

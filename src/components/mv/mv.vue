@@ -6,7 +6,7 @@
       <!-- sound 或 mv 插槽的内容 -->
       <div class="mv" slot="soundWrapper">
         <!-- 视频播放器组件 -->
-        <mv-player></mv-player>
+        <mv-player :cover="mv.cover_url" :mvSource="mv.source"></mv-player>
       </div>
       <!-- 简介信息插槽的内容 -->
       <div class="intro" slot="intro">
@@ -58,7 +58,12 @@
         })
       },
       /* 处理 mv 详情数据 */
-      handleMv (data) {}
+      handleMv (data) {
+        this.mv = new MV(Object.assign({
+          comments: data.comments
+        }, data.info))
+        console.log('mv', this.mv)
+      }
     },
     components: {
       SoundMv,
