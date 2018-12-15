@@ -77,6 +77,7 @@
   import {getChannelInfo} from 'api/channel'
   import {STATUS_OK} from 'api/config'
   import Channel from 'common/js/channel'
+  import {padNum} from 'common/js/util'
 
   export default {
     name: 'ChannelDetail',
@@ -142,15 +143,7 @@
       formatTime (second) {
         let minute = Math.floor(second / 60)
         let restSecond = second % 60
-        return this.padNum(minute, 2) + ':' + this.padNum(restSecond, 2)
-      },
-      /* 为位数不足的数值添加前导零 */
-      padNum (num, bit) {
-        let str = String(num)
-        while (str.length < bit) {
-          str = '0' + str
-        }
-        return str
+        return padNum(minute) + ':' + padNum(restSecond)
       },
       /* 将大于或等于 10000 的数字转成“xxx 万”的形式 */
       normalizeNum (num) {

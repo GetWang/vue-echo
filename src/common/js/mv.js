@@ -12,6 +12,7 @@ export default class MV {
     info,
     like_count,
     share_count,
+    bullet_count,
     view_count,
     source,
     comments
@@ -24,6 +25,7 @@ export default class MV {
     this.info = info || ''
     this.likeCount = +like_count
     this.shareCount = +share_count
+    this.commentCount = +bullet_count || 0
     this.viewCount = +view_count
     this.source = source || ''
     this.userId = user.id

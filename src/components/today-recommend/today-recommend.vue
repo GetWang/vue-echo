@@ -47,6 +47,7 @@
   import {getTodayRecom} from 'api/home'
   import {STATUS_OK} from 'api/config'
   import Sound from 'common/js/sound'
+  import {padNum} from 'common/js/util'
 
   export default {
     name: 'TodayRecommend',
@@ -91,15 +92,7 @@
       formatTime (second) {
         let minute = Math.floor(second / 60)
         let restSecond = second % 60
-        return this.padNum(minute, 2) + ':' + this.padNum(restSecond, 2)
-      },
-      /* 为位数不足的数值添加前导零 */
-      padNum (num, bit) {
-        let str = String(num)
-        while (str.length < bit) {
-          str = '0' + str
-        }
-        return str
+        return padNum(minute) + ':' + padNum(restSecond)
       }
     }
   }

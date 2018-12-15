@@ -51,7 +51,7 @@
               <div class="detail">
                 <div class="user-info">
                   <a :href="'#/user/' + comment.user.id" class="user-name">{{comment.user.name}}</a>
-                  <span class="date">2015-08-01</span>
+                  <span class="date">{{normalizeTime(comment.createTime)}}</span>
                 </div>
                 <p class="comment-content">{{comment.content}}</p>
               </div>
@@ -67,6 +67,8 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import {toDateString} from 'common/js/util'
+
   export default {
     name: 'SoundMv',
     props: {
@@ -97,6 +99,10 @@
           return (+num / 10000).toFixed(1) + '万'
         }
         return num
+      },
+      /* 修正评论时间的格式 */
+      normalizeTime (time) {
+        return toDateString(time)
       }
     }
   }
