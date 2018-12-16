@@ -2,7 +2,7 @@
   <div class="mv-player">
     <div class="cover-bg" :class="{hidden: isHidden}">
       <img :src="cover" alt="" class="cover">
-      <div class="play-btn" title="Play Video"
+      <div class="play-btn icon-play" title="Play Video"
            @click="playVideo"></div>
     </div>
     <video :src="mvSource"></video>
@@ -70,6 +70,10 @@
         border: 4px solid #fff;
         border-radius: 50%;
         box-sizing: border-box;
+        font-size: 65px;
+        line-height: 82px;
+        text-align: center;
+        color: #fff;
         background: rgba(43, 51, 63, .7);
         transition: all .2s ease;
         cursor: pointer;
