@@ -6,6 +6,20 @@
            @click="playVideo"></div>
     </div>
     <video :src="mvSource"></video>
+    <div class="mv-control-bar">
+      <i class="icon-play"></i>
+      <div class="volume-process">
+        <div class="mv-volume">
+          <i class="icon-volume"></i>
+          <div class="volume-wrapper"></div>
+        </div>
+        <div class="mv-process">
+          <div class="mv-process-bar"></div>
+          <span class="remaining-time"></span>
+        </div>
+      </div>
+      <i class="icon-fullscreen"></i>
+    </div>
   </div>
 </template>
 
@@ -85,6 +99,74 @@
     video {
       width: 100%;
       height: 100%;
+    }
+    .mv-control-bar {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 34px;
+      background: rgba(255, 255, 255, .7);
+      opacity: 0;
+      transition: all .5s;
+      .icon-play {
+        float: left;
+        width: 44px;
+        height: 100%;
+        text-align: center;
+        line-height: 34px;
+        background: pink;
+      }
+      .volume-process {
+        float: left;
+        width: 912px;
+        height: 34px;
+        .mv-volume {
+          float: left;
+          height: 100%;
+          .icon-volume {
+            float: left;
+            width: 44px;
+            height: 100%;
+            text-align: center;
+            line-height: 34px;
+            background: red;
+          }
+          .volume-wrapper {
+            float: left;
+            width: 0;
+            height: 100%;
+            background: #000;
+            opacity: 0;
+            transition: all .3s;
+          }
+          &:hover {
+            .volume-wrapper {
+              width: 55px;
+              margin-right: 30px;
+              opacity: 1;
+            }
+          }
+        }
+        .mv-process {
+          height: 100%;
+          overflow: hidden;
+          background: green;
+        }
+      }
+      .icon-fullscreen {
+        float: left;
+        width: 42px;
+        height: 100%;
+        text-align: center;
+        line-height: 34px;
+        background: pink;
+      }
+    }
+    &:hover {
+      .mv-control-bar {
+        opacity: 1;
+      }
     }
   }
 </style>
