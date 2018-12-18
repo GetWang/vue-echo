@@ -3,11 +3,11 @@
     <div class="cover-bg" :class="{hidden: isHidden}">
       <img :src="cover" alt="" class="cover">
       <div class="play-btn icon-play" title="Play Video"
-           @click="playVideo"></div>
+           @click="togglePlaying"></div>
     </div>
-    <video :src="mvSource"></video>
+    <video :src="mvSource" ref="mVideo" @click="togglePlaying"></video>
     <div class="mv-control-bar">
-      <i class="icon-play"></i>
+      <i class="playing-state echo-icon" :class="[playingCls]" @click="togglePlaying"></i>
       <div class="volume-process">
         <div class="mv-volume">
           <i class="icon-volume"></i>
@@ -41,13 +41,28 @@
     data () {
       return {
         // 封面隐藏标志位
-        isHidden: false
+        isHidden: false,
+        // 视频播放状态
+        playingState: false,
+        // 播放/暂停按钮类名
+        playingCls: 'icon-play'
       }
     },
     methods: {
-      /* 播放 mv */
-      playVideo () {
+      /* 切换 mv 播放状态 */
+      togglePlaying () {
         this.isHidden = true
+        if (this.playingState) {
+          this.playingCls = 'icon-play'
+          this.$refs.mVideo.pause()
+        } else {
+          this.playingCls = 'icon-pause'
+          this.$refs.mVideo.play()
+        }
+        this.playingState = !this.playingState
+        console.log('now', this.playingState)
+        this.$refs.mVideo.volume -= 0.02
+        console.log('volume', this.$refs.mVideo.volume)
       }
     }
   }
@@ -55,6 +70,9 @@
 
 <style lang="less" scoped rel="stylesheet/less">
   @import "~common/less/variable";
+
+  // 图标颜色
+  @icon-color: #92d648;
 
   .mv-player {
     position: relative;
@@ -107,9 +125,9 @@
       right: 0;
       height: 34px;
       background: rgba(255, 255, 255, .7);
-      opacity: 0;
+      opacity: 1;
       transition: all .5s;
-      .icon-play {
+      .playing-state {
         float: left;
         width: 44px;
         height: 100%;
@@ -161,6 +179,9 @@
         text-align: center;
         line-height: 34px;
         background: pink;
+      }
+      .echo-icon {
+        color: @icon-color;
       }
     }
     &:hover {
