@@ -11,7 +11,9 @@
       <div class="volume-process">
         <div class="mv-volume">
           <i class="icon-volume"></i>
-          <div class="volume-wrapper"></div>
+          <div class="volume-wrapper">
+            <progress-bar></progress-bar>
+          </div>
         </div>
         <div class="mv-process">
           <div class="mv-process-bar"></div>
@@ -24,6 +26,8 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import ProgressBar from 'base/progress-bar/progress-bar'
+
   export default {
     name: 'MvPlayer',
     props: {
@@ -64,6 +68,9 @@
         this.$refs.mVideo.volume -= 0.02
         console.log('volume', this.$refs.mVideo.volume)
       }
+    },
+    components: {
+      ProgressBar
     }
   }
 </script>
@@ -153,8 +160,7 @@
           .volume-wrapper {
             float: left;
             width: 0;
-            height: 100%;
-            background: #000;
+            padding: 14px 0;
             opacity: 0;
             transition: all .3s;
           }
