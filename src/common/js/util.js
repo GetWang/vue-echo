@@ -18,3 +18,8 @@ export function padNum (num, bit = 2) {
   }
   return str
 }
+
+/* 判断一个数是否在给定区间内，若在则直接返回，否则返回 min 或者 max */
+export function judgeNumInRegion (num, min, max) {
+  return Math.min(max, Math.max(min, num))
+}
