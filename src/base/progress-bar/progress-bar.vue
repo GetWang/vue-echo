@@ -18,6 +18,11 @@
   export default {
     name: 'ProgressBar',
     props: {
+      // 百分比
+      percent: {
+        type: Number,
+        default: 0
+      },
       // 进度条背景色
       barBgColor: {
         type: String,
@@ -66,8 +71,18 @@
       this.barRectLeft = 0
       // 进度条的宽度
       this.barWidth = 0
-      // 进度的宽度
+      // 实时进度的宽度
       this.progressWidth = 0
+      // 在拖拽按钮上 mousedown 事件发生时，进度的宽度
+      this.downProcessWidth = 0
+    },
+    watch: {
+      /* 当传入的百分比发生变化时，更改进度条的进度和按钮的位置 */
+      percent (newPercent) {
+        this.barWidth || (this.barWidth = this.$refs.progressBar.clientWidth)
+        const offsetWidth = this.barWidth * newPercent
+        this._offset(offsetWidth)
+      }
     },
     methods: {
       /* 进度条点击事件处理 */
@@ -85,6 +100,8 @@
       btnMouseDown (e) {
         console.log('down-e', e)
         this.barWidth || (this.barWidth = this.$refs.progressBar.clientWidth)
+        this.downProcessWidth = this.$refs.progress.clientWidth
+        console.log('downProcessWidth', this.downProcessWidth)
         this.btnDownFlag = true
         this.btnMouseObj.startX = e.pageX
       },
@@ -93,7 +110,8 @@
         if (this.btnDownFlag) {
           console.log('move-e', e)
           const deltaX = e.pageX - this.btnMouseObj.startX
-          this.progressWidth = this.$refs.progress.clientWidth + deltaX
+          console.log('deltaX', deltaX)
+          this.progressWidth = this.downProcessWidth + deltaX
           this._offset(this.progressWidth)
         }
       },
@@ -125,7 +143,7 @@
   .progress-bar {
     position: relative;
     .progress {
-      width: 25px;
+      width: 0;
       height: 100%;
     }
     .progress-btn {
