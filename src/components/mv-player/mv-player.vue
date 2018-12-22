@@ -12,7 +12,8 @@
         <div class="mv-volume">
           <i class="icon-volume"></i>
           <div class="volume-wrapper">
-            <progress-bar></progress-bar>
+            <progress-bar :percent="volumePercent"
+                          @percentChange="changeVolume"></progress-bar>
           </div>
         </div>
         <div class="mv-process">
@@ -49,7 +50,9 @@
         // 视频播放状态
         playingState: false,
         // 播放/暂停按钮类名
-        playingCls: 'icon-play'
+        playingCls: 'icon-play',
+        // 音量百分比（0 ~ 1）
+        volumePercent: 1
       }
     },
     methods: {
@@ -65,7 +68,11 @@
         }
         this.playingState = !this.playingState
         console.log('now', this.playingState)
-        this.$refs.mVideo.volume -= 0.02
+        console.log('volume', this.$refs.mVideo.volume)
+      },
+      /* 更改视频音量 */
+      changeVolume (percent) {
+        this.$refs.mVideo.volume = percent
         console.log('volume', this.$refs.mVideo.volume)
       }
     },
