@@ -10,7 +10,9 @@
       <i class="playing-state echo-icon" :class="[playingCls]" @click="togglePlaying"></i>
       <div class="volume-process">
         <div class="mv-volume">
-          <i class="icon-volume"></i>
+          <i class="volume"
+             :class="{'icon-muted': isMuted, 'icon-volume': !isMuted}"
+             @click="toggleMuted"></i>
           <div class="volume-wrapper">
             <progress-bar :percent="volumePercent"
                           @percentChange="changeVolume"></progress-bar>
@@ -51,8 +53,26 @@
         playingState: false,
         // 播放/暂停按钮类名
         playingCls: 'icon-play',
+        // 音量
+        volume: 1,
         // 音量百分比（0 ~ 1）
         volumePercent: 1
+      }
+    },
+    created () {
+      // 初始化“上一个音量值”
+      this.prevVolume = this.volume
+    },
+    watch: {
+      /* 当音量变化时，更新 prevVolume 变量 */
+      volume (newVolume, oldVolume) {
+        this.prevVolume = oldVolume
+      }
+    },
+    computed: {
+      /* 是否静音 */
+      isMuted () {
+        return this.volume === 0
       }
     },
     methods: {
@@ -70,9 +90,19 @@
         console.log('now', this.playingState)
         console.log('volume', this.$refs.mVideo.volume)
       },
+      /* 切换静音状态 */
+      toggleMuted () {
+        let volume = 0
+        if (this.isMuted) {
+          volume = this.prevVolume
+        }
+        this.changeVolume(volume)
+        this.volumePercent = volume
+      },
       /* 更改视频音量 */
       changeVolume (percent) {
         this.$refs.mVideo.volume = percent
+        this.volume = percent
         console.log('volume', this.$refs.mVideo.volume)
       }
     },
@@ -156,7 +186,7 @@
         .mv-volume {
           float: left;
           height: 100%;
-          .icon-volume {
+          .volume {
             float: left;
             width: 44px;
             height: 100%;
