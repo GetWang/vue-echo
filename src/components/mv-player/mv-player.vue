@@ -10,20 +10,26 @@
       <i class="playing-state echo-icon" :class="[playingCls]" @click="togglePlaying"></i>
       <div class="volume-process">
         <div class="mv-volume">
-          <i class="volume"
+          <i class="volume echo-icon"
              :class="{'icon-muted': isMuted, 'icon-volume': !isMuted}"
              @click="toggleMuted"></i>
           <div class="volume-wrapper">
-            <progress-bar :percent="volumePercent"
+            <progress-bar :barBgColor="barBgColor"
+                          :progressColor="progressColor"
+                          :percent="volumePercent"
                           @percentChange="changeVolume"></progress-bar>
           </div>
         </div>
         <div class="mv-process">
-          <div class="mv-process-bar"></div>
-          <span class="remaining-time"></span>
+          <div class="mv-process-bar">
+            <progress-bar :barBgColor="barBgColor"
+                          :progressColor="progressColor"
+                          :barHeight="3"></progress-bar>
+          </div>
+          <span class="remaining-time">-4:40</span>
         </div>
       </div>
-      <i class="icon-fullscreen"></i>
+      <i class="icon-fullscreen echo-icon"></i>
     </div>
   </div>
 </template>
@@ -62,6 +68,10 @@
     created () {
       // 初始化“上一个音量值”
       this.prevVolume = this.volume
+      // 进度条背景色
+      this.barBgColor = 'rgb(217, 233, 199)'
+      // 进度颜色
+      this.progressColor = '#92d648'
     },
     watch: {
       /* 当音量变化时，更新 prevVolume 变量 */
@@ -174,10 +184,7 @@
       .playing-state {
         float: left;
         width: 44px;
-        height: 100%;
-        text-align: center;
-        line-height: 34px;
-        background: pink;
+        // background: pink;
       }
       .volume-process {
         float: left;
@@ -189,10 +196,7 @@
           .volume {
             float: left;
             width: 44px;
-            height: 100%;
-            text-align: center;
-            line-height: 34px;
-            background: red;
+            background: pink;
           }
           .volume-wrapper {
             float: left;
@@ -210,21 +214,39 @@
           }
         }
         .mv-process {
+          position: relative;
           height: 100%;
+          padding-right: 46px;
           overflow: hidden;
-          background: green;
+          // background: green;
+          .mv-process-bar {
+            padding: 14px 0 14px 8px;
+          }
+          .remaining-time {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 44px;
+            height: 34px;
+            font-size: @font-size-small-s;
+            line-height: 34px;
+            text-align: center;
+            color: #8c8c8c;
+          }
         }
       }
       .icon-fullscreen {
         float: left;
         width: 42px;
-        height: 100%;
-        text-align: center;
-        line-height: 34px;
         background: pink;
       }
       .echo-icon {
+        height: 100%;
+        text-align: center;
+        font-size: 28px;
+        line-height: 34px;
         color: @icon-color;
+        cursor: pointer;
       }
     }
     &:hover {

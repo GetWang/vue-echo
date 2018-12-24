@@ -142,6 +142,7 @@
 <style lang="less" scoped rel="stylesheet/less">
   .progress-bar {
     position: relative;
+    cursor: pointer;
     .progress {
       width: 0;
       height: 100%;
