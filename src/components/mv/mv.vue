@@ -1,12 +1,14 @@
 <template>
   <!-- mv 视频详情页面 -->
-  <main class="mv-detail">
+  <main class="mv-detail" :class="{'video-fullscreen': isVideoFullScr}">
     <!-- sound、mv 组件 -->
     <sound-mv :soundMv="mv">
       <!-- sound 或 mv 插槽的内容 -->
       <div class="mv" slot="soundWrapper">
         <!-- 视频播放器组件 -->
-        <mv-player :cover="mv.cover_url" :mvSource="mv.source"></mv-player>
+        <mv-player :cover="mv.cover_url"
+                   :mvSource="mv.source"
+                   @fullScrChange="handleFullScreen"></mv-player>
       </div>
       <!-- 简介信息插槽的内容 -->
       <div class="intro" slot="intro">
@@ -39,7 +41,9 @@
           userId: '',
           userName: '',
           commentList: []
-        }
+        },
+        // 视频是否全屏播放
+        isVideoFullScr: false
       }
     },
     created () {
@@ -63,6 +67,10 @@
           comments: data.comments
         }, data.info))
         console.log('mv', this.mv)
+      },
+      /* 处理视频的全屏/非全屏播放状态 */
+      handleFullScreen (isFullScreen) {
+        this.isVideoFullScr = isFullScreen
       }
     },
     components: {
@@ -78,6 +86,11 @@
   .mv-detail {
     padding: 15px 0 60px;
     background: @color-background;
+    /* 视频全屏播放时，调整页面样式 */
+    &.video-fullscreen {
+      height: 0;
+      overflow: hidden;
+    }
     .mv {
       height: 566px;
     }

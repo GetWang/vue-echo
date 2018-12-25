@@ -1,11 +1,13 @@
 <template>
-  <div class="mv-player">
+  <div class="mv-player" :class="{fullscreen: isFullScreen}">
     <div class="cover-bg" :class="{hidden: isHidden}">
       <img :src="cover" alt="" class="cover">
       <div class="play-btn icon-play" title="Play Video"
            @click="togglePlaying"></div>
     </div>
-    <video :src="mvSource" ref="mVideo" @click="togglePlaying"></video>
+    <video :src="mvSource" ref="mVideo"
+           @click="togglePlaying"
+           @canplay="setVideoReady"></video>
     <div class="mv-control-bar">
       <i class="playing-state echo-icon" :class="[playingCls]" @click="togglePlaying"></i>
       <div class="volume-process">
@@ -24,18 +26,21 @@
           <div class="mv-process-bar">
             <progress-bar :barBgColor="barBgColor"
                           :progressColor="progressColor"
-                          :barHeight="3"></progress-bar>
+                          :barHeight="3"
+                          @percentChange="changeProgress"></progress-bar>
           </div>
-          <span class="remaining-time">-4:40</span>
+          <span class="remaining-time">{{formatedDuration}}</span>
         </div>
       </div>
-      <i class="icon-fullscreen echo-icon"></i>
+      <i class="icon-fullscreen echo-icon"
+         @click="toggleFullScreen"></i>
     </div>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
   import ProgressBar from 'base/progress-bar/progress-bar'
+  import {padNum} from 'common/js/util'
 
   export default {
     name: 'MvPlayer',
@@ -62,7 +67,11 @@
         // 音量
         volume: 1,
         // 音量百分比（0 ~ 1）
-        volumePercent: 1
+        volumePercent: 1,
+        // 视频时长（秒）
+        duration: 0,
+        // 全屏标志
+        isFullScreen: false
       }
     },
     created () {
@@ -72,6 +81,8 @@
       this.barBgColor = 'rgb(217, 233, 199)'
       // 进度颜色
       this.progressColor = '#92d648'
+      // 视频是否可播放
+      this.isVideoReady = false
     },
     watch: {
       /* 当音量变化时，更新 prevVolume 变量 */
@@ -83,9 +94,19 @@
       /* 是否静音 */
       isMuted () {
         return this.volume === 0
+      },
+      /* 格式化后的视频时长字符串 */
+      formatedDuration () {
+        return '-' + this.formatTime(this.duration)
       }
     },
     methods: {
+      /* 视频可播放时，做一些操作 */
+      setVideoReady () {
+        this.isVideoReady = true
+        this.duration = this.$refs.mVideo.duration
+        console.log('duration', this.duration)
+      },
       /* 切换 mv 播放状态 */
       togglePlaying () {
         this.isHidden = true
@@ -109,11 +130,29 @@
         this.changeVolume(volume)
         this.volumePercent = volume
       },
+      /* 切换全屏/非全屏模式 */
+      toggleFullScreen () {
+        this.isFullScreen = !this.isFullScreen
+        // 通知外部全屏播放状态发生变化
+        this.$emit('fullScrChange', this.isFullScreen)
+      },
       /* 更改视频音量 */
       changeVolume (percent) {
         this.$refs.mVideo.volume = percent
         this.volume = percent
         console.log('volume', this.$refs.mVideo.volume)
+      },
+      /* 调整视频播放进度 */
+      changeProgress (percent) {
+        this.$refs.mVideo.currentTime = this.duration * percent
+        console.log('currentTime', this.$refs.mVideo.currentTime)
+      },
+      /* 格式化时间 */
+      formatTime (second) {
+        second = Math.floor(second)
+        let minute = Math.floor(second / 60)
+        let restSecond = second % 60
+        return padNum(minute) + ':' + padNum(restSecond)
       }
     },
     components: {
@@ -131,6 +170,15 @@
   .mv-player {
     position: relative;
     height: 100%;
+    background: #000;
+    /* 视频全屏播放的样式 */
+    &.fullscreen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+    }
     .cover-bg {
       position: absolute;
       top: 0;
@@ -188,7 +236,8 @@
       }
       .volume-process {
         float: left;
-        width: 912px;
+        width: 91.2%;
+        // width: 912px;
         height: 34px;
         .mv-volume {
           float: left;
