@@ -2,16 +2,19 @@
   <div id="app">
     <nav-header></nav-header>
     <router-view/>
+    <echo-player></echo-player>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
   import NavHeader from 'components/nav-header/nav-header'
+  import EchoPlayer from 'components/echo-player/echo-player'
 
   export default {
     name: 'App',
     components: {
-      NavHeader
+      NavHeader,
+      EchoPlayer
     }
   }
 </script>

@@ -1,4 +1,5 @@
 <template>
+  <!-- mv 播放器组件 -->
   <div class="mv-player" :class="{fullscreen: isFullScreen}">
     <div class="cover-bg" :class="{hidden: isHidden}">
       <img :src="cover" alt="" class="cover">

@@ -1,4 +1,5 @@
 <template>
+  <!-- 进度条组件 -->
   <div class="progress-bar" ref="progressBar"
        :style="barStyle" @click="barClick">
     <div class="progress" ref="progress"
