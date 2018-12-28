@@ -12,7 +12,18 @@
             <img :src="sound.pic_500" :alt="sound.name" class="cover">
           </div>
         </div>
-        <div class="sound-controls"></div>
+        <div class="sound-controls">
+          <i class="icon-play"></i>
+          <div class="sound-process-controler">
+            <span class="curr-time">00:23</span>
+            <div class="sound-process-wrapper">
+              <progress-bar></progress-bar>
+            </div>
+            <span class="duration">04:12</span>
+          </div>
+          <i class="play-mode"></i>
+          <i class="icon-favorite"></i>
+        </div>
         <div class="user-area">
           <ul class="tag-list">
             <li class="tag"
@@ -47,6 +58,7 @@
 
 <script type="text/ecmascript-6">
   import SoundMv from 'components/sound-mv/sound-mv'
+  import ProgressBar from 'base/progress-bar/progress-bar'
   import Sound from 'common/js/sound'
   import {getSound} from 'api/sound'
   import {STATUS_OK} from 'api/config'
@@ -108,7 +120,8 @@
       }
     },
     components: {
-      SoundMv
+      SoundMv,
+      ProgressBar
     }
   }
 </script>
@@ -155,8 +168,54 @@
         }
       }
       .sound-controls {
+        position: relative;
         height: 48px;
+        padding-left: 90px;
         background: @color-background-l;
+        .icon-play, .icon-pause {
+          position: absolute;
+          top: 50%;
+          left: 40px;
+          width: 40px;
+          height: 40px;
+          margin-top: -20px;
+          border: 1px solid #ddd;
+          border-radius: 50%;
+          box-sizing: border-box;
+          font-size: 40px;
+          line-height: 40px;
+          text-align: center;
+          color: @color-theme;
+          cursor: pointer;
+        }
+        .sound-process-controler {
+          position: relative;
+          float: left;
+          width: 720px;
+          height: 100%;
+          .curr-time, .duration {
+            float: left;
+            width: 32px;
+            height: 100%;
+            overflow: hidden;
+            font-size: @font-size-small-s;
+            line-height: 48px;
+            color: #8c8c8c;
+          }
+          .duration {
+            float: right;
+          }
+          .sound-process-wrapper {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 620px;
+            height: 6px;
+            margin: auto;
+          }
+        }
       }
       .user-area {
         padding: 15px 30px 25px;

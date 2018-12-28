@@ -4,7 +4,9 @@
     <div class="panel-left">
       <div class="btn-wrapper">
         <i class="echo-icon icon-previous"></i>
-        <i class="echo-icon icon-play"></i>
+        <i class="echo-icon play-state"
+           :class="[playStateCls]"
+           @click="togglePlayState"></i>
         <i class="echo-icon icon-next"></i>
       </div>
     </div>
@@ -37,6 +39,7 @@
       </div>
       <i class="icon-playlist"></i>
     </div>
+    <audio ref="echoSound" src="https://al-qn-echo-cp-cdn.app-echo.com/c2/4871d017f439b4b0f101a79d4551378a167f49eb6149daa4aeb5298ee028076d7c8408b1.mp3?1448715381"></audio>
   </div>
 </template>
 
@@ -45,6 +48,34 @@
 
   export default {
     name: 'EchoPlayer',
+    data () {
+      return {
+        // 播放状态
+        playState: false
+      }
+    },
+    computed: {
+      /* 播放状态 icon 类名 */
+      playStateCls () {
+        return this.playState ? 'icon-pause' : 'icon-play'
+      }
+    },
+    watch: {
+      /* 当播放状态改变时，控制 sound 的播放和暂停 */
+      playState (newState) {
+        if (newState) {
+          this.$refs.echoSound.play()
+        } else {
+          this.$refs.echoSound.pause()
+        }
+      }
+    },
+    methods: {
+      /* 切换 sound 播放状态 */
+      togglePlayState () {
+        this.playState = !this.playState
+      }
+    },
     components: {
       ProgressBar
     }
@@ -99,7 +130,7 @@
           &.icon-next {
             right: 0;
           }
-          &.icon-play {
+          &.play-state {
             display: block;
             width: 50px;
             height: 50px;
