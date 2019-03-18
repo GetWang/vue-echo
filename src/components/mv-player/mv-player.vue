@@ -110,6 +110,10 @@
       },
       /* 切换 mv 播放状态 */
       togglePlaying () {
+        // 视频还未准备好，不可播放
+        if (!this.isVideoReady) {
+          return
+        }
         this.isHidden = true
         if (this.playingState) {
           this.playingCls = 'icon-play'
@@ -246,7 +250,7 @@
           .volume {
             float: left;
             width: 44px;
-            background: pink;
+            font-size: @font-size-medium;
           }
           .volume-wrapper {
             float: left;
@@ -254,6 +258,9 @@
             padding: 14px 0;
             opacity: 0;
             transition: all .3s;
+            width: 55px;
+              margin-right: 30px;
+              opacity: 1;
           }
           &:hover {
             .volume-wrapper {
@@ -288,14 +295,14 @@
       .icon-fullscreen {
         float: left;
         width: 42px;
-        background: pink;
       }
       .echo-icon {
         height: 100%;
         text-align: center;
-        font-size: 28px;
+        font-size: 34px;
         line-height: 34px;
         color: @icon-color;
+        color: #000;
         cursor: pointer;
       }
     }

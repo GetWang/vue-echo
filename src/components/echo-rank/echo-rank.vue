@@ -391,6 +391,32 @@
         .rank-header {
           background-color: @color-rank-origin;
         }
+        .rank-list {
+          .rank-item {
+            .sound-link {
+              .sound-info {
+                .rank-num {
+                  color: @color-rank-origin;
+                }
+              }
+            }
+          }
+        }
+      }
+      .other-rank {
+        .rank {
+          .rank-list {
+            .rank-item {
+              .sound-link {
+                .sound-info {
+                  .rank-num {
+                    color: @color-rank-origin;
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     }
     &.mv {
@@ -422,6 +448,11 @@
               .cover {
                 height: 129px;
               }
+              .sound-info {
+                .rank-num {
+                  color: @color-rank-mv;
+                }
+              }
             }
           }
         }
@@ -433,6 +464,11 @@
               .sound-link {
                 .cover {
                   height: 129px;
+                }
+                .sound-info {
+                  .rank-num {
+                    color: @color-rank-mv;
+                  }
                 }
               }
             }

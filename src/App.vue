@@ -23,6 +23,7 @@
   @import "~common/less/variable";
 
   #app {
+    padding-bottom: 70px;
     font-size: @font-size-small;
     color: @color-text;
   }

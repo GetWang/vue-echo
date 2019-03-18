@@ -43,9 +43,6 @@
         startPage: 0
       }
     },
-    created () {
-      // this.computePageCenter()
-    },
     watch: {
       /* 当总的数量发生变化时，重置相关数据 */
       totalCount () {
@@ -81,15 +78,17 @@
       computePageCenter () {
         let num = this.maxBtnCount - 1
         this.pageCenter = {
+          // 居中数字按钮左边的数字按钮个数
           leftNum: Math.floor(num / 2),
+          // 居中数字按钮右边的数字按钮个数
           rightNum: Math.ceil(num / 2)
         }
       },
       /* 使当前页码居中显示 */
       alignPageCenter () {
-        // “this.maxBtnCount”个数字按钮的起始页码
+        // 当前页码居中时“this.maxBtnCount”个数字按钮的起始页码
         let firstNum = this.currPage - this.pageCenter.leftNum
-        // “this.maxBtnCount”个数字按钮的结束页码
+        // 当前页码居中时“this.maxBtnCount”个数字按钮的结束页码
         let lastNum = this.currPage + this.pageCenter.rightNum
         if (firstNum <= 1) {
           // 此时起始显示的页码中间值为 0

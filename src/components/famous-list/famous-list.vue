@@ -1,4 +1,5 @@
 <template>
+  <!-- 名人列表页面 -->
   <main class="famous-list">
     <div class="content">
       <h2 class="list-name">{{currListTitle}}</h2>

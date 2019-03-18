@@ -1,5 +1,6 @@
 const state = {
-  playState: false    // sound 播放状态
+  // sound 播放状态
+  playState: false
 }
 
 export default state

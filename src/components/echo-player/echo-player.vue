@@ -3,7 +3,7 @@
   <div class="echo-player">
     <div class="panel-left">
       <div class="btn-wrapper">
-        <i class="echo-icon icon-previous"></i>
+        <i class="echo-icon icon-prev"></i>
         <i class="echo-icon play-state"
            :class="[playStateCls]"
            @click="togglePlayState"></i>
@@ -28,7 +28,7 @@
     <div class="panel-right">
       <div class="sound-controler">
         <i class="controler icon-loop"></i>
-        <i class="controler icon-favourite"></i>
+        <i class="controler icon-unlike"></i>
         <i class="controler icon-delete"></i>
       </div>
       <div class="volume-controler">
@@ -37,7 +37,7 @@
           <progress-bar></progress-bar>
         </div>
       </div>
-      <i class="icon-playlist"></i>
+      <i class="playlist icon-playlist-close"></i>
     </div>
     <audio ref="echoSound" src="https://al-qn-echo-cp-cdn.app-echo.com/c2/4871d017f439b4b0f101a79d4551378a167f49eb6149daa4aeb5298ee028076d7c8408b1.mp3?1448715381"></audio>
   </div>
@@ -91,11 +91,13 @@
     right: 0;
     bottom: 0;
     height: 73px;
+    z-index: 99;
     background: #fff;
     .panel-left {
       position: absolute;
       top: 0;
       bottom: 0;
+      left: 0;
       width: 220px;
       padding: 0 30px;
       box-sizing: border-box;
@@ -119,7 +121,7 @@
           &:hover {
             color: @color-text-dd;
           }
-          &.icon-previous, &.icon-next {
+          &.icon-prev, &.icon-next {
             position: absolute;
             top: 50%;
             margin-top: -20px;
@@ -135,6 +137,7 @@
             width: 50px;
             height: 50px;
             margin: 0 auto;
+            font-size: 50px;
             line-height: 50px;
           }
         }
@@ -214,7 +217,6 @@
           margin-right: 20px;
           font-size: 20px;
           color: @color-text;
-          background: pink;
           cursor: pointer;
         }
       }
@@ -230,7 +232,6 @@
           font-size: @font-size-medium;
           line-height: 20px;
           color: @color-text;
-          background: lightblue;
           cursor: pointer;
         }
         .sound-volume-wrapper {
@@ -243,7 +244,7 @@
           margin: auto 0;
         }
       }
-      .icon-playlist {
+      .playlist {
         position: absolute;
         top: 0;
         right: 22px;
@@ -256,7 +257,6 @@
         font-size: 49px;
         text-align: center;
         color: @color-text;
-        background: pink;
         cursor: pointer;
       }
     }

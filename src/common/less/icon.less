@@ -1,11 +1,16 @@
 @font-face {
   font-family: 'echo-icon';
-  src: url('../fonts/echo-icon.ttf') format('truetype');
+  src: url('../fonts/echo-icon.eot');
+  src: url('../fonts/echo-icon.eot#iefix') format('embedded-opentype'),
+       url('../fonts/echo-icon.ttf') format('truetype'),
+       url('../fonts/echo-icon.woff') format('woff'),
+       url('../fonts/echo-icon.svg#icomoon') format('svg');
   font-weight: normal;
   font-style: normal;
 }
 
 [class^="icon-"], [class*=" icon-"] {
+  position: relative;
   font-family: 'echo-icon' !important;
   font-weight: normal;
   font-style: normal;
@@ -13,7 +18,94 @@
   line-height: 1;
 }
 
-/* 播放图标 */
+/* “播放”图标 */
 .icon-play:before {
   content: "\e910";
+}
+
+/* “暂停”图标 */
+.icon-pause:before {
+  content: "\e912";
+}
+
+/* “上一首”图标 */
+.icon-prev:before {
+  content: "\e916";
+}
+
+/* “下一首”图标 */
+.icon-next:before {
+  content: "\e90d";
+}
+
+/* “不喜欢”图标 */
+.icon-unlike:before {
+  content: "\e904";
+}
+
+/* “喜欢”图标 */
+.icon-like:before {
+  content: "\e903";
+}
+
+/* “删除”图标 */
+.icon-delete:before {
+  content: "\e902";
+}
+
+/* “音量”图标 */
+.icon-volume:before {
+  content: "\e918";
+}
+
+/* “静音”图标 */
+.icon-muted:before {
+  content: "\e919";
+}
+
+/* “关闭的播放列表”图标 */
+.icon-playlist-close:before {
+  content: "\e907";
+}
+
+/* “展开的播放列表”图标 */
+.icon-playlist-open:before {
+  content: "\e908";
+}
+
+/* “循环播放”图标 */
+.icon-loop:before {
+  content: "\e909";
+}
+
+/* “单曲循环”图标 */
+.icon-loop-one:before {
+  content: "\e909";
+}
+.icon-loop-one:after {
+  content: "1";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0.1em;
+  bottom: 0;
+  height: 1em;
+  margin: auto 0;
+  font-size: 0.6em;
+  text-align: center;
+}
+
+/* “随机播放”图标 */
+.icon-random:before {
+  content: "\e917";
+}
+
+/* “全屏播放”图标 */
+.icon-fullscreen:before {
+  content: "\e915";
+}
+
+/* “小屏播放”图标 */
+.icon-smallscreen:before {
+  content: "\e915";
 }

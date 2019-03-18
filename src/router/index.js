@@ -66,9 +66,17 @@ export default new Router({
       component: ChannelDetail
     },
     {
+      path: '/sound',
+      redirect: '/home'
+    },
+    {
       path: '/sound/:id',
       name: 'Sound',
       component: Sound
+    },
+    {
+      path: '/mv',
+      redirect: '/home'
     },
     {
       path: '/mv/:id',

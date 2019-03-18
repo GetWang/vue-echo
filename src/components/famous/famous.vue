@@ -257,9 +257,10 @@
       .user-recom-list {
         width: 695px;
         margin: 50px auto;
+        overflow: hidden;
         font-size: 0;
         .user-recom-item {
-          display: inline-block;
+          float: left;
           width: 220px;
           margin-right: 16px;
           &:last-child {
