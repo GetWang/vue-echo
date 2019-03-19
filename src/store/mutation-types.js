@@ -9,3 +9,6 @@ export const SET_PLAY_LIST = 'SET_PLAY_LIST'
 
 // 设置当前播放 sound 的索引
 export const SET_CURR_INDEX = 'SET_CURR_INDEX'
+
+// 设置当前 sound 的播放进度
+export const SET_CURR_TIME = 'SET_CURR_TIME'

@@ -16,6 +16,10 @@ const mutations = {
   /* mutate 当前 sound 的索引 */
   [types.SET_CURR_INDEX] (state, index) {
     state.currIndex = index
+  },
+  /* mutate 当前 sound 的播放进度 */
+  [types.SET_CURR_TIME] (state, time) {
+    state.currTime = time
   }
 }
 

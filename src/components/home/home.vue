@@ -290,6 +290,8 @@
                     .cover {
                       width: 100%;
                       height: 100%;
+                      // 防止图片变形
+                      object-fit: cover;
                     }
                   }
                   .sound-info {
@@ -493,6 +495,8 @@
                   width: 107px;
                   height: 107px;
                   margin-bottom: 8px;
+                  // 防止图片变形
+                  object-fit: cover;
                 }
                 .famous-name {
                   margin-bottom: 5px;
@@ -568,6 +572,8 @@
                   width: 150px;
                   height: 150px;
                   margin-bottom: 10px;
+                  // 防止图片变形
+                  object-fit: cover;
                 }
                 .album-name {
                   margin-bottom: 3px;

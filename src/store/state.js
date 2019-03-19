@@ -6,7 +6,9 @@ const state = {
   // 当前播放列表
   playList: [],
   // 当前播放 sound 在列表中的索引
-  currIndex: -1
+  currIndex: -1,
+  // 当前 sound 进度
+  currTime: 0
 }
 
 export default state

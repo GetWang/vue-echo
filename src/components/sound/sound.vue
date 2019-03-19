@@ -13,13 +13,14 @@
           </div>
         </div>
         <div class="sound-controls">
-          <i class="icon-play"></i>
+          <i class="play-state" :class="[playStateCls]"
+             @click="togglePlayState"></i>
           <div class="sound-process-controler">
             <span class="curr-time">00:23</span>
             <div class="sound-process-wrapper">
               <progress-bar></progress-bar>
             </div>
-            <span class="duration">04:12</span>
+            <span class="duration">{{formatTime(sound.duration)}}</span>
           </div>
           <i class="play-mode"></i>
           <i class="icon-favorite"></i>
@@ -62,6 +63,8 @@
   import Sound from 'common/js/sound'
   import {getSound} from 'api/sound'
   import {STATUS_OK} from 'api/config'
+  import {padNum} from 'common/js/util'
+  import {mapGetters, mapMutations, mapActions} from 'vuex'
 
   export default {
     name: 'Sound',
@@ -76,6 +79,7 @@
           commentCount: 0,
           viewCount: 0,
           songInfo: [],
+          duration: 0,
           info: '',
           lyric: '',
           tagList: [],
@@ -89,6 +93,15 @@
     },
     created () {
       this._getSound(this.$route.params.id)
+    },
+    computed: {
+      /* 播放状态 icon 类名 */
+      playStateCls () {
+        return this.playState ? 'icon-pause' : 'icon-play'
+      },
+      ...mapGetters([
+        'playState'
+      ])
     },
     methods: {
       /* 获取 sound 详情信息 */
@@ -117,7 +130,27 @@
           comments: data.comments
         }, data.info))
         console.log('sound', this.sound)
-      }
+      },
+      /* 切换播放状态 */
+      togglePlayState () {
+        if (this.playState) {
+          this.setPlayState(false)
+        } else {
+          // console.log(21)
+          this.insertSound(this.sound)
+        }
+      },
+      /* 格式化时间 */
+      formatTime (second) {
+        second = Math.floor(second)
+        let minute = Math.floor(second / 60)
+        let restSecond = second % 60
+        return padNum(minute) + ':' + padNum(restSecond)
+      },
+      ...mapMutations({
+        setPlayState: 'SET_PLAY_STATE'
+      }),
+      ...mapActions(['insertSound'])
     },
     components: {
       SoundMv,
@@ -172,7 +205,7 @@
         height: 48px;
         padding-left: 90px;
         background: @color-background-l;
-        .icon-play, .icon-pause {
+        .play-state {
           position: absolute;
           top: 50%;
           left: 40px;

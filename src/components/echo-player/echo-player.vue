@@ -11,11 +11,11 @@
       </div>
     </div>
     <div class="panel-center">
-      <a href="" class="sound-link">
-        <img src="" alt="" class="cover">
+      <a :href="'#/sound/' + (currSound.id || '')" class="sound-link">
+        <img :src="currSound.pic_100 || ''" :alt="currSound.name || ''" class="cover">
       </a>
       <div class="sound-detail">
-        <p class="sound-name">女声翻唱「李白」</p>
+        <p class="sound-name">{{currSound.name || ''}}</p>
         <div class="progress-controler">
           <span class="curr-time time">{{formatedCurrTime}}</span>
           <div class="sound-progress-wrapper">
@@ -41,7 +41,7 @@
       </div>
       <i class="playlist icon-playlist-close"></i>
     </div>
-    <audio ref="echoSound" src="https://al-qn-echo-cp-cdn.app-echo.com/c2/4871d017f439b4b0f101a79d4551378a167f49eb6149daa4aeb5298ee028076d7c8408b1.mp3?1448715381"
+    <audio ref="echoSound" :src="currSound.source"
            @timeupdate="updateTime" @canplay="audioReady"></audio>
   </div>
 </template>
@@ -49,15 +49,12 @@
 <script type="text/ecmascript-6">
   import ProgressBar from 'base/progress-bar/progress-bar'
   import {padNum} from 'common/js/util'
+  import {mapGetters, mapMutations} from 'vuex'
 
   export default {
     name: 'EchoPlayer',
     data () {
       return {
-        // 播放状态
-        playState: false,
-        // 当前 sound 播放时间点
-        currentTime: 0,
         // sound 时长
         duration: 0,
         // 当前音量
@@ -75,7 +72,6 @@
     mounted () {
       // 保存对 audio 元素的引用
       this.echoSound = this.$refs.echoSound
-      console.log('Vol', this.echoSound.volume)
     },
     computed: {
       /* 播放状态 icon 类名 */
@@ -88,22 +84,25 @@
       },
       /* 当前 sound 播放进度百分比 */
       progressPercent () {
-        return this.currentTime / this.duration
+        return this.currTime / this.duration
       },
       /* 格式化好的当前 sound 播放进度 */
       formatedCurrTime () {
-        return this.formatTime(this.currentTime)
+        return this.formatTime(this.currTime)
       },
       /* 格式化好的 sound 时长 */
       formatedDuration () {
         return this.formatTime(this.duration)
-      }
+      },
+      ...mapGetters(['playState', 'currIndex', 'currSound', 'currTime'])
     },
     watch: {
       /* 当播放状态改变时，控制 sound 的播放和暂停 */
       playState (newState) {
         if (newState) {
-          this.echoSound.play()
+          this.$nextTick(() => {
+            this.echoSound.play()
+          })
         } else {
           this.echoSound.pause()
         }
@@ -125,11 +124,19 @@
     methods: {
       /* 切换 sound 播放状态 */
       togglePlayState () {
-        this.playState = !this.playState
+        /* 若当前播放列表为空则不切换状态 */
+        if (this.currIndex < 0) {
+          return
+        }
+        if (this.playState) {
+          this.setPlayState(false)
+        } else {
+          this.setPlayState(true)
+        }
       },
       /* 更新 sound 当前播放时间点 */
       updateTime () {
-        this.currentTime = this.echoSound.currentTime
+        this.setCurrTime(this.echoSound.currentTime)
       },
       /* audio 资源已准备好 */
       audioReady () {
@@ -159,7 +166,11 @@
         let minute = Math.floor(second / 60)
         let restSecond = second % 60
         return minute + ':' + padNum(restSecond)
-      }
+      },
+      ...mapMutations({
+        setPlayState: 'SET_PLAY_STATE',
+        setCurrTime: 'SET_CURR_TIME'
+      })
     },
     components: {
       ProgressBar

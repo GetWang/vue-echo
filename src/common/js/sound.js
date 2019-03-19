@@ -13,6 +13,7 @@ export default class Sound {
     songInfo,
     info,
     lrc,
+    source,
     user,
     pic_100,
     pic_200,
@@ -32,6 +33,7 @@ export default class Sound {
     this.songInfo = songInfo || []
     this.info = info || ''
     this.lyric = lrc || ''
+    this.source = source
     this.pic_100 = pic_100
     this.pic_200 = pic_200
     this.pic_500 = pic_500
