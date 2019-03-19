@@ -77,6 +77,12 @@
       // 在拖拽按钮上 mousedown 事件发生时，进度的宽度
       this.downProcessWidth = 0
     },
+    mounted () {
+      // 根据初始 percent 值，初始化进度条进度
+      this.barWidth || (this.barWidth = this.$refs.progressBar.clientWidth)
+      const offsetWidth = this.barWidth * this.percent
+      this._offset(offsetWidth)
+    },
     watch: {
       /* 当传入的百分比发生变化时，更改进度条的进度和按钮的位置 */
       percent (newPercent) {
@@ -125,7 +131,7 @@
       /* 控制进度和按钮的偏移 */
       _offset (width) {
         width = judgeNumInRegion(width, 0, this.barWidth)
-        console.log('offset', width)
+        // console.log('offset', width)
         this.$refs.progress.style.width = width + 'px'
         this.btnStyle.transform = `translateX(${width}px)`
       },
