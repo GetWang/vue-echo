@@ -3,11 +3,11 @@
   <div class="echo-player">
     <div class="panel-left">
       <div class="btn-wrapper">
-        <i class="echo-icon icon-prev"></i>
+        <i class="echo-icon icon-prev" @click="prev"></i>
         <i class="echo-icon play-state"
            :class="[playStateCls]"
            @click="togglePlayState"></i>
-        <i class="echo-icon icon-next"></i>
+        <i class="echo-icon icon-next" @click="next"></i>
       </div>
     </div>
     <div class="panel-center">
@@ -42,7 +42,8 @@
       <i class="playlist icon-playlist-close"></i>
     </div>
     <audio ref="echoSound" :src="currSound.source"
-           @timeupdate="updateTime" @canplay="audioReady"></audio>
+           @timeupdate="updateTime" @canplay="audioReady"
+           @ended="end"></audio>
   </div>
 </template>
 
@@ -96,7 +97,7 @@
       formatedDuration () {
         return this.formatTime(this.duration)
       },
-      ...mapGetters(['playState', 'currIndex', 'currSound', 'currTime'])
+      ...mapGetters(['playState', 'currIndex', 'currSound', 'currTime', 'playList'])
     },
     watch: {
       /* 当播放状态改变时，控制 sound 的播放和暂停 */
@@ -130,6 +131,16 @@
           this.echoSound.currentTime = newTime
         }
         this.audioTimeUpdateFlag = false
+      },
+      /* 监听播放列表当前索引值 */
+      currIndex () {
+        this.setCurrTime(0)
+        if (this.playState) {
+          this.$nextTick(() => {
+            this.echoSound.play()
+          })
+        }
+        this.setPlayState(true)
       }
     },
     methods: {
@@ -145,6 +156,38 @@
           this.setPlayState(true)
         }
       },
+      /* 上一首 */
+      prev () {
+        let index = this.currIndex
+        if (index < 0) {
+          return
+        }
+        let len = this.playList.length
+        if (index === 0) {
+          index = len - 1
+        } else {
+          index = (index - 1) % len
+        }
+        this.setCurrIndex(index)
+        if (len === 1) {
+          this.setCurrTime(0)
+          this.setPlayState(true)
+        }
+      },
+      /* 下一首 */
+      next () {
+        let index = this.currIndex
+        if (index < 0) {
+          return
+        }
+        let len = this.playList.length
+        index = (index + 1) % len
+        this.setCurrIndex(index)
+        if (len === 1) {
+          this.setCurrTime(0)
+          this.setPlayState(true)
+        }
+      },
       /* 更新 sound 当前播放时间点 */
       updateTime () {
         this.audioTimeUpdateFlag = true
@@ -155,6 +198,13 @@
         console.log('tt', this.echoSound.duration)
         this.duration = this.echoSound.duration
         this.isAudioReady = true
+      },
+      /* 当前 sound 播放结束 */
+      end () {
+        if (this.playList.length === 1) {
+          this.echoSound.play()
+        }
+        this.next()
       },
       /* 更改 sound 播放进度 */
       changeSoundProgress (percent) {
@@ -181,7 +231,8 @@
       },
       ...mapMutations({
         setPlayState: 'SET_PLAY_STATE',
-        setCurrTime: 'SET_CURR_TIME'
+        setCurrTime: 'SET_CURR_TIME',
+        setCurrIndex: 'SET_CURR_INDEX'
       })
     },
     components: {
