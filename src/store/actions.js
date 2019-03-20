@@ -6,6 +6,7 @@ export function insertSound ({state, commit}, sound) {
     commit(types.SET_ORIGIN_LIST, [sound])
     commit(types.SET_PLAY_LIST, [sound])
     commit(types.SET_CURR_INDEX, 0)
+    commit(types.SET_CURR_TIME, 0)
     commit(types.SET_PLAY_STATE, true)
     return
   }
@@ -29,6 +30,7 @@ export function insertSound ({state, commit}, sound) {
     // 为 index 值，否则将 sound 插入“原始”和“当前”两个列表当前 sound 后面
     if (index !== state.currIndex) {
       commit(types.SET_CURR_INDEX, index)
+      commit(types.SET_CURR_TIME, 0)
       commit(types.SET_PLAY_STATE, true)
     } else {
       const originList = state.originList.slice()
@@ -45,7 +47,17 @@ export function insertSound ({state, commit}, sound) {
       commit(types.SET_ORIGIN_LIST, originList)
       commit(types.SET_PLAY_LIST, playList)
       commit(types.SET_CURR_INDEX, index)
+      commit(types.SET_CURR_TIME, 0)
       commit(types.SET_PLAY_STATE, true)
     }
   }
+}
+
+/* 一键播放列表中的所有 sound */
+export function playAllSounds ({state, commit}, list) {
+  commit(types.SET_ORIGIN_LIST, list)
+  commit(types.SET_PLAY_LIST, list)
+  commit(types.SET_CURR_INDEX, 0)
+  commit(types.SET_CURR_TIME, 0)
+  commit(types.SET_PLAY_STATE, true)
 }

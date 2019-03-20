@@ -11,11 +11,11 @@
       </div>
     </div>
     <div class="panel-center">
-      <a :href="'#/sound/' + (currSound.id || '')" class="sound-link">
-        <img :src="currSound.pic_100 || ''" :alt="currSound.name || ''" class="cover">
+      <a :href="currSound.id ? ('#/sound/' + currSound.id) : ''" class="sound-link">
+        <img v-show="currSound.pic_100" :src="currSound.pic_100" class="cover">
       </a>
       <div class="sound-detail">
-        <p class="sound-name">{{currSound.name || ''}}</p>
+        <p class="sound-name">{{currSound.name || 'echo 回声'}}</p>
         <div class="progress-controler">
           <span class="curr-time time">{{formatedCurrTime}}</span>
           <div class="sound-progress-wrapper">
@@ -68,6 +68,8 @@
       this.isAudioReady = false
       // 初始化 prevVolume
       this.prevVolume = this.volume
+      // audio 当前播放时间是否发生变化的标志
+      this.audioTimeUpdateFlag = true
     },
     mounted () {
       // 保存对 audio 元素的引用
@@ -119,6 +121,15 @@
         } else {
           this.isMuted = false
         }
+      },
+      // 监听 currTime，根据 currTime 是否由 audio 自身
+      // “当前时间”属性值变化而触发 currTime 更新来决定是
+      // 否设置 audio 的 currentTime 属性
+      currTime (newTime) {
+        if (!this.audioTimeUpdateFlag) {
+          this.echoSound.currentTime = newTime
+        }
+        this.audioTimeUpdateFlag = false
       }
     },
     methods: {
@@ -136,6 +147,7 @@
       },
       /* 更新 sound 当前播放时间点 */
       updateTime () {
+        this.audioTimeUpdateFlag = true
         this.setCurrTime(this.echoSound.currentTime)
       },
       /* audio 资源已准备好 */
@@ -146,7 +158,7 @@
       },
       /* 更改 sound 播放进度 */
       changeSoundProgress (percent) {
-        this.echoSound.currentTime = this.duration * percent
+        this.setCurrTime(this.duration * percent)
       },
       /* 更改音量 */
       changeVolume (percent) {
@@ -252,11 +264,12 @@
         padding: 3px;
         box-sizing: border-box;
         box-shadow: 0 0 2px rgba(0, 0, 0, .2);
+        background: url("./echo-cover.png") no-repeat 3px 3px;
+        background-size: 48px 48px;
         .cover {
           display: block;
           width: 100%;
           height: 100%;
-          background: pink;
         }
       }
       .sound-detail {

@@ -3,7 +3,7 @@
   <div class="day-choose">
     <div class="choose-header">
       <h2 class="title">每日精选</h2>
-      <div class="play-all">
+      <div class="play-all" @click="playAllSounds(listData)">
         <i class="play-icon"></i>
         <span class="text">播放全部</span>
       </div>
@@ -23,6 +23,8 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import {mapActions} from 'vuex'
+
   export default {
     name: 'DayChoose',
     props: {
@@ -33,6 +35,9 @@
           return []
         }
       }
+    },
+    methods: {
+      ...mapActions(['playAllSounds'])
     }
   }
 </script>

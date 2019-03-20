@@ -16,9 +16,10 @@
           <i class="play-state" :class="[playStateCls]"
              @click="togglePlayState"></i>
           <div class="sound-process-controler">
-            <span class="curr-time">00:23</span>
+            <span class="curr-time">{{formatedCurrTime}}</span>
             <div class="sound-process-wrapper">
-              <progress-bar></progress-bar>
+              <progress-bar :percent="progressPercent"
+                            @percentChange="changeCurrTime"></progress-bar>
             </div>
             <span class="duration">{{formatTime(sound.duration)}}</span>
           </div>
@@ -95,12 +96,36 @@
       this._getSound(this.$route.params.id)
     },
     computed: {
+      /* 判断当前页面中的 sound 是否和播放器中的当前的 sound 一致 */
+      isSameSound () {
+        return this.playList[this.currIndex] && (this.playList[this.currIndex].id === this.sound.id)
+      },
       /* 播放状态 icon 类名 */
       playStateCls () {
-        return this.playState ? 'icon-pause' : 'icon-play'
+        if (this.isSameSound) {
+          return this.playState ? 'icon-pause' : 'icon-play'
+        }
+        return 'icon-play'
+      },
+      /* sound 播放进度百分比 */
+      progressPercent () {
+        if (this.isSameSound) {
+          return this.currTime / this.sound.duration
+        }
+        return 0
+      },
+      /* 格式化后的“当前播放时间” */
+      formatedCurrTime () {
+        if (this.isSameSound) {
+          return this.formatTime(this.currTime)
+        }
+        return this.formatTime(0)
       },
       ...mapGetters([
-        'playState'
+        'playState',
+        'currTime',
+        'playList',
+        'currIndex'
       ])
     },
     methods: {
@@ -133,12 +158,15 @@
       },
       /* 切换播放状态 */
       togglePlayState () {
-        if (this.playState) {
+        if (this.playState && this.isSameSound) {
           this.setPlayState(false)
         } else {
-          // console.log(21)
           this.insertSound(this.sound)
         }
+      },
+      /* 更改当前 sound 播放进度 */
+      changeCurrTime (percent) {
+        this.setCurrTime(this.sound.duration * percent)
       },
       /* 格式化时间 */
       formatTime (second) {
@@ -148,7 +176,8 @@
         return padNum(minute) + ':' + padNum(restSecond)
       },
       ...mapMutations({
-        setPlayState: 'SET_PLAY_STATE'
+        setPlayState: 'SET_PLAY_STATE',
+        setCurrTime: 'SET_CURR_TIME'
       }),
       ...mapActions(['insertSound'])
     },

@@ -3,7 +3,7 @@
   <div class="today-recommend">
     <div class="recom-header">
       <h2 class="title">今日推荐</h2>
-      <div class="play-btn">
+      <div class="play-btn" @click="playAllSounds(recomList)">
         <i class="play-icon"></i>
         <span class="text">一键播放</span>
       </div>
@@ -48,6 +48,7 @@
   import {STATUS_OK} from 'api/config'
   import Sound from 'common/js/sound'
   import {padNum} from 'common/js/util'
+  import {mapActions} from 'vuex'
 
   export default {
     name: 'TodayRecommend',
@@ -93,7 +94,8 @@
         let minute = Math.floor(second / 60)
         let restSecond = second % 60
         return padNum(minute) + ':' + padNum(restSecond)
-      }
+      },
+      ...mapActions(['playAllSounds'])
     }
   }
 </script>
