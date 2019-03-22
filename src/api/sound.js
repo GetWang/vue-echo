@@ -13,3 +13,16 @@ export function getSound (id, comment) {
     return Promise.resolve(res.data)
   })
 }
+
+/* 获取首页声音场景对应的 sound 列表 */
+export function getSceneSoundList (ids) {
+  const url = '/api/getSceneSoundList'
+  const data = {
+    ids
+  }
+  return axios.get(url, {
+    params: data
+  }).then(res => {
+    return Promise.resolve(res.data)
+  })
+}

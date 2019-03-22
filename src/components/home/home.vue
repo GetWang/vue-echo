@@ -4,7 +4,7 @@
     <div class="content">
       <section class="content-left">
         <!-- 声音场景 -->
-        <sound-scene></sound-scene>
+        <sound-scene :sceneSoundIdList="sceneSoundIdList"></sound-scene>
         <!-- 回声榜 -->
         <ul class="echo-rank">
           <li class="rank" v-for="rank in rankList" :key="rank.rankClass" :class="[rank.rankClass]">
@@ -113,6 +113,8 @@
     name: 'Home',
     data () {
       return {
+        // 所有声音场景 sounds 的 id 列表
+        sceneSoundIdList: [],
         // 回声榜列表
         rankList: [],
         // echo 名人列表
@@ -129,7 +131,7 @@
       this._getHomeAlbum()
     },
     methods: {
-      /* 获取首页回声榜和每日精选数据 */
+      /* 获取首页各声音场景 sounds 的 id 列表和回声榜、每日精选数据 */
       _getRankChoose () {
         getRankChoose().then(res => {
           if (res.status === STATUS_OK) {
@@ -159,7 +161,7 @@
           console.log('api/getHomeAlbum error', err)
         })
       },
-      /* 处理首页回声榜和每日精选数据 */
+      /* 处理首页声音场景 sounds 的 id 列表和回声榜、每日精选数据 */
       handleRankChoose (data) {
         const soundHot = {
           name: '热门回声榜',
@@ -192,6 +194,14 @@
         data.hot_recommend.forEach((item) => {
           this.chooseList.push(new Sound(item))
         })
+        const arr = []
+        for (let key in data.top_type5) {
+          key = +key
+          if (!isNaN(key)) {
+            arr[key - 1] = data.top_type5[key]
+          }
+        }
+        this.sceneSoundIdList = arr
       },
       /* 处理首页 echo 名人数据 */
       handleFamousUser (data) {

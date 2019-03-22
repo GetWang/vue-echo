@@ -279,6 +279,20 @@ const devWebpackConfig = merge(baseWebpackConfig, {
           console.log('api/getSound error', e)
         })
       })
+      app.get('/api/getSceneSoundList', function (req, res) {
+        const url = 'http://www.app-echo.com/sound/api-infos'
+        axios.get(url, {
+          headers: {
+            host: 'www.app-echo.com',
+            referer: 'http://www.app-echo.com/'
+          },
+          params: req.query
+        }).then(response => {
+          res.json(response.data)
+        }).catch(e => {
+          console.log('api/getSceneSoundList error', e)
+        })
+      })
       /* 获取 mv 详情信息 */
       app.get('/api/getMv', function (req, res) {
         const url = 'http://www.app-echo.com/api/mv/info'

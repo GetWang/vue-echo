@@ -1,7 +1,8 @@
 <template>
   <!-- 声音场景组件 -->
   <ul class="sound-scene">
-    <li class="scene" v-for="scene in scenes" :key="scene.id" :class="scene.sceneClass">
+    <li class="scene" v-for="scene in scenes" :key="scene.id"
+        :class="scene.sceneClass" @click="_getSceneSoundList(scene.idList)">
       <div class="cover">
         <div class="gifPic"></div>
         <div class="mask"><span class="play"></span></div>
@@ -12,8 +13,17 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import {getSceneSoundList} from 'api/sound'
+
   export default {
     name: 'SoundScene',
+    props: {
+      // 所有声音场景 sounds 的 id 列表
+      sceneSoundIdList: {
+        type: Array,
+        default: () => []
+      }
+    },
     data () {
       return {
         // 声音场景数据
@@ -21,29 +31,52 @@
           {
             id: 'lunch-tea',
             name: '午后红茶',
-            sceneClass: ['lunch-tea']
+            sceneClass: ['lunch-tea'],
+            idList: []
           },
           {
             id: 'work-study',
             name: '工作学习',
-            sceneClass: ['work-study']
+            sceneClass: ['work-study'],
+            idList: []
           },
           {
             id: 'deep-night',
             name: '深夜居酒屋',
-            sceneClass: ['deep-night']
+            sceneClass: ['deep-night'],
+            idList: []
           },
           {
             id: 'weekend-party',
             name: '周末聚会',
-            sceneClass: ['weekend-party']
+            sceneClass: ['weekend-party'],
+            idList: []
           },
           {
             id: 'relax-mood',
             name: '放松心情',
-            sceneClass: ['relax-mood']
+            sceneClass: ['relax-mood'],
+            idList: []
           }
         ]
+      }
+    },
+    watch: {
+      /* 更新每个声音场景的 id 列表 */
+      sceneSoundIdList (newList) {
+        newList.forEach((item, index) => {
+          this.scenes[index].idList = item
+          console.log('item', item)
+        })
+      }
+    },
+    methods: {
+      /* 获取声音场景 sound 列表 */
+      _getSceneSoundList (idList) {
+        const ids = idList.join(',')
+        getSceneSoundList(ids).then(res => {
+          console.log('res', res)
+        })
       }
     }
   }
