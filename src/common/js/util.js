@@ -23,3 +23,15 @@ export function padNum (num, bit = 2) {
 export function judgeNumInRegion (num, min, max) {
   return Math.min(max, Math.max(min, num))
 }
+
+/* 打乱数组元素顺序 */
+export function shuffle (arr) {
+  const _arr = arr.slice()
+  for (let i = 0, len = _arr.length; i < len; i++) {
+    let num = Math.floor(Math.random() * (i + 1))
+    let temp = _arr[i]
+    _arr[i] = _arr[num]
+    _arr[num] = temp
+  }
+  return _arr
+}

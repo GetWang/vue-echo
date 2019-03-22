@@ -33,7 +33,7 @@
              @click="modeShowFlag = !modeShowFlag"></i>
           <ul class="mode-list" v-show="modeShowFlag">
             <li class="mode-item" v-for="mode in modeList"
-                :key="mode.type" @click="changePlayMode(mode.type)">
+                :key="mode.type" @click="checkPlayMode(mode.type)">
               <i class="controler" :class="[mode.iconClass]"></i>
             </li>
           </ul>
@@ -173,8 +173,12 @@
         }
         this.audioTimeUpdateFlag = false
       },
-      /* 监听播放列表当前索引值 */
-      currIndex () {
+      /* 监听当前 sound 的变化 */
+      currSound (newSound, oldSound) {
+        // 模式切换时要进行该项检测
+        if (newSound.id === oldSound.id) {
+          return
+        }
         this.setCurrTime(0)
         if (this.playState) {
           this.$nextTick(() => {
@@ -200,34 +204,49 @@
       /* 上一首 */
       prev () {
         let index = this.currIndex
+        // 播放列表为空
         if (index < 0) {
           return
         }
         let len = this.playList.length
+        // 播放列表只有一首 sound 或“单曲循环”
+        if (len === 1 || this.playMode === playMode.loopOne) {
+          this.setCurrTime(0)
+          this.setPlayState(true)
+          this.echoSound.play()
+          return
+        }
         if (index === 0) {
           index = len - 1
         } else {
           index = (index - 1) % len
         }
         this.setCurrIndex(index)
-        if (len === 1) {
-          this.setCurrTime(0)
-          this.setPlayState(true)
-        }
       },
       /* 下一首 */
       next () {
         let index = this.currIndex
+        // 播放列表为空
         if (index < 0) {
           return
         }
         let len = this.playList.length
-        index = (index + 1) % len
-        this.setCurrIndex(index)
-        if (len === 1) {
+        // 播放列表只有一首 sound 或“单曲循环”
+        if (len === 1 || this.playMode === playMode.loopOne) {
           this.setCurrTime(0)
           this.setPlayState(true)
+          this.echoSound.play()
+          return
         }
+        index = (index + 1) % len
+        this.setCurrIndex(index)
+      },
+      /* 在修改模式之前先检查一下 */
+      checkPlayMode (mode) {
+        if (mode === this.playMode) {
+          return
+        }
+        this.changePlayMode(mode)
       },
       /* 更新 sound 当前播放时间点 */
       updateTime () {
@@ -242,9 +261,6 @@
       },
       /* 当前 sound 播放结束 */
       end () {
-        if (this.playList.length === 1) {
-          this.echoSound.play()
-        }
         this.next()
       },
       /* 更改 sound 播放进度 */
