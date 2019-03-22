@@ -28,7 +28,16 @@
     </div>
     <div class="panel-right">
       <div class="sound-controler">
-        <i class="controler icon-loop"></i>
+        <div class="mode-wrapper">
+          <i class="controler mode" :class="[modeIconClsMap[playMode]]"
+             @click="modeShowFlag = !modeShowFlag"></i>
+          <ul class="mode-list" v-show="modeShowFlag">
+            <li class="mode-item" v-for="mode in modeList"
+                :key="mode.type" @click="changePlayMode(mode.type)">
+              <i class="controler" :class="[mode.iconClass]"></i>
+            </li>
+          </ul>
+        </div>
         <i class="controler icon-unlike"></i>
         <i class="controler icon-delete"></i>
       </div>
@@ -50,18 +59,43 @@
 <script type="text/ecmascript-6">
   import ProgressBar from 'base/progress-bar/progress-bar'
   import {padNum} from 'common/js/util'
-  import {mapGetters, mapMutations} from 'vuex'
+  import {playMode} from 'common/js/config'
+  import {mapGetters, mapMutations, mapActions} from 'vuex'
 
   export default {
     name: 'EchoPlayer',
     data () {
+      // 播放模式类型与相应图标的映射
+      this.modeIconClsMap = {
+        [playMode.loop]: 'icon-loop',
+        [playMode.loopOne]: 'icon-loop-one',
+        [playMode.random]: 'icon-random'
+      }
+      const modeIconClsMap = this.modeIconClsMap
       return {
         // sound 时长
         duration: 0,
         // 当前音量
         volume: 1,
         // 静音标志
-        isMuted: false
+        isMuted: false,
+        // 模式列表浮层显示标志
+        modeShowFlag: false,
+        // 模式列表
+        modeList: [
+          {
+            type: playMode.random,
+            iconClass: modeIconClsMap[playMode.random]
+          },
+          {
+            type: playMode.loopOne,
+            iconClass: modeIconClsMap[playMode.loopOne]
+          },
+          {
+            type: playMode.loop,
+            iconClass: modeIconClsMap[playMode.loop]
+          }
+        ]
       }
     },
     created () {
@@ -97,7 +131,14 @@
       formatedDuration () {
         return this.formatTime(this.duration)
       },
-      ...mapGetters(['playState', 'currIndex', 'currSound', 'currTime', 'playList'])
+      ...mapGetters([
+        'playState',
+        'currIndex',
+        'currSound',
+        'currTime',
+        'playList',
+        'playMode'
+      ])
     },
     watch: {
       /* 当播放状态改变时，控制 sound 的播放和暂停 */
@@ -233,7 +274,8 @@
         setPlayState: 'SET_PLAY_STATE',
         setCurrTime: 'SET_CURR_TIME',
         setCurrIndex: 'SET_CURR_INDEX'
-      })
+      }),
+      ...mapActions(['changePlayMode'])
     },
     components: {
       ProgressBar
@@ -370,6 +412,27 @@
         float: left;
         margin-right: 20px;
         font-size: 0;
+        .mode-wrapper {
+          display: inline-block;
+          position: relative;
+          margin-right: 20px;
+          .mode-list {
+            position: absolute;
+            bottom: 26px;
+            right: -7px;
+            padding: 6px 5px;
+            border: 1px solid #e8e8e8;
+            background: #fff;
+            .mode-item {
+              margin-bottom: 2px;
+              padding: 2px;
+              cursor: pointer;
+              .controler {
+                margin: 0;
+              }
+            }
+          }
+        }
         .controler {
           display: inline-block;
           width: 20px;
@@ -378,6 +441,9 @@
           font-size: 20px;
           color: @color-text;
           cursor: pointer;
+          &.mode {
+            margin: 0;
+          }
         }
       }
       .volume-controler {

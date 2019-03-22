@@ -20,6 +20,10 @@ const mutations = {
   /* mutate 当前 sound 的播放进度 */
   [types.SET_CURR_TIME] (state, time) {
     state.currTime = time
+  },
+  /* mutate 播放模式 */
+  [types.SET_PLAY_MODE] (state, mode) {
+    state.playMode = mode
   }
 }
 

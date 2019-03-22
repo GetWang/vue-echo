@@ -12,3 +12,6 @@ export const SET_CURR_INDEX = 'SET_CURR_INDEX'
 
 // 设置当前 sound 的播放进度
 export const SET_CURR_TIME = 'SET_CURR_TIME'
+
+// 设置播放模式
+export const SET_PLAY_MODE = 'SET_PLAY_MODE'

@@ -17,3 +17,6 @@ export const currSound = state => {
 
 // 当前 sound 播放进度
 export const currTime = state => state.currTime
+
+// 播放模式
+export const playMode = state => state.playMode

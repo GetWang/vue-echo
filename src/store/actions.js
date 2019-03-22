@@ -61,3 +61,8 @@ export function playAllSounds ({state, commit}, list) {
   commit(types.SET_CURR_TIME, 0)
   commit(types.SET_PLAY_STATE, true)
 }
+
+/* 切换播放模式 */
+export function changePlayMode ({state, commit}, mode) {
+  commit(types.SET_PLAY_MODE, mode)
+}
