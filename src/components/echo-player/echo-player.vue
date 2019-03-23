@@ -50,6 +50,9 @@
       </div>
       <i class="playlist icon-playlist-close"></i>
     </div>
+    <div class="playlist-wrapper">
+      <playlist></playlist>
+    </div>
     <audio ref="echoSound" :src="currSound.source"
            @timeupdate="updateTime" @canplay="audioReady"
            @ended="end"></audio>
@@ -58,6 +61,7 @@
 
 <script type="text/ecmascript-6">
   import ProgressBar from 'base/progress-bar/progress-bar'
+  import Playlist from 'components/playlist/playlist'
   import {padNum} from 'common/js/util'
   import {playMode} from 'common/js/config'
   import {mapGetters, mapMutations, mapActions} from 'vuex'
@@ -294,7 +298,8 @@
       ...mapActions(['changePlayMode'])
     },
     components: {
-      ProgressBar
+      ProgressBar,
+      Playlist
     }
   }
 </script>
@@ -308,6 +313,7 @@
     right: 0;
     bottom: 0;
     height: 73px;
+    border-top: 1px solid #e8e8e8;
     z-index: 99;
     background: #fff;
     .panel-left {
@@ -501,6 +507,14 @@
         color: @color-text;
         cursor: pointer;
       }
+    }
+    .playlist-wrapper {
+      position: absolute;
+      right: 0;
+      bottom: 74px;
+      width: 460px;
+      height: 540px;
+      min-width: 460px;
     }
   }
 </style>
