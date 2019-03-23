@@ -48,9 +48,10 @@
                         @percentChange="changeVolume"></progress-bar>
         </div>
       </div>
-      <i class="playlist icon-playlist-close"></i>
+      <i class="playlist" :class="[playListIcoCls]"
+         @click="isShowPlaylist = !isShowPlaylist"></i>
     </div>
-    <div class="playlist-wrapper">
+    <div class="playlist-wrapper" :class="{opend: isShowPlaylist}">
       <playlist></playlist>
     </div>
     <audio ref="echoSound" :src="currSound.source"
@@ -77,6 +78,8 @@
       }
       const modeIconClsMap = this.modeIconClsMap
       return {
+        // 是否显示“播放列表”
+        isShowPlaylist: false,
         // sound 时长
         duration: 0,
         // 当前音量
@@ -122,6 +125,10 @@
       /* 静音/非静音类名 */
       volumeCls () {
         return this.isMuted ? 'icon-muted' : 'icon-volume'
+      },
+      /* “播放列表”图标类名 */
+      playListIcoCls () {
+        return this.isShowPlaylist ? 'icon-playlist-open' : 'icon-playlist-close'
       },
       /* 当前 sound 播放进度百分比 */
       progressPercent () {
@@ -513,8 +520,14 @@
       right: 0;
       bottom: 74px;
       width: 460px;
-      height: 540px;
+      height: 0;
       min-width: 460px;
+      overflow: hidden;
+      box-shadow: -2px -2px 10px rgba(0, 0, 0, .1);
+      transition: height .2s ease-in-out;
+      &.opend {
+        height: 540px;
+      }
     }
   }
 </style>
