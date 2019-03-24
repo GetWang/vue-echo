@@ -39,7 +39,7 @@
           </ul>
         </div>
         <i class="controler icon-unlike"></i>
-        <i class="controler icon-delete"></i>
+        <i class="controler icon-delete" @click="deleteSound(currIndex)"></i>
       </div>
       <div class="volume-controler">
         <i class="volume" :class="[volumeCls]" @click="toggleMuted"></i>
@@ -80,8 +80,6 @@
       return {
         // 是否显示“播放列表”
         isShowPlaylist: false,
-        // sound 时长
-        duration: 0,
         // 当前音量
         volume: 1,
         // 静音标志
@@ -132,7 +130,7 @@
       },
       /* 当前 sound 播放进度百分比 */
       progressPercent () {
-        return this.currTime / this.duration
+        return (this.currTime / this.currSound.duration) || 0
       },
       /* 格式化好的当前 sound 播放进度 */
       formatedCurrTime () {
@@ -140,7 +138,7 @@
       },
       /* 格式化好的 sound 时长 */
       formatedDuration () {
-        return this.formatTime(this.duration)
+        return this.formatTime(this.currSound.duration)
       },
       ...mapGetters([
         'playState',
@@ -186,8 +184,8 @@
       },
       /* 监听当前 sound 的变化 */
       currSound (newSound, oldSound) {
-        // 模式切换时要进行该项检测
-        if (newSound.id === oldSound.id) {
+        // 模式切换或进行过删除操作要进行该项检测
+        if (newSound.id === oldSound.id || !newSound.id) {
           return
         }
         this.setCurrTime(0)
@@ -266,8 +264,6 @@
       },
       /* audio 资源已准备好 */
       audioReady () {
-        console.log('tt', this.echoSound.duration)
-        this.duration = this.echoSound.duration
         this.isAudioReady = true
       },
       /* 当前 sound 播放结束 */
@@ -276,7 +272,7 @@
       },
       /* 更改 sound 播放进度 */
       changeSoundProgress (percent) {
-        this.setCurrTime(this.duration * percent)
+        this.setCurrTime((this.currSound.duration * percent) || 0)
       },
       /* 更改音量 */
       changeVolume (percent) {
@@ -292,7 +288,7 @@
       },
       /* 格式化时间 */
       formatTime (second) {
-        second = Math.floor(second)
+        second = Math.floor(second) || 0
         let minute = Math.floor(second / 60)
         let restSecond = second % 60
         return minute + ':' + padNum(restSecond)
@@ -302,7 +298,7 @@
         setCurrTime: 'SET_CURR_TIME',
         setCurrIndex: 'SET_CURR_INDEX'
       }),
-      ...mapActions(['changePlayMode'])
+      ...mapActions(['changePlayMode', 'deleteSound'])
     },
     components: {
       ProgressBar,
@@ -451,6 +447,7 @@
             right: -7px;
             padding: 6px 5px;
             border: 1px solid #e8e8e8;
+            z-index: 99;
             background: #fff;
             .mode-item {
               margin-bottom: 2px;

@@ -21,12 +21,13 @@
     </div>
     <!-- sound 列表 -->
     <ul class="sound-list">
-      <li class="sound-item">
-        <p class="sound-name">房东的猫《一百个不喜欢你的方法》（电影《一吻定情》推广曲）</p>
+      <li class="sound-item" :class="[getStatusCls(sound.id)]"
+          v-for="(sound, index) in playList" :key="sound.id">
+        <p class="sound-name" @click="setCurrIndex(index)">{{sound.name}}</p>
         <div class="control-wrapper">
           <i class="like-btn icon-unlike"></i>
-          <i class="delete-btn icon-close"></i>
-          <span class="duration">04:38</span>
+          <i class="delete-btn icon-close" @click="deleteSound(index)"></i>
+          <span class="duration">{{formatTime(sound.duration)}}</span>
         </div>
       </li>
     </ul>
@@ -34,6 +35,9 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import {padNum} from 'common/js/util'
+  import {mapGetters, mapMutations, mapActions} from 'vuex'
+
   export default {
     name: 'Playlist',
     data () {
@@ -42,14 +46,32 @@
         currListType: 'playlist'
       }
     },
+    computed: {
+      ...mapGetters(['playList', 'currSound'])
+    },
     methods: {
+      /* 获取每首 sound 的 status 类名 */
+      getStatusCls (id) {
+        return this.currSound.id === id ? 'current' : 'dot'
+      },
       /* 更改当前列表 */
       changeList (type) {
         if (type === this.currListType) {
           return
         }
         this.currListType = type
-      }
+      },
+      /* 格式化时间 */
+      formatTime (second) {
+        second = Math.floor(second)
+        let minute = Math.floor(second / 60)
+        let restSecond = second % 60
+        return padNum(minute) + ':' + padNum(restSecond)
+      },
+      ...mapMutations({
+        setCurrIndex: 'SET_CURR_INDEX'
+      }),
+      ...mapActions(['deleteSound'])
     }
   }
 </script>
@@ -164,6 +186,7 @@
           line-height: 22px;
           text-overflow: ellipsis;
           white-space: nowrap;
+          cursor: default;
         }
         .control-wrapper {
           float: right;
