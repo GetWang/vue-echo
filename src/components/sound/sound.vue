@@ -226,6 +226,7 @@
             width: 282px;
             height: 282px;
             border-radius: 4px;
+            object-fit: cover;
           }
         }
       }

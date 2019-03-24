@@ -20,6 +20,10 @@
             <div class="channel-info">
               <h2 class="intro-title">频道简介</h2>
               <p class="intro">{{channel.info}}</p>
+              <div class="play-btn" @click="playAllSounds(channel.soundList)">
+                <i class="play-icon"></i>
+                <span class="text">一键播放</span>
+              </div>
             </div>
           </div>
         </div>
@@ -78,6 +82,7 @@
   import {STATUS_OK} from 'api/config'
   import Channel from 'common/js/channel'
   import {padNum} from 'common/js/util'
+  import {mapActions} from 'vuex'
 
   export default {
     name: 'ChannelDetail',
@@ -151,7 +156,8 @@
           return (+num / 10000).toFixed(1) + '万'
         }
         return num
-      }
+      },
+      ...mapActions(['playAllSounds'])
     },
     components: {
       Pager
@@ -237,7 +243,7 @@
             }
             .channel-info {
               float: left;
-              max-width: 500px;
+              width: 620px;
               .intro-title {
                 margin-bottom: 3px;
                 font-size: @font-size-medium;
@@ -246,12 +252,40 @@
                 color: #9b9b9b;
               }
               .intro {
+                height: 60px;
+                margin-bottom: 18px;
                 overflow: hidden;
                 font-size: @font-size-small-s;
                 line-height: 18px;
-                text-overflow: ellipsis;
-                white-space: nowrap;
                 color: @color-text;
+              }
+              .play-btn {
+                position: relative;
+                display: inline-block;
+                width: 96px;
+                height: 32px;
+                padding-left: 32px;
+                border: 1px solid #d9d9d9;
+                border-radius: 50px;
+                box-sizing: border-box;
+                line-height: 30px;
+                cursor: pointer;
+                .play-icon {
+                  position: absolute;
+                  top: 6px;
+                  left: 6px;
+                  width: 19px;
+                  height: 19px;
+                  background: url("~common/image/play.png") no-repeat 0 0;
+                  background-size: 100% 100%;
+                }
+                .text {
+                  font-size: @font-size-small-s;
+                  color: @color-text;
+                }
+                &:hover {
+                  border-color: @color-theme;
+                }
               }
             }
           }
@@ -290,8 +324,8 @@
                   .cover {
                     display: block;
                     width: 100%;
-                    height: auto;
                     height: 160px;
+                    object-fit: cover;
                   }
                   .duration {
                     position: absolute;

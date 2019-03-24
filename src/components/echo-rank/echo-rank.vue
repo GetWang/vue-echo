@@ -21,7 +21,8 @@
                 <span class="user-name">{{dailyRank.top1.userName}}</span>
               </a>
             </p>
-            <div class="play-btn" v-if="rankType !== 'mv'">
+            <div class="play-btn" v-if="rankType !== 'mv'"
+                 @click="playAllSounds([].concat(dailyRank.top1, dailyRank.list))">
               <span class="text">一键播放</span>
             </div>
           </div>
@@ -48,7 +49,8 @@
       <li class="rank" v-for="(rank, i) in otherRankList" :key="'rank-' + i">
         <div class="rank-header">
           <h1 class="title">{{rank.title}}</h1>
-          <div class="play-btn" v-if="rankType !== 'mv'">
+          <div class="play-btn" v-if="rankType !== 'mv'"
+               @click="playAllSounds(rank.list)">
             <i class="play-icon"></i>
             <span class="text">播放全部</span>
           </div>
@@ -75,6 +77,8 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import {mapActions} from 'vuex'
+
   export default {
     name: 'EchoRank',
     props: {
@@ -103,6 +107,9 @@
       linkPrefix () {
         return this.rankType === this.mvType ? '#/mv/' : '#/sound/'
       }
+    },
+    methods: {
+      ...mapActions(['playAllSounds'])
     }
   }
 </script>

@@ -57,11 +57,13 @@ export function insertSound ({state, commit}, sound) {
 
 /* 一键播放列表中的所有 sound */
 export function playAllSounds ({state, commit}, list) {
-  commit(types.SET_ORIGIN_LIST, list)
-  commit(types.SET_PLAY_LIST, list)
-  commit(types.SET_CURR_INDEX, 0)
-  commit(types.SET_CURR_TIME, 0)
-  commit(types.SET_PLAY_STATE, true)
+  if (list.length > 0) {
+    commit(types.SET_ORIGIN_LIST, list)
+    commit(types.SET_PLAY_LIST, list)
+    commit(types.SET_CURR_INDEX, 0)
+    commit(types.SET_CURR_TIME, 0)
+    commit(types.SET_PLAY_STATE, true)
+  }
 }
 
 /* 从列表中删除所选 sound */
@@ -94,6 +96,17 @@ export function deleteSound ({state, commit}, index) {
   commit(types.SET_PLAY_LIST, playList)
   commit(types.SET_ORIGIN_LIST, originList)
   commit(types.SET_CURR_INDEX, currIndex)
+}
+
+/* 清空播放列表 */
+export function clearPlaylist ({state, commit}) {
+  if (state.playList.length > 0) {
+    commit(types.SET_ORIGIN_LIST, [])
+    commit(types.SET_PLAY_LIST, [])
+    commit(types.SET_CURR_INDEX, -1)
+    commit(types.SET_CURR_TIME, 0)
+    commit(types.SET_PLAY_STATE, false)
+  }
 }
 
 /* 切换播放模式 */

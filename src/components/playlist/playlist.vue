@@ -3,12 +3,12 @@
   <div class="playlist">
     <!-- 列表类型切换 tabs -->
     <div class="tab-list">
-      <div class="tab-item" :class="{current: currListType === 'playlist'}"
+      <div class="tab-item" :class="{current: !isShowLikelist}"
            @click="changeList('playlist')">
         <i class="icon-sound"></i>
         <span class="text">播放列表</span>
       </div>
-      <div class="tab-item" :class="{current: currListType === 'likelist'}"
+      <div class="tab-item" :class="{current: isShowLikelist}"
            @click="changeList('likelist')">
         <i class="icon-unlike"></i>
         <span class="text">我喜欢的</span>
@@ -16,13 +16,15 @@
     </div>
     <!-- 列表操作按钮区 -->
     <div class="operator-wrapper">
-      <div class="clear-btn" v-show="currListType === 'playlist'">清空</div>
-      <div class="play-all-btn" v-show="currListType === 'likelist'">播放全部</div>
+      <div class="clear-btn" v-show="!isShowLikelist"
+           @click="clearPlaylist">清空</div>
+      <div class="play-all-btn" v-show="isShowLikelist"
+           @click="playAllSounds(currList)">播放全部</div>
     </div>
     <!-- sound 列表 -->
     <ul class="sound-list">
       <li class="sound-item" :class="[getStatusCls(sound.id)]"
-          v-for="(sound, index) in playList" :key="sound.id">
+          v-for="(sound, index) in currList" :key="sound.id">
         <p class="sound-name" @click="setCurrIndex(index)">{{sound.name}}</p>
         <div class="control-wrapper">
           <i class="like-btn icon-unlike"></i>
@@ -47,6 +49,14 @@
       }
     },
     computed: {
+      /* 是否显示“喜欢列表” */
+      isShowLikelist () {
+        return this.currListType === 'likelist'
+      },
+      /* 组件当前的“播放列表” */
+      currList () {
+        return this.isShowLikelist ? [] : this.playList
+      },
       ...mapGetters(['playList', 'currSound'])
     },
     methods: {
@@ -71,7 +81,7 @@
       ...mapMutations({
         setCurrIndex: 'SET_CURR_INDEX'
       }),
-      ...mapActions(['deleteSound'])
+      ...mapActions(['deleteSound', 'clearPlaylist', 'playAllSounds'])
     }
   }
 </script>

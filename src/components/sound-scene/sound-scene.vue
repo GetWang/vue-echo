@@ -66,7 +66,6 @@
       sceneSoundIdList (newList) {
         newList.forEach((item, index) => {
           this.scenes[index].idList = item
-          console.log('item', item)
         })
       }
     },
