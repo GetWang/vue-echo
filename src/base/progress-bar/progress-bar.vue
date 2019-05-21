@@ -96,35 +96,35 @@
       barClick (e) {
         this.barRectLeft || (this.barRectLeft = this.$refs.progressBar.getBoundingClientRect().left)
         this.barWidth || (this.barWidth = this.$refs.progressBar.clientWidth)
-        console.log('bartWidth', this.barWidth)
-        console.log('rectLeft', this.barRectLeft)
-        console.log('pageX', e.pageX)
+        // console.log('bartWidth', this.barWidth)
+        // console.log('rectLeft', this.barRectLeft)
+        // console.log('pageX', e.pageX)
         const offsetWidth = e.pageX - this.barRectLeft
         this._offset(offsetWidth)
         this._triggerPercent(offsetWidth)
       },
       /* 处理拖拽按钮上的 mousedown 事件 */
       btnMouseDown (e) {
-        console.log('down-e', e)
+        // console.log('down-e', e)
         this.barWidth || (this.barWidth = this.$refs.progressBar.clientWidth)
         this.downProcessWidth = this.$refs.progress.clientWidth
-        console.log('downProcessWidth', this.downProcessWidth)
+        // console.log('downProcessWidth', this.downProcessWidth)
         this.btnDownFlag = true
         this.btnMouseObj.startX = e.pageX
       },
       /* 处理拖拽按钮上的 mousemove 事件 */
       btnMouseMove (e) {
         if (this.btnDownFlag) {
-          console.log('move-e', e)
+          // console.log('move-e', e)
           const deltaX = e.pageX - this.btnMouseObj.startX
-          console.log('deltaX', deltaX)
+          // console.log('deltaX', deltaX)
           this.progressWidth = this.downProcessWidth + deltaX
           this._offset(this.progressWidth)
         }
       },
       /* 处理拖拽按钮上的 mouseup 事件 */
       btnMouseUp (e) {
-        console.log('up-e', e)
+        // console.log('up-e', e)
         this.btnDownFlag = false
         this._triggerPercent(this.progressWidth)
       },
@@ -139,7 +139,7 @@
       _triggerPercent (width) {
         width = judgeNumInRegion(width, 0, this.barWidth)
         const percent = parseFloat((width / this.barWidth).toFixed(3))
-        console.log('percent', percent)
+        // console.log('percent', percent)
         this.$emit('percentChange', percent)
       }
     }

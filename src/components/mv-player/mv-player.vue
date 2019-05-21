@@ -232,7 +232,7 @@
       right: 0;
       height: 34px;
       background: rgba(255, 255, 255, .7);
-      opacity: 1;
+      opacity: 0;
       transition: all .5s;
       .playing-state {
         float: left;
@@ -258,9 +258,6 @@
             padding: 14px 0;
             opacity: 0;
             transition: all .3s;
-            width: 55px;
-              margin-right: 30px;
-              opacity: 1;
           }
           &:hover {
             .volume-wrapper {
