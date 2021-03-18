@@ -2,7 +2,7 @@
 
 > A echo-music website by vue.
 >
-> 在线演示：[echo-music](http://120.76.61.79:9001/)
+> 在线演示：[echo-music](https://getwang.github.io/echo-app/)
 
 ## Description
 
